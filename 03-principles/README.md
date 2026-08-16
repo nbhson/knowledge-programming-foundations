@@ -1,4 +1,4 @@
-# 📜 Lớp 3: Principles (Nguyên Tắc)
+# 📜 03 - Principles (Nguyên Tắc)
 
 > **Principles** là các **quy tắc vàng** định hướng cách viết code tốt,
 > duy trì codebase dễ bảo trì và mở rộng.
@@ -7,470 +7,143 @@
 
 ---
 
-## Tổng Quan
+## 📚 Mục lục
 
-```
-Principles
-├── Design Principles
-│   ├── DRY (Don't Repeat Yourself)
-│   ├── KISS (Keep It Simple, Stupid)
-│   ├── YAGNI (You Ain't Gonna Need It)
-│   ├── SoC (Separation of Concerns)
-│   ├── Law of Demeter
-│   └── Composition over Inheritance
-└── SOLID Principles
-    ├── S — Single Responsibility Principle
-    ├── O — Open/Closed Principle
-    ├── L — Liskov Substitution Principle
-    ├── I — Interface Segregation Principle
-    └── D — Dependency Inversion Principle
-```
+| # | Nhóm | Mô tả | Principles |
+|---|------|-------|------------|
+| 3.1 | [Design Principles](#31-design-principles-nguyên-tắc-thiết-kế) | Nguyên tắc thiết kế chung | DRY, KISS, YAGNI, SoC, Law of Demeter, Composition over Inheritance |
+| 3.2 | [SOLID Principles](#32-solid-principles) | 5 nguyên tắc OOP nền tảng | SRP, OCP, LSP, ISP, DIP |
 
 ---
 
-## Design Principles
+## 🎯 Principles là gì?
 
----
+**Principles** = quy tắc vàng định hướng cách viết code. Không phải pattern cụ thể, mà là **kim chỉ nam** — áp dụng mọi lúc, mọi nơi.
 
-### DRY (Don't Repeat Yourself)
-
-**Mô tả:** Tránh **trùng lặp mã nguồn** — mỗi kiến thức nên có **một nguồn duy nhất** (single source of truth).
-
-```typescript
-// ❌ BAD: Duplicated validation logic
-function validateUser(user: any) {
-  if (!user.name || user.name.length < 3) {
-    throw new Error("Name must be at least 3 characters");
-  }
-  if (!user.email || !user.email.includes("@")) {
-    throw new Error("Invalid email");
-  }
-}
-
-function validateAdmin(admin: any) {
-  if (!admin.name || admin.name.length < 3) {
-    throw new Error("Name must be at least 3 characters"); // duplicated!
-  }
-  if (!admin.email || !admin.email.includes("@")) {
-    throw new Error("Invalid email"); // duplicated!
-  }
-}
-
-// ✅ GOOD: Single source of truth
-function validateName(name: string) {
-  if (!name || name.length < 3) {
-    throw new Error("Name must be at least 3 characters");
-  }
-}
-
-function validateEmail(email: string) {
-  if (!email || !email.includes("@")) {
-    throw new Error("Invalid email");
-  }
-}
-
-function validateUser(user: any) {
-  validateName(user.name);
-  validateEmail(user.email);
-}
-
-function validateAdmin(admin: any) {
-  validateName(admin.name);
-  validateEmail(admin.email);
-}
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   QUY TẮC VÀNG              ÁP DỤNG              KẾT QUẢ    │
+│   ┌────────────┐          ┌────────────┐      ┌──────────┐   │
+│   │  DRY       │          │  Tránh     │      │ Code     │   │
+│   │  (nguyên   │ ───────▶ │  trùng     │ ───▶ │ ngắn,    │   │
+│   │   tắc)     │          │  lặp       │      │ dễ sửa   │   │
+│   └────────────┘          └────────────┘      └──────────┘   │
+│                                                             │
+│   Principle = kim chỉ nam. Pattern = giải pháp cụ thể.       │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-**Lưu ý:** Không nên DRY quá mức — đôi khi "duplicate" là OK nếu nó giúp code rõ ràng hơn (Rule of Three).
+### Principles vs Patterns
+
+| | Principles | Patterns |
+|---|-----------|----------|
+| **Bản chất** | Quy tắc, triết lý | Giải pháp cụ thể |
+| **Phạm vi** | Toàn bộ codebase | Từng vấn đề thiết kế |
+| **Ví dụ** | DRY, SRP | Singleton, Observer |
+| **Bắt buộc?** | Nên tuân thủ | Tùy ngữ cảnh |
 
 ---
 
-### KISS (Keep It Simple, Stupid)
+## 🧭 Bản đồ lựa chọn
 
-**Mô tả:** Giữ mọi thứ **đơn giản**, tránh phức tạp hóa không cần thiết.
-
-```typescript
-// ❌ BAD: Over-engineered
-type ProcessResult<T> = T extends string ? StringProcessor<T> : NumberProcessor<T>;
-abstract class BaseProcessor<T> { abstract process(input: T): T; }
-
-// ✅ GOOD: Simple and clear
-function processInput(input: string): string {
-  return input.trim().toLowerCase();
-}
 ```
-
-**Nguyên tắc:** Nếu bạn cần suy nghĩ quá nhiều để hiểu code → code quá phức tạp.
-
----
-
-### YAGNI (You Ain't Gonna Need It)
-
-**Mô tả:** Đừng viết code cho **tương lai** — chỉ viết code khi bạn **thực sự cần** ngay bây giờ.
-
-```typescript
-// ❌ BAD: Writing code "just in case"
-class UserService {
-  createUser(data: UserData) { /* ... */ }
-  deleteUser(id: string) { /* ... */ }
-  softDeleteUser(id: string) { /* ... */ }  // "có thể cần sau"
-  archiveUser(id: string) { /* ... */ }     // "biết đâu cần"
-  restoreUser(id: string) { /* ... */ }     // "cho chắc"
-  bulkDeleteUsers(ids: string[]) { /* ... */ } // "phòng khi"
-}
-
-// ✅ GOOD: Only what's needed NOW
-class UserService {
-  createUser(data: UserData) { /* ... */ }
-  deleteUser(id: string) { /* ... */ }
-}
+BẠN ĐANG GẶP VẤN ĐỀ GÌ?
+│
+├─ VỀ THIẾT KẾ CHUNG (Design Principles)
+│   ├─ Code trùng lặp nhiều nơi? → DRY
+│   ├─ Code phức tạp, khó hiểu? → KISS
+│   ├─ Viết code cho tương lai không chắc xảy ra? → YAGNI
+│   ├─ 1 class làm quá nhiều việc? → SoC
+│   ├─ Gọi method xuyên qua nhiều object? → Law of Demeter
+│   └─ Kế thừa gây rắc rối? → Composition over Inheritance
+│
+└─ VỀ OOP (SOLID)
+    ├─ Class có nhiều lý do để thay đổi? → SRP
+    ├─ Thêm chức năng phải sửa code cũ? → OCP
+    ├─ Subtype phá vỡ hành vi cha? → LSP
+    ├─ Interface quá "béo", client phải implement thừa? → ISP
+    └─ Module cấp cao phụ thuộc module cấp thấp? → DIP
 ```
 
 ---
 
-### SoC (Separation of Concerns)
+## 📖 Chi tiết từng nguyên tắc
 
-**Mô tả:** Mỗi module/class chỉ chịu **trách nhiệm 1 lĩnh vực** duy nhất.
+### 3.1 Design Principles (Nguyên Tắc Thiết Kế)
 
-```typescript
-// ❌ BAD: Class does everything
-class UserService {
-  createUser(data: UserData) { /* ... */ }
-  sendWelcomeEmail(user: User) { /* ... */ }
-  generateReport(users: User[]) { /* ... */ }
-  logAction(action: string) { /* ... */ }
-}
+> Quy tắc chung cho mọi codebase, không phụ thuộc ngôn ngữ hay mô hình.
 
-// ✅ GOOD: Each class has one concern
-class UserService {
-  createUser(data: UserData) { /* ... */ }
-}
+| # | Principle | Mục đích | Chi tiết |
+|---|-----------|----------|----------|
+| 3.1.1 | **DRY** | Tránh trùng lặp, 1 nguồn duy nhất | [→ Xem](3.1-design-principles/3.1.1-dry/README.md) |
+| 3.1.2 | **KISS** | Giữ mọi thứ đơn giản | [→ Xem](3.1-design-principles/3.1.2-kiss/README.md) |
+| 3.1.3 | **YAGNI** | Chỉ viết code khi thực sự cần | [→ Xem](3.1-design-principles/3.1.3-yagni/README.md) |
+| 3.1.4 | **SoC** | Tách trách nhiệm, mỗi module 1 lĩnh vực | [→ Xem](3.1-design-principles/3.1.4-soc/README.md) |
+| 3.1.5 | **Law of Demeter** | Chỉ nói chuyện với object trực tiếp | [→ Xem](3.1-design-principles/3.1.5-law-of-demeter/README.md) |
+| 3.1.6 | **Composition over Inheritance** | Kết hợp thay vì kế thừa | [→ Xem](3.1-design-principles/3.1.6-composition-over-inheritance/README.md) |
 
-class EmailService {
-  sendWelcomeEmail(user: User) { /* ... */ }
-}
+### 3.2 SOLID Principles
 
-class ReportService {
-  generateUserReport(users: User[]) { /* ... */ }
-}
+> 5 nguyên tắc nền tảng cho thiết kế OOP — viết tắt của 5 chữ cái đầu.
 
-class LogService {
-  logAction(action: string) { /* ... */ }
-}
+| # | Principle | Mục đích | Chi tiết |
+|---|-----------|----------|----------|
+| 3.2.1 | **S — SRP** | 1 class = 1 trách nhiệm | [→ Xem](3.2-solid-principles/3.2.1-srp/README.md) |
+| 3.2.2 | **O — OCP** | Mở rộng, không sửa đổi | [→ Xem](3.2-solid-principles/3.2.2-ocp/README.md) |
+| 3.2.3 | **L — LSP** | Subtype thay thế được cha | [→ Xem](3.2-solid-principles/3.2.3-lsp/README.md) |
+| 3.2.4 | **I — ISP** | Interface nhỏ, tập trung | [→ Xem](3.2-solid-principles/3.2.4-isp/README.md) |
+| 3.2.5 | **D — DIP** | Depend abstraction, không depend concrete | [→ Xem](3.2-solid-principles/3.2.5-dip/README.md) |
+
+---
+
+## 🆚 So sánh các nguyên tắc dễ nhầm lẫn
+
+| Cặp nguyên tắc | Khác nhau |
+|----------------|-----------|
+| **DRY vs SoC** | DRY: tránh trùng lặp code. SoC: tách trách nhiệm — 2 class có thể cùng logic nhưng khác lĩnh vực |
+| **KISS vs YAGNI** | KISS: đơn giản hóa cái đang có. YAGNI: đừng thêm cái chưa cần |
+| **SRP vs SoC** | SRP: 1 class 1 lý do thay đổi (OOP). SoC: tách module theo lĩnh vực (rộng hơn) |
+| **OCP vs Composition** | OCP: mở rộng không sửa. Composition: 1 cách cụ thể để đạt OCP |
+| **LSP vs ISP** | LSP: subtype giữ contract cha. ISP: interface không bắt client làm thừa |
+
+---
+
+## 📁 Cấu trúc thư mục
+
+```
+03-principles/
+├── README.md                    # File này (overview)
+├── 3.1-design-principles/
+│   ├── README.md                # Tổng quan nhóm Design Principles
+│   ├── 3.1.1-dry/
+│   │   ├── README.md            # Tutorial DRY
+│   │   └── examples/index.ts    # Code ví dụ
+│   ├── 3.1.2-kiss/
+│   ├── 3.1.3-yagni/
+│   ├── 3.1.4-soc/
+│   ├── 3.1.5-law-of-demeter/
+│   └── 3.1.6-composition-over-inheritance/
+└── 3.2-solid-principles/
+    ├── README.md                # Tổng quan nhóm SOLID
+    ├── 3.2.1-srp/
+    ├── 3.2.2-ocp/
+    ├── 3.2.3-lsp/
+    ├── 3.2.4-isp/
+    └── 3.2.5-dip/
 ```
 
 ---
 
-### Law of Demeter
+## 📚 Tài liệu tham khảo
 
-**Mô tả:** Chỉ nói chuyện với **đối tượng trực tiếp**, không "chatter" với bạn của bạn.
-
-```typescript
-// ❌ BAD: Talking to friend's friend
-user.getAddress().getCity().getName();
-
-// ✅ GOOD: Talk to direct object only
-user.getCityName(); // User knows how to get its city name
-// hoặc
-class User {
-  getCityName(): string {
-    return this.address.city.name; // Still accessed internally but exposed via one method
-  }
-}
-```
+- 📖 [SOLID - Wikipedia](https://en.wikipedia.org/wiki/SOLID)
+- 📖 [The Principles of OOD - Robert C. Martin](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)
+- 📖 [Refactoring Guru - Code Smells](https://refactoring.guru/refactoring/smells)
+- 📖 [Clean Code - Robert C. Martin](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
 
 ---
 
-### Composition over Inheritance
+## ⏭️ Bài tiếp theo
 
-**Mô tả:** Ưu tiên **composition** (kết hợp) thay vì **inheritance** (kế thừa).
-
-```typescript
-// ❌ BAD: Inheritance
-class Bird {
-  fly() { console.log("Flying"); }
-  swim() { console.log("Swimming"); } // Not all birds swim!
-}
-
-class Penguin extends Bird {
-  fly() { throw new Error("Penguins can't fly!"); } // Override = design smell
-}
-
-// ✅ GOOD: Composition
-class FlyingAbility {
-  fly() { console.log("Flying"); }
-}
-
-class SwimmingAbility {
-  swim() { console.log("Swimming"); }
-}
-
-class Eagle {
-  private flying = new FlyingAbility();
-  fly() { this.flying.fly(); }
-}
-
-class Penguin {
-  private swimming = new SwimmingAbility();
-  swim() { this.swimming.swim(); }
-}
-```
-
----
-
-## SOLID Principles
-
----
-
-### S — Single Responsibility Principle (SRP)
-
-**Mỗi class chỉ nên có MỘT lý do để thay đổi.**
-
-```typescript
-// ❌ BAD: Multiple responsibilities
-class Employee {
-  calculatePay() { /* ... */ }
-  generateReport() { /* ... */ }
-  saveToDatabase() { /* ... */ }
-}
-
-// ✅ GOOD: One responsibility per class
-class Employee {
-  constructor(
-    private name: string,
-    private salary: number
-  ) {}
-}
-
-class PayCalculator {
-  calculatePay(employee: Employee): number {
-    return employee.salary;
-  }
-}
-
-class ReportGenerator {
-  generateReport(employee: Employee): string {
-    return `Report for ${employee.name}`;
-  }
-}
-
-class EmployeeRepository {
-  save(employee: Employee): void {
-    // save to database
-  }
-}
-```
-
----
-
-### O — Open/Closed Principle (OCP)
-
-**Mở để mở rộng, đóng để sửa đổi.** Bạn có thể thêm hành vi mới mà không cần sửa code hiện có.
-
-```typescript
-// ❌ BAD: Must modify existing code to add new discount type
-class DiscountCalculator {
-  calculate(price: number, type: string): number {
-    if (type === "percentage") return price * 0.9;
-    if (type === "fixed") return price - 10;
-    return price; // must modify this method for new discount types
-  }
-}
-
-// ✅ GOOD: Open for extension, closed for modification
-interface DiscountStrategy {
-  apply(price: number): number;
-}
-
-class PercentageDiscount implements DiscountStrategy {
-  apply(price: number): number { return price * 0.9; }
-}
-
-class FixedDiscount implements DiscountStrategy {
-  apply(price: number): number { return price - 10; }
-}
-
-// To add new discount: just add a new class, NO modification needed
-class BuyOneGetOneFree implements DiscountStrategy {
-  apply(price: number): number { return price / 2; }
-}
-
-class DiscountCalculator {
-  calculate(price: number, strategy: DiscountStrategy): number {
-    return strategy.apply(price);
-  }
-}
-```
-
----
-
-### L — Liskov Substitution Principle (LSP)
-
-**Object có thể thay thế bởi subtype mà không sai chương trình.**
-
-```typescript
-// ❌ BAD: Subtype breaks parent contract
-class Rectangle {
-  constructor(protected width: number, protected height: number) {}
-
-  setWidth(w: number) { this.width = w; }
-  setHeight(h: number) { this.height = h; }
-  getArea() { return this.width * this.height; }
-}
-
-class Square extends Rectangle {
-  setWidth(w: number) {
-    this.width = w;
-    this.height = w; // Side effect! Changes height too
-  }
-  setHeight(h: number) {
-    this.width = h;
-    this.height = h; // Side effect! Changes width too
-  }
-}
-
-// Client expects Rectangle behavior but Square breaks it
-function enlargeRectangle(rect: Rectangle) {
-  const originalArea = rect.getArea();
-  rect.setWidth(rect.width + 1);
-  // For Rectangle: area increases. For Square: unexpected behavior!
-}
-
-// ✅ GOOD: Use composition or separate interfaces
-interface Shape {
-  getArea(): number;
-}
-
-class Rectangle implements Shape {
-  constructor(private width: number, private height: number) {}
-  getArea() { return this.width * this.height; }
-}
-
-class Square implements Shape {
-  constructor(private side: number) {}
-  getArea() { return this.side * this.side; }
-}
-```
-
----
-
-### I — Interface Segregation Principle (ISP)
-
-**Không ép client implement interface mà chúng không sử dụng.**
-
-```typescript
-// ❌ BAD: Fat interface
-interface Worker {
-  work(): void;
-  eat(): void;
-  sleep(): void;
-  code(): void;
-  design(): void;
-}
-
-// Robot must implement eat() and sleep() — doesn't make sense!
-class Robot implements Worker {
-  work() { /* ... */ }
-  eat() { throw new Error("Robots don't eat!"); }
-  sleep() { throw new Error("Robots don't sleep!"); }
-  code() { /* ... */ }
-  design() { /* ... */ }
-}
-
-// ✅ GOOD: Segregated interfaces
-interface Workable {
-  work(): void;
-}
-
-interface Eatable {
-  eat(): void;
-}
-
-interface Sleepable {
-  sleep(): void;
-}
-
-interface Coder {
-  code(): void;
-}
-
-class HumanDeveloper implements Workable, Eatable, Sleepable, Coder {
-  work() { /* ... */ }
-  eat() { /* ... */ }
-  sleep() { /* ... */ }
-  code() { /* ... */ }
-}
-
-class RobotWorker implements Workable, Coder {
-  work() { /* ... */ }
-  code() { /* ... */ }
-}
-```
-
----
-
-### D — Dependency Inversion Principle (DIP)
-
-**Depend vào abstraction, không depend vào class cụ thể.**
-
-```typescript
-// ❌ BAD: High-level module depends on low-level module
-class MySQLDatabase {
-  query(sql: string) { /* ... */ }
-  insert(data: any) { /* ... */ }
-}
-
-class UserService {
-  private db = new MySQLDatabase(); // Tight coupling!
-
-  createUser(data: UserData) {
-    this.db.insert(data);
-  }
-}
-
-// ✅ GOOD: Both depend on abstraction
-interface Database {
-  query(sql: string): any;
-  insert(data: any): void;
-}
-
-class MySQLDatabase implements Database {
-  query(sql: string) { /* ... */ }
-  insert(data: any) { /* ... */ }
-}
-
-class PostgreSQLDatabase implements Database {
-  query(sql: string) { /* ... */ }
-  insert(data: any) { /* ... */ }
-}
-
-// High-level module depends on abstraction
-class UserService {
-  constructor(private db: Database) {} // Dependency injection
-
-  createUser(data: UserData) {
-    this.db.insert(data);
-  }
-}
-
-// Can swap implementations easily
-const mysqlService = new UserService(new MySQLDatabase());
-const pgService = new UserService(new PostgreSQLDatabase());
-```
-
----
-
-## Bảng So Sánh
-
-| Nguyên Tắc | Cốt Lõi | Kết Quả |
-|------------|---------|---------|
-| **DRY** | Tránh trùng lặp | Code ngắn hơn, dễ thay đổi |
-| **KISS** | Đơn giản hóa | Dễ hiểu, dễ maintain |
-| **YAGNI** | Chỉ viết khi cần | Không over-engineering |
-| **SoC** | Tách trách nhiệm | Module rõ ràng |
-| **Law of Demeter** | Ít coupling hơn | Giảm depend |
-| **Composition** | Kết hợp thay vì kế thừa | Linh hoạt hơn |
-| **SRP** | 1 class = 1 trách nhiệm | Dễ thay đổi |
-| **OCP** | Mở rộng, không sửa | Thêm chức năng an toàn |
-| **LSP** | Subtype thay thế được | Không phá vỡ contract |
-| **ISP** | Interface nhỏ, tập trung | Client không bị overloading |
-| **DIP** | Depend abstraction | Linh hoạt thay đổi implementation |
+→ [04-paradigms](../04-paradigms/README.md)

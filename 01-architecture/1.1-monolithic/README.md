@@ -45,27 +45,31 @@ Monolithic Architecture gói toàn bộ tính năng vào 1 ứng dụng duy nh�
 
 ## 🖼️ Minh họa demo code
 
-Ví dụ `examples/index.ts` mô tả **E-commerce Monolith**:
+Ví dụ `examples/index.ts` mô tả **Mini Shop Monolith**:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    MONOLITH APP                             │
+│                    MONOLITH APP (1 process)                 │
 │                                                             │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │  OrderService ──▶ PaymentService ──▶ InventoryService│   │
-│  │  (gọi trực tiếp trong cùng process)                  │   │
+│  │  Presentation: ConsoleUI                             │   │
+│  │  Business:     ProductService, OrderService          │   │
+│  │  Data Access:  ProductRepository, OrderRepository    │   │
+│  │  (gọi trực tiếp trong cùng process, không network)   │   │
 │  └──────────────────────────────────────────────────────┘   │
 │                                                             │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │  InMemoryDatabase (1 DB dùng chung)                  │   │
+│  │  In-memory Database (Map) — 1 DB dùng chung          │   │
 │  └──────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-- **Services:** `OrderService`, `PaymentService`, `InventoryService` — gọi trực tiếp nhau
-- **Database:** `InMemoryDatabase` — 1 DB dùng chung
+- **Presentation:** `ConsoleUI` — hiển thị sản phẩm, tạo đơn
+- **Business Logic:** `ProductService`, `OrderService` — gọi trực tiếp nhau
+- **Data Access:** `ProductRepository`, `OrderRepository` — dùng chung in-memory DB
+- **Database:** in-memory `Map` — 1 DB dùng chung
 
-> 💡 Service gọi nhau trực tiếp (in-process), không qua network. Đơn giản nhưng khó tách riêng sau này.
+> 💡 Các layer gọi nhau trực tiếp (in-process), không qua network. Đơn giản nhưng khó tách riêng sau này.
 
 ---
 
@@ -118,7 +122,7 @@ Ví dụ `examples/index.ts` mô tả **E-commerce Monolith**:
 1.1-monolithic/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # E-commerce demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mini Shop demo (chạy: npx ts-node examples/index.ts)
 ```
 
 ---

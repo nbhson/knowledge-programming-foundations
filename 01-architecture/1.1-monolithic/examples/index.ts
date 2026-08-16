@@ -244,3 +244,6 @@ function main() {
 }
 
 main();
+
+// export {} để file này là module — tránh trùng tên class với các example khác
+export {};

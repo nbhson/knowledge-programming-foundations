@@ -53,26 +53,33 @@ Microservices chia hệ thống thành các service nhỏ theo **bounded context
 
 ## 🖼️ Minh họa demo code
 
-Ví dụ `examples/index.ts` mô tả **E-commerce Microservices**:
+Ví dụ `examples/index.ts` mô tả **Mini Shop (3 services)**:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  ┌──────────────────┐   HTTP   ┌──────────────────┐         │
-│  │  OrderService    │ ───────▶ │  PaymentService  │         │
-│  │  (port 3001)     │          │  (port 3002)     │         │
-│  └──────────────────┘          └──────────────────┘         │
+│  ┌──────────────┐   HTTP (sync)   ┌──────────────────┐      │
+│  │  Ordering    │ ──────────────▶ │  Catalog         │      │
+│  │  Service     │  reserve stock  │  Service         │      │
+│  └──────┬───────┘                 └──────────────────┘      │
+│         │  publish OrderCreated (async)                     │
+│         ▼                                                   │
+│  ┌──────────────────┐   subscribe   ┌──────────────────┐    │
+│  │   Event Bus      │ ─────────────▶│  User Service    │    │
+│  │  (Kafka/RabbitMQ)│               │  (gửi email)     │    │
+│  └──────────────────┘               └──────────────────┘    │
 │                                                             │
 │  Mỗi service: codebase riêng, DB riêng, deploy riêng        │
-│  Giao tiếp qua HTTP (network)                               │
+│  Giao tiếp: HTTP (sync) + Event Bus (async)                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-- **OrderService:** gọi PaymentService qua HTTP
-- **PaymentService:** xử lý thanh toán độc lập
-- **Giao tiếp:** HTTP request/response (network call)
+- **Catalog Service:** quản lý sản phẩm, reserve stock (DB riêng: catalog-db)
+- **Ordering Service:** tạo đơn, gọi Catalog qua HTTP, publish event (DB riêng: ordering-db)
+- **User Service:** quản lý user, lắng nghe `OrderCreated` để gửi email (DB riêng: user-db)
+- **Giao tiếp:** HTTP request/response (sync) + Event Bus (async)
 
-> 💡 Trong demo dùng HTTP trực tiếp. Thực tế thường qua API Gateway + service discovery.
+> 💡 Trong demo dùng HTTP trực tiếp + Event Bus in-process. Thực tế thường qua API Gateway + service discovery + Kafka/RabbitMQ.
 
 ---
 
@@ -127,7 +134,7 @@ Ví dụ `examples/index.ts` mô tả **E-commerce Microservices**:
 1.2-microservices/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # E-commerce demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mini Shop demo (chạy: npx ts-node examples/index.ts)
 ```
 
 ---

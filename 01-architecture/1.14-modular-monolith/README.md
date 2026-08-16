@@ -50,27 +50,31 @@ Modular Monolith giữ sự đơn giản của Monolith (1 codebase, 1 deploy) n
 
 ## 🖼️ Minh họa demo code
 
-Ví dụ `examples/index.ts` mô tả **E-commerce**:
+Ví dụ `examples/index.ts` mô tả **Mini Shop**:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
 │  ┌──────────────────┐   ┌──────────────────┐                │
-│  │  OrderModule     │   │  PaymentModule   │                │
-│  │  OrderService    │──▶│  PaymentService  │                │
-│  │  OrderRepository │   │  PaymentRepo     │                │
+│  │  OrdersModule    │   │  InventoryModule │                │
+│  │  (tạo đơn hàng)  │──▶│  (reserve stock) │                │
 │  └──────────────────┘   └──────────────────┘                │
+│  ┌──────────────────┐                                       │
+│  │  UsersModule     │                                       │
+│  │  (lấy email)     │◀── OrdersModule gọi qua interface     │
+│  └──────────────────┘                                       │
 │                                                             │
-│  OrderModule gọi PaymentModule qua interface                │
-│  (không import class internal của PaymentModule)            │
+│  OrdersModule chỉ biết interface (InventoryPort, UserPort)  │
+│  — không import class internal của module khác              │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-- **Module Orders:** `OrderService`, `OrderRepository`
-- **Module Payment:** `PaymentService`, `PaymentRepository`
-- **Giao tiếp:** OrderModule gọi PaymentModule qua interface công khai
+- **Module Orders:** `OrdersModule` (tạo đơn, gọi Inventory/Users qua interface)
+- **Module Inventory:** `InventoryModule` (reserve stock, getStock)
+- **Module Users:** `UsersModule` (getEmail)
+- **Giao tiếp:** OrdersModule gọi InventoryModule/UsersModule qua interface công khai
 
-> 💡 Muốn tách Payment thành microservice? Chỉ cần thay interface call bằng HTTP/event call — phần còn lại giữ nguyên.
+> 💡 Muốn tách Inventory thành microservice? Chỉ cần thay interface call bằng HTTP/event call — phần còn lại giữ nguyên.
 
 ---
 
@@ -122,7 +126,7 @@ Ví dụ `examples/index.ts` mô tả **E-commerce**:
 1.14-modular-monolith/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # E-commerce demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mini Shop demo (chạy: npx ts-node examples/index.ts)
 ```
 
 ---
