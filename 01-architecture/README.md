@@ -1,293 +1,434 @@
-# 🏛️ Lớp 1: Architecture (Kiến Trúc Phần Mềm)
+# 🏗️ 01 - Architecture
 
-> **Architecture** là cách bạn **tổ chức và cấu trúc** toàn bộ hệ thống phần mềm —
-> bao gồm cách các modules, services, layers giao tiếp với nhau,
-> cách dữ liệu chảy qua hệ thống, và cách hệ thống được chia nhỏ thành các thành phần.
->
-> **Ví dụ:** Nhà thầu tư vấn thiết kế — vẽ bức tranh lớn cho toàn bộ tòa nhà.
+> Tổng quan về các kiến trúc phần mềm phổ biến, cách chúng giải quyết vấn đề về tổ chức code, phân tách trách nhiệm (Separation of Concerns) và khả năng mở rộng (Scalability).
 
 ---
 
-## Tổng Quan
+## 📚 Mục lục
 
-| # | Kiến Trúc | Mô Tả |
-|---|-----------|-------|
-| 1.1 | **Monolithic Architecture** | Tất cả thành phần trong 1 ứng dụng duy nhất. Đơn giản, dễ deploy nhưng khó scale. |
-| 1.2 | **Microservices Architecture** | Chia thành nhiều service nhỏ, độc lập. Scale riêng, fault isolation nhưng phức tạp hơn. |
-| 1.3 | **Clean Architecture** | Phân thành các vòng tròn同心 với Dependency Rule — code bên trong không biết gì về bên ngoài. |
-| 1.4 | **Hexagonal Architecture (Ports & Adapters)** | Core business ở trung tâm, giao tiếp qua Ports và Adapters. |
-| 1.5 | **Onion Architecture** | Dependency luôn hướng vào trong — domain models ở trung tâm. |
-| 1.6 | **MVC (Model-View-Controller)** | Phân tách thành Model (dữ liệu), View (UI), Controller (điều phối). |
-| 1.7 | **MVVM (Model-View-ViewModel)** | ViewModel là lớp trung gian, binding data 2 chiều giữa View và Model. |
-| 1.8 | **MVP (Model-View-Presenter)** | Presenter xử lý logic, giao tiếp giữa View (Passive) và Model. |
-| 1.9 | **CQRS** | Tách biệt đọc (Query) và ghi (Command) thành 2 model riêng. |
-| 1.10 | **Event Sourcing** | Lưu toàn bộ lịch sử sự kiện thay vì trạng thái hiện tại. |
-| 1.11 | **Event-Driven Architecture** | Hệ thống giao tiếp chủ yếu qua sự kiện (events). |
-| 1.12 | **Domain-Driven Design (DDD)** | Thiết kế phần mềm tập trung vào business domain. |
-| 1.13 | **Serverless Architecture** | Không quản lý server, code chạy trên managed functions. |
-| 1.14 | **Layered Architecture (N-Tier)** | Hệ thống chia thành các lớp rõ ràng, mỗi layer chỉ giao tiếp với layer liền kề. |
-
----
-
-## 1.1 Monolithic Architecture
-
-**Mô tả:** Tất cả các thành phần (frontend, backend, database) được triển khai như **một ứng dụng duy nhất**.
-
-**Ưu điểm:**
-- Đơn giản để phát triển ban đầu
-- Dễ deploy (một lần deploy cho tất cả)
-- Dễ debug (mọi thứ cùng một process)
-- Không có network latency giữa các module
-
-**Nhược điểm:**
-- Khó scale riêng lẻ từng thành phần
-- Codebase lớn → khó quản lý
-- 1 lỗi có thể crash toàn bộ hệ thống
-- Khó thay đổi công nghệ từng phần
-
-**Khi nào dùng:** MVP, ứng dụng nhỏ, team nhỏ (< 10 người).
+| # | Chủ đề | Mô tả ngắn |
+|---|--------|------------|
+| 1.1 | [Monolithic](#11-monolithic) | Toàn bộ ứng dụng trong 1 codebase - deployment unit |
+| 1.2 | [Microservices](#12-microservices) | Tách nhỏ thành nhiều service độc lập |
+| 1.3 | [Clean Architecture](#13-clean-architecture) | Phân lớp theo hướng Dependency Rule |
+| 1.4 | [Layered Architecture](#14-layered-architecture) | Phân lớp theo chiều dọc (UI → DB) |
+| 1.5 | [Hexagonal Architecture](#15-hexagonal-architecture) | Cô lập domain khỏi infrastructure qua Ports & Adapters |
+| 1.6 | [Onion Architecture](#16-onion-architecture) | Domain ở trung tâm, phụ thuộc hướng vào trong |
+| 1.7 | [Domain-Driven Design](#17-domain-driven-design) | Thiết kế dựa trên nghiệp vụ domain |
+| 1.8 | [CQRS](#18-cqrs) | Tách Command (ghi) và Query (đọc) |
+| 1.9 | [Event Sourcing](#19-event-sourcing) | Lưu trạng thái bằng chuỗi sự kiện |
+| 1.10 | [Event-Driven Architecture](#110-event-driven-architecture) | Giao tiếp qua sự kiện bất đồng bộ |
+| 1.11 | [MVC](#111-mvc) | Model - View - Controller |
+| 1.12 | [MVP](#112-mvp) | Model - View - Presenter |
+| 1.13 | [MVVM](#113-mvvm) | Model - View - ViewModel |
+| 1.14 | [Modular Monolith](#114-modular-monolith) | Kết hợp ưu điểm Monolith & Microservices |
 
 ---
 
-## 1.2 Microservices Architecture
+## 🌍 Kiến trúc là gì?
 
-**Mô tả:** Hệ thống được chia thành nhiều **service nhỏ, độc lập**, mỗi service xử lý 1 chức năng cụ thể, giao tiếp qua HTTP/gRPC/Message Queue.
+**Kiến trúc phần mềm (Software Architecture)** là cách ta **tổ chức các thành phần** của hệ thống và **quy định cách chúng tương tác** với nhau. Nó bao gồm:
 
-**Ưu điểm:**
-- Scale riêng lẻ từng service
-- Team khác nhau có thể phát triển service khác nhau
-- Fault isolation — 1 service crash không ảnh hưởng service khác
-- Đa công nghệ (mỗi service dùng ngôn ngữ/framework khác nhau)
+- **Cấu trúc (Structure):** Các thành phần/module/class được sắp xếp thế nào.
+- **Hành vi (Behavior):** Các thành phần phối hợp với nhau ra sao.
+- **Ràng buộc (Constraints):** Quy tắc mà toàn hệ thống phải tuân theo.
 
-**Nhược điểm:**
-- Phức tạp khi deploy & quản lý (cần Kubernetes, Docker)
-- Network latency giữa các service
-- Khó debug distributed system
-- Cần quản lý data consistency phân tán
+### Tại sao kiến trúc quan trọng?
 
-**Ví dụ thực tế:** Netflix, Amazon, Uber
+```
+┌────────────────────────────────────────────────────────────────┐
+│                    KHÔNG CÓ KIẾN TRÚC                          │
+│  Mọi thứ đan xen → Sửa 1 chỗ → Vỡ nhiều chỗ                     │
+│  Big Ball of Mud 🐌                                              │
+├────────────────────────────────────────────────────────────────┤
+│                    CÓ KIẾN TRÚC                                │
+│  Thay đổi cục bộ → Ít rủi ro → Dễ test → Dễ mở rộng 🚀         │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### Các yếu tố kiến trúc tốt
+
+| Yếu tố | Ý nghĩa |
+|--------|---------|
+| 🧩 **Modularity** | Code chia thành module độc lập, dễ hiểu, dễ thay thế |
+| 🔗 **Loosely Coupled** | Các module ít phụ thuộc lẫn nhau |
+| 🎯 **High Cohesion** | Các phần trong module có cùng mục đích |
+| 🔄 **Testability** | Dễ viết test nhờ dependency injection |
+| 📈 **Scalability** | Dễ mở rộng khi tải tăng |
+| 🛡️ **Security** | Phân tách vùng tin cậy, kiểm soát truy cập |
 
 ---
 
-## 1.3 Clean Architecture (Uncle Bob)
+## 🧭 Bản đồ lựa chọn kiến trúc
 
-**Mô tả:** Hệ thống được phân thành các **vòng tròn同心** với nguyên tắc **Dependency Rule** — code bên trong không biết gì về bên ngoài.
+```
+BẮT ĐẦU: Dự án của bạn như thế nào?
+│
+├─ Quy mô nhỏ, team nhỏ, muốn đơn giản?
+│   └─→ 1.1 Monolithic hoặc 1.14 Modular Monolith
+│
+├─ Ứng dụng doanh nghiệp phức tạp, nghiệp vụ nhiều?
+│   ├─ Vòng đời dài, cần bảo trì: → 1.3 Clean / 1.6 Onion
+│   ├─ Tập trung nghiệp vụ, nói chuyện với domain expert: → 1.7 DDD
+│   └─ Cần tách infra (DB, queue...): → 1.5 Hexagonal
+│
+├─ Hệ thống lớn, team nhiều, cần scale độc lập?
+│   └─→ 1.2 Microservices (nhưng thận trọng!)
+│
+├─ Cần UI tương tác nhiều, desktop/mobile?
+│   ├─ Web truyền thống: → 1.11 MVC
+│   ├─ Cần testable, tách logic khỏi View: → 1.12 MVP / 1.13 MVVM
+│   └─ Reactive UI (SwiftUI, Compose, WPF...): → 1.13 MVVM
+│
+├─ Cần đồng bộ giữa nhiều service, xử lý sự kiện?
+│   └─→ 1.10 Event-Driven / 1.9 Event Sourcing
+│
+└─ Đọc nhiều hơn ghi, cần tối ưu riêng cho đọc/ghi?
+    └─→ 1.8 CQRS
+```
+
+---
+
+## 🔗 Mối quan hệ giữa các kiến trúc
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     KHÔNG PHẢI CÁI NÀY HAY HƠN CÁI KIA                │
+│         Mỗi kiến trúc giải quyết 1 nhóm vấn đề khác nhau             │
+│                                                                     │
+│   Monolithic ──mở rộng──→ Modular Monolith ──tách nhỏ──→ Microservices│
+│        │                        │                         │          │
+│        │                        │                    Event-Driven      │
+│        │                        │                    CQRS             │
+│        ▼                        ▼                         │          │
+│   Về tổ chức code bên trong:                        Event Sourcing      │
+│   Layered / Clean / Hexagonal / Onion / DDD                        │
+│        │                                                           │
+│        ▼                                                           │
+│   Về giao diện người dùng:  MVC / MVP / MVVM                       │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+> 💡 **Lưu ý:** Các kiến trúc này **không loại trừ nhau**. Ví dụ: bạn có thể dùng **Clean Architecture + CQRS + Event Sourcing** trong cùng một **Microservice**, hoặc dùng **MVVM** cho UI của một hệ thống **Layered Architecture**.
+
+---
+
+## 📖 Chi tiết từng mục
+
+### 1.1 Monolithic
+
+Một codebase, một deployment unit, chạy toàn bộ tính năng.
 
 ```
 ┌─────────────────────────────────────────┐
-│           Frameworks & Drivers          │  ← Outermost (ngoài cùng)
-│  ┌───────────────────────────────────┐  │
-│  │       Interface Adapters          │  │
-│  │  ┌─────────────────────────────┐  │  │
-│  │  │      Use Cases              │  │  │
-│  │  │  ┌───────────────────────┐  │  │  │
-│  │  │  │   Entities            │  │  │  │  ← Innermost (bên trong)
-│  │  │  └───────────────────────┘  │  │  │
-│  │  └─────────────────────────────┘  │  │
-│  └───────────────────────────────────┘  │
+│             MONOLITH APP                │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐    │
+│  │  UI     │ │ Business│ │  Data   │    │
+│  │ Handlers│ │  Logic  │ │  Access │    │
+│  └─────────┘ └─────────┘ └─────────┘    │
+│  ┌─────────────────────────────────┐    │
+│  │          DATABASE              │    │
+│  └─────────────────────────────────┘    │
 └─────────────────────────────────────────┘
 ```
 
-- **Entities:** Business objects thuần túy (không phụ thuộc framework)
-- **Use Cases:** Các tác vụ business cụ thể
-- **Interface Adapters:** Chuyển đổi dữ liệu giữa use cases và external
-- **Frameworks & Drivers:** Database, Web Framework, UI
+- ✅ **Ưu:** Đơn giản, dễ deploy, dễ debug, chi phí thấp
+- ❌ **Nhược:** Khó scale từng phần, code lớn khó bảo trì, phụ thuộc công nghệ
 
-**Ưu điểm:**
-- Business logic tách biệt hoàn toàn với framework
-- Dễ thay đổi UI, database mà không ảnh hưởng business logic
-- Dễ test (mock các adapter)
+📂 → [Chi tiết: 1.1-monolithic](1.1-monolithic/README.md)
 
 ---
 
-## 1.4 Hexagonal Architecture (Ports & Adapters)
+### 1.2 Microservices
 
-**Mô tả:** Ứng dụng có **core business logic** ở trung tâm, giao tiếp với thế giới bên ngoài qua **Ports** (cổng) và **Adapters** (bộ chuyển đổi).
+Tách ứng dụng thành nhiều service nhỏ, độc lập, giao tiếp qua network.
 
 ```
-          [Database Adapter] ←→ [Port] ←→ [Core Business] ←→ [Port] ←→ [API Adapter]
+Client → [API Gateway] → Service A ──→ DB A
+                        → Service B ──→ DB B
+                        → Service C ──→ DB C
 ```
 
-- **Port:** Interface xác định cách core giao tiếp với thế giới bên ngoài
-- **Adapter:** Implementation cụ thể của port (PostgreSQL, REST API, CLI...)
+- ✅ **Ưu:** Scale độc lập, team độc lập, công nghệ đa dạng, cô lập lỗi
+- ❌ **Nhược:** Phức tạp (network, distributed transaction), khó debug, chi phí vận hành cao
 
-**Ưu điểm:**
-- Thay đổi adapter mà không ảnh hưởng core
-- Test được core logic bằng mock adapter
+📂 → [Chi tiết: 1.2-microservices](1.2-microservices/README.md)
 
 ---
 
-## 1.5 Onion Architecture
+### 1.3 Clean Architecture
 
-**Mô tả:** Giống Clean/Hexagonal nhưng nhấn mạnh **dependency luôn hướng vào trong** — domain models ở trung tâm, infrastructure ở ngoài.
+Phân lớp theo **Dependency Rule** - phụ thuộc luôn hướng từ ngoài vào trong.
 
 ```
-         Infrastructure (ORM, Email, File System)
-              ↓
-         Application Services (Use Cases)
-              ↓
-         Domain Services (Business Logic)
-              ↓
-         Domain Models (Entities, Value Objects)  ← Tâm của hành tinh
+        ┌──────────────────────────┐
+        │      Frameworks &        │  ← Ngoài cùng
+        │     Drivers (React,      │
+        │    Express, Mongo...)     │
+        └────────────┬─────────────┘
+        ┌────────────▼─────────────┐
+        │ Interface Adapters       │  ← Controllers, Presenters, Gateways
+        └────────────┬─────────────┘
+        ┌────────────▼─────────────┐
+        │ Use Cases                │  ← Application business rules
+        └────────────┬─────────────┘
+        ┌────────────▼─────────────┐
+        │ Entities                 │  ← Enterprise business rules (trong cùng)
+        └──────────────────────────┘
 ```
+
+- ✅ **Ưu:** Độc lập framework, dễ test, dễ thay đổi công nghệ
+- ❌ **Nhược:** Nhiều lớp boilerplate, phức tạp với dự án nhỏ
+
+📂 → [Chi tiết: 1.3-clean-architecture](1.3-clean-architecture/README.md)
 
 ---
 
-## 1.6 MVC (Model-View-Controller)
+### 1.4 Layered Architecture
 
-**Mô tả:** Phân tách ứng dụng thành 3 thành phần:
-- **Model:** Dữ liệu & business logic
-- **View:** Giao diện người dùng
-- **Controller:** Xử lý input, điều phối giữa Model và View
+Phân lớp theo chiều dọc: Presentation → Business → Persistence → Database.
 
-**Ví dụ:** Ruby on Rails, Django, Laravel, AngularJS
+```
+┌──────────────────────────────┐
+│        Presentation          │  ← UI, Controllers
+├──────────────────────────────┤
+│        Business Logic        │  ← Services, Rules
+├──────────────────────────────┤
+│        Persistence           │  ← Repositories, DAOs
+├──────────────────────────────┤
+│         Database             │  ← DB, Cache
+└──────────────────────────────┘
+```
+
+- ✅ **Ưu:** Đơn giản, dễ hiểu, phổ biến nhất
+- ❌ **Nhược:** Phụ thuộc chiều dọc, khó test layer trên nếu layer dưới chưa xong
+
+📂 → [Chi tiết: 1.4-layered-architecture](1.4-layered-architecture/README.md)
 
 ---
 
-## 1.7 MVVM (Model-View-ViewModel)
+### 1.5 Hexagonal Architecture (Ports & Adapters)
 
-**Mô tả:**
-- **Model:** Dữ liệu
-- **View:** Giao diện
-- **ViewModel:** Lớp trung gian, binding data 2 chiều giữa View và Model
+Domain ở trung tâm, giao tiếp với thế giới bên ngoài qua **Ports** (interface) và **Adapters** (implement).
 
-**Ví dụ:** Angular (2+), WPF, Vue.js, Knockout.js
+```
+        ┌──────────┐
+        │  Driver  │          ┌──────────────┐
+        │ Adapters │◄────────►│              │◄────────►┐
+        │(HTTP, CLI│          │   DOMAIN     │          │ Driven
+        │  Queue)  │  Ports   │   (Core)     │  Ports   │ Adapters
+        └──────────┘          │              │          │ (DB, External
+                              └──────────────┘          │  API, SMTP)
+                                                       └──────────┘
+```
+
+- ✅ **Ưu:** Domain độc lập hoàn toàn với công nghệ, dễ swap adapter
+- ❌ **Nhược:** Nhiều interface, boilerplate, khó hình dung lúc đầu
+
+📂 → [Chi tiết: 1.5-hexagonal-architecture](1.5-hexagonal-architecture/README.md)
 
 ---
 
-## 1.8 MVP (Model-View-Presenter)
+### 1.6 Onion Architecture
 
-**Mô tả:**
-- **Model:** Dữ liệu
-- **View:** Giao diện (Passive — không biết gì về logic)
-- **Presenter:** Xử lý logic, giao tiếp giữa View và Model
+Giống Hexagonal nhưng nhấn mạnh phân lớp hình tròn, phụ thuộc hướng vào trong.
 
-**Ví dụ:** Android (traditional), Windows Forms
+```
+                ┌─────────────────────────────┐
+                │   Infrastructure / UI        │  ← Ngoài cùng
+                │   ┌───────────────────────┐  │
+                │   │  Application Services │  │
+                │   │  ┌─────────────────┐  │  │
+                │   │  │  Domain Model   │  │  │  ← Trung tâm
+                │   │  │ (Entities, VOs) │  │  │
+                │   │  └─────────────────┘  │  │
+                │   └───────────────────────┘  │
+                └─────────────────────────────┘
+```
+
+- ✅ **Ưu:** Domain cô lập, dễ test, dễ mở rộng
+- ❌ **Nhược:** Nhiều tầng gián tiếp, học đường cong dốc
+
+📂 → [Chi tiết: 1.6-onion-architecture](1.6-onion-architecture/README.md)
 
 ---
 
-## 1.9 CQRS (Command Query Responsibility Segregation)
+### 1.7 Domain-Driven Design (DDD)
 
-**Mô tả:** Tách biệt **đọc (Query)** và **ghi (Command)** thành 2 model riêng biệt.
+Thiết kế dựa trên **nghiệp vụ (domain)** - ngôn ngữ chung (Ubiquitous Language), Bounded Context, Entities, Value Objects, Aggregates, Repositories.
 
 ```
-Write Side (Command)  →  Write Database  →  Event  →  Read Database  ←  Read Side (Query)
+┌───────────────────────────────────────────────┐
+│            Bounded Context: Orders            │
+│  ┌──────────┐  ┌──────────┐  ┌────────────┐   │
+│  │  Order   │  │  Item    │  │ Repository │   │
+│  │ (Entity) │  │ (ValueObj)│  │  Interface │   │
+│  └──────────┘  └──────────┘  └────────────┘   │
+│  ┌───────────────────────────────────────┐     │
+│  │  Domain Service / Domain Events       │     │
+│  └───────────────────────────────────────┘     │
+└───────────────────────────────────────────────┘
 ```
 
-**Ưu điểm:**
-- Scale đọc và ghi độc lập
-- Tối ưu hóa từng bên riêng biệt
-- Phù hợp hệ thống đọc nhiều hơn ghi
+- ✅ **Ưu:** Phản ánh đúng nghiệp vụ, dễ trao đổi với domain expert, mô hình ổn định
+- ❌ **Nhược:** Cần domain expert, phức tạp, overkill cho dự án CRUD đơn giản
 
-**Nhược điểm:**
-- Phức tạp hơn (cần sync giữa 2 database)
-- Eventual consistency
+📂 → [Chi tiết: 1.7-domain-driven-design](1.7-domain-driven-design/README.md)
 
 ---
 
-## 1.10 Event Sourcing
+### 1.8 CQRS (Command Query Responsibility Segregation)
 
-**Mô tả:** Thay vì lưu **trạng thái hiện tại**, lưu **toàn bộ lịch sử sự kiện**. Trạng thái hiện tại được tái tạo bằng cách replay các event.
+Tách **Command** (thay đổi trạng thái) và **Query** (đọc dữ liệu) thành 2 đường riêng, có thể dùng 2 model/db khác nhau.
 
 ```
-Account State = Event1 (Create) + Event2 (Deposit $100) + Event3 (Withdraw $30)
+Client ──Command──→ Command Handler ──→ Write DB
+   │                    ↑
+   └───────Query──────→ Query Handler ──→ Read DB (có thể là cache/denormalized)
 ```
 
-**Ưu điểm:**
-- Audit trail hoàn chỉnh
-- Có thể travel back in time
-- Debug dễ dàng
+- ✅ **Ưu:** Tối ưu riêng cho đọc/ghi, scale độc lập, model phù hợp từng bên
+- ❌ **Nhược:** Phức tạp, cần đồng bộ dữ liệu, overkill cho CRUD đơn giản
 
-**Nhược điểm:**
-- Phức tạp hơn CRUD truyền thống
-- Cần event store
-- Snapshotting cần thiết cho performance
+📂 → [Chi tiết: 1.8-cqrs](1.8-cqrs/README.md)
 
 ---
 
-## 1.11 Event-Driven Architecture
+### 1.9 Event Sourcing
 
-**Mô tả:** Hệ thống giao tiếp chủ yếu qua **sự kiện (events)**. Components publish events và các components khác subscribe để xử lý.
+Không lưu trạng thái hiện tại mà lưu **chuỗi sự kiện** (event log). Trạng thái hiện tại = replay toàn bộ sự kiện.
 
 ```
-Component A → [Event Bus/Message Queue] → Component B
-                                            Component C
+Events: [Created] → [ItemAdded] → [Shipped] → [Delivered]
+                  │ replay    │           │
+                  ▼           ▼           ▼
+    State v1 = f(events)  State v2   State v3
 ```
 
-**Components:**
-- **Event Producer:** Tạo và gửi events
-- **Event Channel:** Kafka, RabbitMQ, Redis Pub/Sub
-- **Event Consumer:** Nhận và xử lý events
+- ✅ **Ưu:** Audit trail đầy đủ, có thể tái dựng trạng thái bất kỳ lúc nào, temporal query
+- ❌ **Nhược:** Event schema khó thay đổi, learning curve cao, snapshot cần thiết khi event nhiều
+
+📂 → [Chi tiết: 1.9-event-sourcing](1.9-event-sourcing/README.md)
 
 ---
 
-## 1.12 Domain-Driven Design (DDD)
+### 1.10 Event-Driven Architecture
 
-**Mô tả:** Tiếp cận thiết kế phần mềm tập trung vào **business domain** (lĩnh vực kinh doanh).
+Các thành phần giao tiếp qua **sự kiện** bất đồng bộ, không gọi trực tiếp lẫn nhau.
 
-**Các khái niệm chính:**
-- **Domain:** Lĩnh vực kinh doanh (VD: Banking, E-commerce)
-- **Bounded Context:** Boundary rõ ràng cho mỗi subdomain
-- **Ubiquitous Language:** Ngôn ngữ chung giữa dev và business
-- **Entities:** Đối tượng có identity (VD: User, Order)
-- **Value Objects:** Đối tượng không có identity (VD: Address, Money)
-- **Aggregates:** Nhóm các entity bảo vệ business invariants
-- **Repositories:** Truy xuất aggregates từ persistence
-- **Domain Events:** Sự kiện xảy ra trong domain
-
-**Ví dụ:**
 ```
-E-commerce Domain:
-├── Catalog Context     (Products, Categories)
-├── Ordering Context    (Orders, OrderItems)
-├── Payment Context     (Payments, Invoices)
-└── Shipping Context    (Shipments, Tracking)
+Producer ──publish──→ Event Bus (Kafka, RabbitMQ...) ──subscribe──→ Consumer A
+                                                              └──→ Consumer B
 ```
+
+- ✅ **Ưu:** Loose coupling, scale độc lập, xử lý bất đồng bộ tốt
+- ❌ **Nhược:** Khó debug, eventual consistency, khó đảm bảo ordering
+
+📂 → [Chi tiết: 1.10-event-driven-architecture](1.10-event-driven-architecture/README.md)
 
 ---
 
-## 1.13 Serverless Architecture
+### 1.11 MVC (Model-View-Controller)
 
-**Mô tả:** Không quản lý server. Code chạy trên **managed functions** của cloud provider.
+Tách UI thành 3 thành phần: **Model** (dữ liệu), **View** (hiển thị), **Controller** (xử lý input, điều phối).
 
-**Ví dụ:** AWS Lambda, Azure Functions, Google Cloud Functions
+```
+User Input → Controller → cập nhật Model → View render
+                ↑                              │
+                └─────────── đọc ──────────────┘
+```
 
-**Ưu điểm:**
-- Không cần quản lý infrastructure
-- Scale tự động (0 → ∞)
-- Chỉ trả tiền khi code chạy
+- ✅ **Ưu:** Phổ biến, dễ hiểu, tách rõ trách nhiệm
+- ❌ **Nhược:** Controller dễ phình to (fat controller), View phụ thuộc Model
 
-**Nhược điểm:**
-- Cold start latency
-- Khó debug
-- Vendor lock-in
+📂 → [Chi tiết: 1.11-mvc](1.11-mvc/README.md)
 
 ---
 
-## 1.14 Layered Architecture (N-Tier)
+### 1.12 MVP (Model-View-Presenter)
 
-**Mô tả:** Hệ thống được chia thành **các lớp (layers)** rõ ràng, mỗi layer chỉ giao tiếp với layer liền kề.
+**View** thụ động, **Presenter** điều phối toàn bộ: nhận input từ View, xử lý, cập nhật View.
 
 ```
-┌──────────────────────┐
-│   Presentation Layer │  ← UI, Controllers
-├──────────────────────┤
-│   Business Layer     │  ← Services, Business Logic
-├──────────────────────┤
-│   Persistence Layer  │  ← Repositories, DAOs
-├──────────────────────┤
-│   Database Layer     │  ← Tables, Schemas
-└──────────────────────┘
+View (thụ động) ←── Presenter ──→ Model
+       │  user event                │
+       └──────────►─────────────────┘
 ```
+
+- ✅ **Ưu:** View dễ test (mock), tách UI logic triệt để, phù hợp desktop/mobile
+- ❌ **Nhược:** Presenter phình to, view dài dòng nếu giao diện phức tạp
+
+📂 → [Chi tiết: 1.12-mvp](1.12-mvp/README.md)
 
 ---
 
-## Mối Quan Hệ
+### 1.13 MVVM (Model-View-ViewModel)
+
+**ViewModel** phơi bày state/data binding, **View** tự động cập nhật khi ViewModel thay đổi (2-way binding).
 
 ```
-Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
-    └── Design Patterns  ← Giải pháp thiết kế cụ thể
-        └── Principles  ← Nguyên tắc định hướng
-            └── Paradigms  ← Triết lý tư duy
-                └── Techniques  ← Cách thực hành hàng ngày
-                    └── DSA  ← Nền tảng toán học
+View ←── data binding ──→ ViewModel ──→ Model
+   │  user event (command)    │
+   └─────────────────────────►┘
+```
+
+- ✅ **Ưu:** Tách View khỏi logic, 2-way binding giảm boilerplate, test ViewModel dễ
+- ❌ **Nhược:** Binding phức tạp khó debug, overkill cho màn hình đơn giản
+
+📂 → [Chi tiết: 1.13-mvvm](1.13-mvvm/README.md)
+
+---
+
+### 1.14 Modular Monolith
+
+Một deployment unit như Monolith, nhưng bên trong chia thành **module** biệt lập theo bounded context (giống Microservices).
+
+```
+┌────────────────────────────────────────────────┐
+│            MODULAR MONOLITH APP                │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐     │
+│  │  Module   │ │  Module   │ │  Module   │     │
+│  │  Orders   │ │  Payment  │ │  Users    │     │
+│  └───────────┘ └───────────┘ └───────────┘     │
+│  Giao tiếp qua interface (in-process)          │
+│  ┌────────────────────────────────────────┐    │
+│  │  1 DATABASE (nhưng schema tách module)  │    │
+│  └────────────────────────────────────────┘    │
+└────────────────────────────────────────────────┘
+```
+
+- ✅ **Ưu:** Đơn giản deploy như Monolith, ranh giới rõ như Microservices, dễ migrate dần sang microservices
+- ❌ **Nhược:** Vẫn single point of failure, module có thể "thân nhau quá" nếu không kỷ luật
+
+📂 → [Chi tiết: 1.14-modular-monolith](1.14-modular-monolith/README.md)
+
+---
+
+## 🆚 So sánh nhanh
+
+| Tiêu chí | Monolith | Modular Monolith | Microservices |
+|----------|----------|-----------------|---------------|
+| Deploy | 1 unit | 1 unit | Nhiều unit |
+| Scale | Toàn bộ | Toàn bộ | Từng service |
+| Độ phức tạp | Thấp | Trung bình | Cao |
+| Team độc lập | Không | Một phần | Hoàn toàn |
+| Lỗi ảnh hưởng | Toàn hệ thống | Toàn hệ thống | Cô lập |
+
+---
+
+## 📚 Tài liệu tham khảo
+
+- 📖 [Clean Architecture - Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- 📖 [The Onion Architecture - Jeffrey Palermo](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)
+- 📖 [Ports & Adapters - Alistair Cockburn](https://alistair.cockburn.us/hexagonal-architecture/)
+- 📖 [Domain-Driven Design - Eric Evans](https://dddcommunity.org/)
+- 📖 [Microservices - Martin Fowler](https://martinfowler.com/articles/microservices.html)
+- 📖 [CQRS - Martin Fowler](https://martinfowler.com/bliki/CQRS.html)
+- 📖 [Event Sourcing - Martin Fowler](https://martinfowler.com/eaaDev/EventSourcing.html)
+- 📖 [Event-Driven Architecture - AWS](https://aws.amazon.com/event-driven-architecture/)
+
+---
+
+## ⏭️ Bài tiếp theo
+
+→ [02-design-patterns](../02-design-patterns/README.md)

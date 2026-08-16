@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "01-architecture/**/*.ts",
+    "02-design-patterns/**/*.ts",
+    "03-principles/**/*.ts",
+    "04-paradigms/**/*.ts",
+    "05-techniques-and-practices/**/*.ts",
+    "06-data-structures-and-algorithms/**/*.ts",
+    "07-testing/**/*.ts",
+    "08-devops-cicd/**/*.ts",
+    "09-security/**/*.ts",
+    "10-database/**/*.ts",
+    "11-networking-apis/**/*.ts",
+    "12-concurrency/**/*.ts",
+    "13-system-design/**/*.ts",
+    "14-clean-code/**/*.ts",
+    "15-version-control/**/*.ts",
+    "16-design-systems/**/*.ts"
+  ]
+}
