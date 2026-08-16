@@ -207,46 +207,22 @@ function isEven(n: number): boolean {
 
 ## 5.2 Development Methodologies (Phương Pháp Phát Triển)
 
----
+> 📖 **Xem chi tiết tại:** [5.2-development-methodologies/README.md](./5.2-development-methodologies/README.md)
 
-### Agile (Scrum / Kanban / XP)
+Danh sách 12 quy trình & framework phát triển phần mềm phổ biến:
 
-#### Scrum
-
-```
-Sprint Planning → Daily Standup → Sprint Review → Retrospective
-
-Product Backlog
-  ↓ (Sprint Planning)
-Sprint Backlog (2-4 weeks)
-  ↓ (Daily Standup)
-Working Software
-  ↓ (Sprint Review)
-Increment
-  ↓ (Retrospective)
-Process Improvement
-```
-
-**Ceremonies:**
-- **Sprint Planning:** Chọn task cho sprint
-- **Daily Standup:** 15 phút — What did I do? What will I do? Any blockers?
-- **Sprint Review:** Demo product cho stakeholder
-- **Retrospective:** Cải thiện quy trình
-
-#### Kanban
-
-```
-To Do | In Progress | Code Review | Testing | Done
-──────┼─────────────┼─────────────┼─────────┼─────
-Card1 | Card3       | Card4       | Card5   | Card2
-Card6 |             |             |         | Card7
-```
-
-**Principles:**
-- Visualize workflow
-- Limit Work In Progress (WIP)
-- Manage flow
-- Make policies explicit
+1. 🔄 **[5.2.1 Scrum](./5.2-development-methodologies/5.2.1-scrum/README.md)** — Sprint 1-4 tuần, 3 role, 4 ceremony, 3 artifact
+2. 📋 **[5.2.2 Kanban](./5.2-development-methodologies/5.2.2-kanban/README.md)** — Luồng liên tục, WIP limit, cycle time, không sprint
+3. ⚡ **[5.2.3 XP (Extreme Programming)](./5.2-development-methodologies/5.2.3-xp/README.md)** — TDD, Pair Programming, Continuous Integration, Refactoring
+4. 🍃 **[5.2.4 Lean Software Development](./5.2-development-methodologies/5.2.4-lean/README.md)** — 7 nguyên tắc loại bỏ lãng phí (waste)
+5. 🌊 **[5.2.5 Waterfall](./5.2-development-methodologies/5.2.5-waterfall/README.md)** — Mô hình thác nước tuần tự truyền thống
+6. 🏢 **[5.2.6 SAFe (Scaled Agile Framework)](./5.2-development-methodologies/5.2.6-safe/README.md)** — Mở rộng Agile cho quy mô Enterprise
+7. 🔍 **[5.2.7 LeSS (Large-Scale Scrum)](./5.2-development-methodologies/5.2.7-less/README.md)** — Scrum tối giản cho 2-8+ teams
+8. 💎 **[5.2.8 Crystal Agile Framework](./5.2-development-methodologies/5.2.8-crystal/README.md)** — Linh hoạt theo quy mô team & mức độ rủi ro
+9. 🏗️ **[5.2.9 Feature-Driven Development (FDD)](./5.2-development-methodologies/5.2.9-fdd/README.md)** — Phát triển theo từng feature nhỏ (2 tuần)
+10. ⏱️ **[5.2.10 Dynamic Systems Development Method (DSDM)](./5.2-development-methodologies/5.2.10-dsdm/README.md)** — Cố định Time/Cost, biến đổi Scope (MoSCoW)
+11. 🌀 **[5.2.11 Spiral Model](./5.2-development-methodologies/5.2.11-spiral/README.md)** — Lặp lại kết hợp phân tích rủi ro chuyên sâu
+12. 🚀 **[5.2.12 Rapid Application Development (RAD)](./5.2-development-methodologies/5.2.12-rad/README.md)** — Prototype nhanh & liên tục nhận phản hồi
 
 ---
 
