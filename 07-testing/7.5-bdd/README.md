@@ -1,0 +1,275 @@
+# 🧪 7.5 Behavior-Driven Development (BDD)
+
+> **BDD** là kỹ thuật viết test dựa trên **hành vi mong đợi** của hệ thống, dùng ngôn ngữ tự nhiên (Gherkin) để mọi người cùng hiểu — không chỉ developer.
+
+---
+
+## 🎯 BDD Là Gì?
+
+BDD mở rộng từ TDD, tập trung vào **WHAT** (hệ thống làm gì) thay vì **HOW** (code hoạt động thế nào).
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    TDD vs BDD                                │
+│                                                             │
+│   TDD: Developer-centric                                     │
+│         "Cho input A, function trả về B"                     │
+│         test.add(2, 3).toBe(5)                              │
+│                                                             │
+│   BDD: Business-centric                                      │
+│         "Khi user thanh toán, hệ thống xác nhận đơn hàng"   │
+│         WHEN user pays THEN order is confirmed              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📝 Gherkin Syntax (Given-When-Then)
+
+Gherkin là ngôn ngữ mô tả behavior dưới dạng **Scenario** đọc được bởi cả business và tech.
+
+### Ví Dụ: Feature Login
+
+```gherkin
+# features/login.feature
+Feature: User Login
+  As a registered user
+  I want to log in with my credentials
+  So that I can access my account
+
+  Scenario: Successful login with valid credentials
+    Given a registered user with email "user@test.com"
+    And the user has password "password123"
+    When the user logs in with email "user@test.com" and password "password123"
+    Then the user should be redirected to "/dashboard"
+    And a welcome message "Hello, User!" should be displayed
+
+  Scenario: Failed login with invalid password
+    Given a registered user with email "user@test.com"
+    When the user logs in with email "user@test.com" and password "wrong"
+    Then an error message "Invalid credentials" should be displayed
+    And the user should remain on "/login"
+
+  Scenario: Empty credentials
+    When the user logs in with empty email and password
+    Then validation errors should be shown for both fields
+```
+
+### Cấu Trúc Gherkin
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Feature        → Mô tả tính năng tổng thể                   │
+│  Scenario       → Một trường hợp sử dụng cụ thể             │
+│  Given          → Điều kiện ban đầu (setup)                 │
+│  When           → Hành động xảy ra                          │
+│  Then           → Kết quả mong đợi                          │
+│  And            → Thêm điều kiện/kết quả (giống Given/Then) │
+│  But            → Điều kiện ngược                           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔧 Cucumber Implementation
+
+### Cài đặt
+
+```bash
+npm install -D @cucumber/cucumber
+```
+
+### Step Definitions
+
+```typescript
+// step-definitions/login.steps.ts
+import { Given, When, Then } from "@cucumber/cucumber";
+import { expect } from "chai";
+
+let userEmail = "";
+let userPassword = "";
+let loginResult: { status: number; redirect?: string; message?: string };
+
+Given("a registered user with email {string}", function (email: string) {
+  userEmail = email;
+  // seed user trong test DB
+});
+
+Given("the user has password {string}", function (password: string) {
+  userPassword = password;
+});
+
+When(
+  'the user logs in with email "{string}" and password "{string}"',
+  function (email: string, password: string) {
+    // gọi API login
+    loginResult = mockLogin(email, password);
+  },
+);
+
+Then('the user should be redirected to "{string}"', function (path: string) {
+  expect(loginResult.status).toBe(302);
+  expect(loginResult.redirect).toBe(path);
+});
+
+Then(
+  'an error message "{string}" should be displayed',
+  function (message: string) {
+    expect(loginResult.message).toBe(message);
+  },
+);
+```
+
+### Chạy Test
+
+```bash
+npx cucumber-js features/login.feature --format progress
+```
+
+---
+
+## ✅ BDD vs TDD Comparison
+
+| Khía cạnh | TDD | BDD |
+|-----------|-----|-----|
+| **Ngôn ngữ** | Code (TypeScript/JS) | Tự nhiên (Gherkin) |
+| **Focus** | How (implementation) | What (behavior) |
+| **Người viết** | Developer | Dev + QA + Product |
+| **Mức độ** | Unit/Integration | Acceptance/Feature |
+| **Đọc được bởi** | Developer | Mọi stakeholder |
+| **Công cụ** | Jest, Vitest | Cucumber, Behave |
+| **Output** | Pass/Fail tests | Business-readable report |
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    TEST PYRAMID với BDD                      │
+│                                                             │
+│                        ╱ BDD ╲     ← Few (business rules)   │
+│                       ╱──────────╲                          │
+│                      ╱ Integration╲   ← More                │
+│                     ╱    Tests     ╲                        │
+│                    ╱────────────────╲                       │
+│                   ╱   Unit Tests     ╲ ← Most               │
+│                  ╱────────────────────╲                     │
+│                                                             │
+│  BDD nằm trên đỉnh: ít nhất, bao phủ business-critical path │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Khi nào dùng cái nào?
+
+| Trường hợp | Chọn |
+|------------|------|
+| Test logic nội bộ, algorithm | TDD |
+| Test API contract, unit function | TDD |
+| Test user flow, acceptance criteria | BDD |
+| Cần business team tham gia viết test | BDD |
+| Quick feedback loop cho dev | TDD |
+
+---
+
+## 📋 Example: Full BDD Flow
+
+### Feature file
+
+```gherkin
+# features/cart.feature
+Feature: Shopping Cart
+  As a customer
+  I want to add items to cart
+  So that I can checkout later
+
+  Scenario: Add item to cart
+    Given I am logged in as "buyer@test.com"
+    And the product "Laptop" costs $1500
+    When I add "Laptop" to cart with quantity 1
+    Then my cart should contain 1 item
+    And the total should be $1500
+
+  Scenario: Remove item from cart
+    Given my cart has 2 items worth $100 total
+    When I remove the first item
+    Then my cart should contain 1 item
+    And the total should be $50
+```
+
+### Step Definition
+
+```typescript
+import { Given, When, Then } from "@cucumber/cucumber";
+import { Cart } from "../src/cart";
+
+const cart = new Cart();
+let currentUser: string;
+
+Given("I am logged in as {string}", (email: string) => {
+  currentUser = email;
+  cart.login(currentUser);
+});
+
+Given("the product {string} costs ${int}", (name: string, price: number) => {
+  cart.addProduct(name, price);
+});
+
+When("I add {string} to cart with quantity {int}", (name: string, qty: number) => {
+  cart.addItem(name, qty);
+});
+
+Then("my cart should contain {int} item(s)", (expected: number) => {
+  expect(cart.itemCount()).toBe(expected);
+});
+
+Then("the total should be ${int}", (expectedTotal: number) => {
+  expect(cart.total()).toBe(expectedTotal);
+});
+```
+
+---
+
+## ⚠️ Lưu Ý Quan Trọng
+
+| Pitfall | Cách tránh |
+|---------|------------|
+| Scenario quá chi tiết (implementation) | Giữ ở mức business |
+|过多 scenarios lặp lại | Dùng Scenario Outline |
+| Step definition dài, phức tạp | Tách thành helper functions |
+| Không có business value | Mỗi scenario phải trả lời "why" |
+
+### Scenario Outline (tránh lặp)
+
+```gherkin
+Scenario Outline: Add various quantities
+  Given the product "<product>" costs $<price>
+  When I add "<product>" with quantity <qty>
+  Then total should be $<total>
+
+  Examples:
+    | product | price | qty | total |
+    | Laptop  | 1500  | 1   | 1500  |
+    | Laptop  | 1500  | 2   | 3000  |
+    | Mouse   | 25    | 4   | 100   |
+```
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 07-testing/7.5-bdd
+npx cucumber-js features/ --format html:report.html
+```
+
+---
+
+## 📚 Tài Liệu Tham Khảo
+
+| Tài liệu | Liên kết |
+|----------|----------|
+| Cucumber Docs | https://cucumber.io/docs/ |
+| Gherkin Reference | https://cucumber.io/docs/gherkin/ |
+| BDD vs TDD | https://smartbear.com/learn/bdd/ |
+| Behavior-Driven Development | Michael Feathers |
+
+---
+
+## ⏭️ Bài tiếp theo → [7.6 Performance Testing](../7.6-performance-testing/README.md)

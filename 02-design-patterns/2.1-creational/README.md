@@ -94,6 +94,15 @@ BẠN CẦN TẠO ĐỐI TƯỢNG NHƯ THẾ NÀO?
 
 ---
 
+## 🔗 Liên quan
+
+- **2.2.1 Adapter** — Factory thường trả về Adapter
+- **2.2.4 Proxy** — Proxy có thể lazy-init qua Factory
+- **3.2.2 OCP** — Creational patterns hỗ trợ mở rộng không sửa code cũ
+- **3.2.5 DIP** — Factory giúp phụ thuộc abstraction
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [2.2 Structural Patterns](../2.2-structural/README.md)

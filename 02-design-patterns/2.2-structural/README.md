@@ -94,6 +94,15 @@ BẠN CẦN KẾT HỢP OBJECT NHƯ THẾ NÀO?
 
 ---
 
+## 🔗 Liên quan
+
+- **2.1 Creational Patterns** — Factory tạo object, Adapter chuyển interface
+- **3.2.5 DIP** — Dependency Inversion giúp áp dụng Adapter, Proxy
+- **3.2.2 OCP** — Decorator, Proxy giúp mở rộng không sửa code cũ
+- **3.1.6 Composition over Inheritance** — Structural patterns ưu tiên composition
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [2.3 Behavioral Patterns](../2.3-behavioral/README.md)
