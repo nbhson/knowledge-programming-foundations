@@ -54,6 +54,9 @@ D — Dependency Inversion Principle (DIP)      → Phụ thuộc abstraction, k
 3.2-solid-principles/
 ├── README.md           # File này
 ├── 3.2.1-srp/
+│   ├── README.md
+│   ├── violations.md
+│   └── examples/index.ts
 ├── 3.2.2-ocp/
 ├── 3.2.3-lsp/
 ├── 3.2.4-isp/

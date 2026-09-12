@@ -54,7 +54,7 @@ class GenericRepository<T> {
 **Cách xử lý:**
 
 ```typescript
-// ✅ GOOD: конкретный repository cho từng entity
+// ✅ GOOD: concrete repository cho từng entity
 class UserRepository {
   async findAll(): Promise<User[]> { /* ... */ }
   async findById(id: string): Promise<User> { /* ... */ }
@@ -174,5 +174,5 @@ class OrderService {
 | Code cho tính năng tương lai | Xóa, code khi thực sự cần |
 | Generic quá mức cho 2-3 entity | Dùng concrete class |
 | Logging/caching nơi không cần | Bỏ, thêm sau khi profiling cho thấy vấn đề |
-| Utility functions cho trường hợp hypothetical | Xóa, tạo khi có需求 thực tế |
+| Utility functions cho trường hợp hypothetical | Xóa, tạo khi có nhu cầu thực tế |
 | Validate nhiều lần ở nhiều layer | Chỉ validate 1 lần ở 1 chỗ |

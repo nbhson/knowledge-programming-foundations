@@ -92,6 +92,7 @@ BẠN ĐANG GẶP VẤN ĐỀ GÌ?
 ├── README.md                    # File này
 ├── 3.1.1-dry/
 │   ├── README.md
+│   ├── violations.md            # Tình huống vi phạm
 │   └── examples/index.ts
 ├── 3.1.2-kiss/
 ├── 3.1.3-yagni/

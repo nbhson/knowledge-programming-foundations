@@ -118,7 +118,7 @@ Ví dụ `examples/index.ts` mô tả **Mini Shop Monolith**:
 
 ## 📁 Cấu trúc thư mục ví dụ
 
-```
+```text
 1.1-monolithic/
 ├── README.md           # File này
 └── examples/

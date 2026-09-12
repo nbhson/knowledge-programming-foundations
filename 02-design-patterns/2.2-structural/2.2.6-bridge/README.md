@@ -157,4 +157,4 @@ npx ts-node examples/index.ts
 
 ## ⏭️ Bài tiếp theo
 
-→ [2.3 Behavioral Patterns](../README.md)
+→ [2.3 Behavioral Patterns](../../2.3-behavioral/README.md)

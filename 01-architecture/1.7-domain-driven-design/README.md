@@ -39,7 +39,7 @@ DDD (Eric Evans) không phải kiến trúc kỹ thuật mà là **phương phá
 | **Bounded Context** | Ranh giới của 1 domain model | Orders, Shipping, Billing |
 | **Entity** | Có identity riêng, thay đổi theo thời gian | `Order` (id: #123) |
 | **Value Object** | Không có identity, bất biến | `Address`, `Money`, `TrackingId` |
-| **Aggregate** | Nhóm entity + VO, có root, bất biến qua root | `Shipment` (root) chứa `Location` |
+| **Aggregate** | Nhóm entity + VO, có root, bất biến qua root | `Shipment` (root) chứa `ShipmentLeg`/`Location` (VO) |
 | **Aggregate Root** | Điểm truy cập duy nhất vào aggregate | `Shipment` |
 | **Repository** | Interface lưu/truy xuất aggregate | `ShipmentRepository` |
 | **Domain Service** | Business rule liên quan nhiều aggregate | `PricingService` |
@@ -68,9 +68,9 @@ Ví dụ `examples/index.ts` mô tả **Shipping Domain**:
 └─────────────────────────────────────────────────────┘
 ```
 
-- **Entities:** `Shipment`, `Location`
-- **Value Objects:** `TrackingId`, `Address`
-- **Aggregate:** `Shipment` (root)
+- **Entities:** `Shipment` (Aggregate Root)
+- **Value Objects:** `TrackingId`, `Address`, `Location`
+- **Aggregate:** `Shipment` (root) chứa các VO
 - **Domain Events:** `ShipmentDelivered`
 - **Repository:** `ShipmentRepository`
 

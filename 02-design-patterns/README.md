@@ -138,14 +138,14 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
 
 | # | Pattern | Mục đích | Chi tiết |
 |---|---------|----------|----------|
-| 2.3.1 | **Observer** | 1-nhiều, tự động thông báo | [→ Xem](2.3-behavioral/2.3.1-observer/README.md) |
-| 2.3.2 | **Strategy** | Family algorithms, đổi lúc runtime | [→ Xem](2.3-behavioral/2.3.2-strategy/README.md) |
+| 2.3.1 | **Strategy** | Đổi thuật toán lúc runtime | [→ Xem](2.3-behavioral/2.3.1-strategy/README.md) |
+| 2.3.2 | **Observer** | 1-nhiều, tự động thông báo | [→ Xem](2.3-behavioral/2.3.2-observer/README.md) |
 | 2.3.3 | **Command** | Đóng gói request, undo/queue | [→ Xem](2.3-behavioral/2.3.3-command/README.md) |
 | 2.3.4 | **State** | Hành vi đổi theo trạng thái | [→ Xem](2.3-behavioral/2.3.4-state/README.md) |
-| 2.3.5 | **Iterator** | Duyệt collection không lộ cấu trúc | [→ Xem](2.3-behavioral/2.3.5-iterator/README.md) |
-| 2.3.6 | **Chain of Responsibility** | Request qua chuỗi handler | [→ Xem](2.3-behavioral/2.3.6-chain-of-responsibility/README.md) |
-| 2.3.7 | **Template Method** | Skeleton algorithm, subclass override | [→ Xem](2.3-behavioral/2.3.7-template-method/README.md) |
-| 2.3.8 | **Mediator** | Điều phối giao tiếp, giảm coupling | [→ Xem](2.3-behavioral/2.3.8-mediator/README.md) |
+| 2.3.5 | **Template Method** | Skeleton algorithm, subclass override | [→ Xem](2.3-behavioral/2.3.5-template-method/README.md) |
+| 2.3.6 | **Iterator** | Duyệt collection không lộ cấu trúc | [→ Xem](2.3-behavioral/2.3.6-iterator/README.md) |
+| 2.3.7 | **Mediator** | Điều phối giao tiếp, giảm coupling | [→ Xem](2.3-behavioral/2.3.7-mediator/README.md) |
+| 2.3.8 | **Chain of Responsibility** | Request qua chuỗi handler | [→ Xem](2.3-behavioral/2.3.8-chain-of-responsibility/README.md) |
 
 ---
 
@@ -186,14 +186,14 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
 │   └── 2.2.6-bridge/
 └── 2.3-behavioral/
     ├── README.md                # Tổng quan nhóm Behavioral
-    ├── 2.3.1-observer/
-    ├── 2.3.2-strategy/
+    ├── 2.3.1-strategy/
+    ├── 2.3.2-observer/
     ├── 2.3.3-command/
     ├── 2.3.4-state/
-    ├── 2.3.5-iterator/
-    ├── 2.3.6-chain-of-responsibility/
-    ├── 2.3.7-template-method/
-    └── 2.3.8-mediator/
+    ├── 2.3.5-template-method/
+    ├── 2.3.6-iterator/
+    ├── 2.3.7-mediator/
+    └── 2.3.8-chain-of-responsibility/
 ```
 
 ---

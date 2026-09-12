@@ -167,7 +167,7 @@ class VNTaxStrategy implements TaxStrategy {
   calculate(amount: number) { return amount * 0.1; }
 }
 
-classUSTaxStrategy implements TaxStrategy {
+class USTaxStrategy implements TaxStrategy {
   calculate(amount: number) { return amount * 0.08; }
 }
 

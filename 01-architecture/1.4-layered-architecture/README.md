@@ -41,7 +41,7 @@ Layered Architecture (N-tier) chia ứng dụng thành các lớp xếp chồng.
 └─────────────────────────────────────────────────────────────┘
 ```
 
-> 📌 **Quy tắc:** Lớp trên gọi lớp dưới. Lớp dưới **không biết** lớp trên. Không nhảy tầng (Presentation không gọi thẳng Persistence).
+> 📌 **Quy tắc (nghiêm ngặt):** Lớp trên gọi lớp dưới. Lớp dưới **không biết** lớp trên. Không nhảy tầng (Presentation không gọi thẳng Persistence). Thực tế có biến thể **relaxed/open layering** cho phép bỏ qua tầng trung gian khi cần tối ưu.
 
 ---
 
@@ -101,9 +101,9 @@ Ví dụ `examples/index.ts` mô tả **Order Processing**:
 | Nhược điểm | Giải thích |
 |------------|------------|
 | 🔗 **Phụ thuộc chiều dọc** | Lớp trên phụ thuộc lớp dưới, khó test độc lập |
-| 🐌 **Lazy loading** | Dữ liệu tải qua nhiều lớp, chậm |
+| 🐌 **Performance overhead** | Dữ liệu đi qua nhiều lớp trung gian, tăng latency |
 | 🌀 **Anemic model** | Business logic dồn Service, Model chỉ là data |
-| 🚫 **Khó nhảy tầng** | Đôi khi cần truy cập thẳng, bị chặn bởi quy tắc |
+| 🚫 **Khó nhảy tầng** | Đôi khi cần truy cập thẳng, bị chặn bởi quy tắc nghiêm ngặt (strict layering) |
 
 ---
 

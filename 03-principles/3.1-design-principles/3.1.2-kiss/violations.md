@@ -11,12 +11,12 @@ container.register("logger", Logger);
 container.register("cache", CacheService);
 container.register("db", DatabaseService);
 // ... 20 registrations khác
-//只为 gọi một function đơn giản
+// Chỉ để gọi một function đơn giản
 
 function processOrder(order: Order) {
   const logger = container.resolve("logger");
   const cache = container.resolve("cache");
-  // ... phức tạp vô必要
+  // ... phức tạp vô lý
 }
 ```
 
@@ -37,7 +37,7 @@ class OrderProcessor {
 
 ---
 
-## Tình huống 2: Tạo abstraction vô必要 khi chỉ có 1 implementation
+## Tình huống 2: Tạo abstraction vô lý khi chỉ có 1 implementation
 
 **Vi phạm:**
 

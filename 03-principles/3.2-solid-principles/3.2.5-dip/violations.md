@@ -215,7 +215,7 @@ class CsvReportFormatter implements ReportFormatter {
 
 ---
 
-## Tình huống 5: Service khởi tạo dependency внутри method
+## Tình huống 5: Service khởi tạo dependency trong method
 
 **Vi phạm:**
 

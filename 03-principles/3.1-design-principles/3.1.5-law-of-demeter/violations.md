@@ -105,7 +105,7 @@ class Package {
 **Vi phạm:**
 
 ```typescript
-// ❌ BAD: UserService gọi method của对象 trả về từ UserRepository
+// ❌ BAD: UserService gọi method của object trả về từ UserRepository
 class UserService {
   async getUserEmailStatus(userId: number) {
     const user = await this.userRepo.findById(userId);

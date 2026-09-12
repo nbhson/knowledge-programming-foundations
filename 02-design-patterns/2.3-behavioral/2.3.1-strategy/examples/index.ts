@@ -20,8 +20,8 @@ class ExpressShipping implements ShippingStrategy {
 }
 
 class FreeShipping implements ShippingStrategy {
-  calculate(): number {
-    return 0; // miễn phí cho VIP
+  calculate(_weightKg: number): number {
+    return 0; // miễn phí cho VIP — param không dùng nhưng phải khớp interface
   }
 }
 

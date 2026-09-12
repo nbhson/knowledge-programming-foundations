@@ -21,10 +21,10 @@ Microservices chia hệ thống thành các service nhỏ theo **bounded context
 │  └───┬────┬────┬──┘                                         │
 │      │    │    │                                            │
 │      ▼    ▼    ▼                                            │
-│  ┌──────┐┌──────┐┌──────┐                                   │
-│  │Order ││Payment││User  │   ← mỗi service độc lập          │
-│  │Svc   ││Svc   ││Svc   │                                   │
-│  └──┬───┘└──┬───┘└──┬───┘                                   │
+│  ┌──────┐  ┌──────┐  ┌──────┐                               │
+│  │Order │  │Payment│  │User  │   ← mỗi service độc lập      │
+│  │Svc   │  │Svc   │  │Svc   │                               │
+│  └──┬───┘  └──┬───┘  └──┬───┘                               │
 │     │       │       │                                       │
 │     ▼       ▼       ▼                                       │
 │  ┌──────┐┌──────┐┌──────┐                                   │

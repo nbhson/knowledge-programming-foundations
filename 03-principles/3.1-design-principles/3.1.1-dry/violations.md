@@ -54,7 +54,7 @@ function validateAdmin(admin: any) {
 **Vi phạm:**
 
 ```typescript
-// ❌ BAD: công thức tính thuếcopy ở 5 chỗ
+// ❌ BAD: công thức tính thuế copy ở 5 chỗ
 function calculateTotal(order: Order) {
   const subtotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
   const tax = subtotal * 0.1; // thuế 10%

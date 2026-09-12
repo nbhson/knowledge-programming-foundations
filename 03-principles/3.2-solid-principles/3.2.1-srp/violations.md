@@ -7,7 +7,7 @@
 ```typescript
 // ❌ BAD: UserService có 3 lý do thay đổi
 class UserService {
-  // Lý do 1: thay đổi validate规则
+  // Lý do 1: thay đổi validate
   validateUser(user: any) {
     if (!user.name) throw new Error("Name required");
     if (user.name.length < 3) throw new Error("Name too short");

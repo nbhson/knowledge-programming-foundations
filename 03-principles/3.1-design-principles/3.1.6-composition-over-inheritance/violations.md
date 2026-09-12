@@ -217,4 +217,4 @@ class NotificationService {
 | Kế thừa sâu > 2 tầng | Thay bằng composition |
 | Kế thừa chỉ để dùng 1-2 method | Inject dependency thay vì extend |
 | Default implementation gây hiểu nhầm | Dùng interface không có default |
-|爆炸 subclass growth | Tách thành interfaces/componenets riêng |
+| Subclass growth bùng nổ | Tách thành interfaces/components riêng |

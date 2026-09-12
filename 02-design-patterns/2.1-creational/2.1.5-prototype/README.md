@@ -178,4 +178,4 @@ npx ts-node examples/index.ts
 
 ## ⏭️ Bài tiếp theo
 
-→ [2.2 Structural Patterns](../2.2-structural/README.md)
+→ [2.2 Structural Patterns](../../2.2-structural/README.md)

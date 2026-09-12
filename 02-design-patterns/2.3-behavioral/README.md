@@ -193,4 +193,4 @@ Request ──▶ Handler A ──▶ Handler B ──▶ Handler C
 
 ## ⏭️ Bài tiếp theo
 
-→ [03 Principles](../README.md)
+→ [03 Principles](../../03-principles/README.md)

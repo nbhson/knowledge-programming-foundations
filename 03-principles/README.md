@@ -118,6 +118,7 @@ BẠN ĐANG GẶP VẤN ĐỀ GÌ?
 │   ├── README.md                # Tổng quan nhóm Design Principles
 │   ├── 3.1.1-dry/
 │   │   ├── README.md            # Tutorial DRY
+│   │   ├── violations.md        # Tình huống vi phạm DRY
 │   │   └── examples/index.ts    # Code ví dụ
 │   ├── 3.1.2-kiss/
 │   ├── 3.1.3-yagni/
