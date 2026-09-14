@@ -18,6 +18,18 @@ ModuleUnderTest cần:
 → Giải pháp: dùng Fake/Stub/Mock thay thế!
 ```
 
+### Deep dive: Những gì xảy ra nếu KHÔNG mock?
+
+| Scenario | Vấn đề nếu không mock |
+|----------|----------------------|
+| Test gọi `db.query()` | Test phụ thuộc DB availability, schema, data |
+| Test gọi `email.send()` | Gửi email thật cho mỗi test run — spam test users |
+| Test gọi `payment.process()` | Tính tiền thật, cần API keys, sandbox config |
+| Test gọi `fs.writeFileSync()` | Ghi file thật, có thể overwrite production data |
+| Test gọi `Date.now()` | Kết quả thay đổi theo thời gian → flaky test |
+
+> 💡 **Nguyên tắc vàng:** Mock **external boundaries** (things outside your control), không mock **internal logic** (your own code).
+
 ---
 
 ## 📐 So Sánh Mock / Stub / Spy / Fake
@@ -45,21 +57,21 @@ ModuleUnderTest cần:
 ### ASCII Mind Map
 
 ```
-                    Dependencies
-                         │
-        ┌────────────────┼────────────────┐
-        │                │                │
-     STUB            MOCK            SPY
-   (data giả)     (verify call)    (wrap + log)
-        │                │                │
-        ▼                ▼                ▼
-  return fixed     assert_called_with  still calls
-  values           check_args           real impl
-                         │
-                         ▼
-                      FAKE
-              (simplified impl)
-              e.g. InMemoryDb
+                     Dependencies
+                          │
+         ┌────────────────┼────────────────┐
+         │                │                │
+      STUB            MOCK            SPY
+    (data giả)     (verify call)    (wrap + log)
+         │                │                │
+         ▼                ▼                ▼
+   return fixed     assert_called_with  still calls
+   values           check_args           real impl
+                          │
+                          ▼
+                       FAKE
+               (simplified impl)
+               e.g. InMemoryDb
 ```
 
 ---
@@ -114,6 +126,13 @@ describe("UserService", () => {
   });
 });
 ```
+
+**Khi nào dùng Stub:**
+- Bạn cần **data đầu vào cố định** cho function under test
+- Không quan tâm **method có được gọi** hay không
+-只想 verify output dựa trên input
+
+---
 
 ### 2. MOCK — Verify tương tác
 
@@ -170,6 +189,13 @@ describe("OrderService", () => {
 });
 ```
 
+**Khi nào dùng Mock:**
+- Bạn cần **verify method được gọi** với đúng arguments
+- Bạn cần **verify call count** (bao nhiêu lần, lần nào)
+- Bạn cần **verify order** (gọi trước/sau method khác)
+
+---
+
 ### 3. SPY — Wrap và ghi lại calls
 
 ```typescript
@@ -211,6 +237,15 @@ describe("Calculator spy", () => {
   });
 });
 ```
+
+**Khi nào dùng Spy:**
+- Bạn muốn **giữ nguyên behavior thật** nhưng cũng muốn **theo dõi calls**
+- Bạn muốn **override kết quả** của method thật tạm thời
+- Bạn test **deprecated method** vẫn được gọi (migration tracking)
+
+> ⚠️ **Luôn `mockRestore()`** trong `afterEach` để tránh spy ảnh hưởng test khác.
+
+---
 
 ### 4. FAKE — Implementation đơn giản thay thế
 
@@ -258,13 +293,21 @@ describe("UserService with Fake", () => {
 });
 ```
 
+**Khi nào dùng Fake:**
+- Bạn cần **behavior thật** (không phải hardcode return value)
+- Dependency quá phức tạp để mock toàn bộ (database, file system)
+- Bạn muốn test **nhiều operations** trên cùng data (CRUD đầy đủ)
+- Integration test giữa service và repository
+
+> 💡 **Fake vs Stub:** Fake là **working implementation** (có logic thật), Stub là **hardcoded return value** (không có logic). Fake gần với production code hơn, dùng cho integration tests.
+
 ---
 
 ## 🎯 Khi Nào Dùng Gì?
 
 ```
 Bạn cần test gì?                    → Dùng gì?
-─────────────────────────────────────────────────────
+────────────────────────────────────────────────────
 Chỉ cần data giả                   → STUB
 Kiểm tra method có gọi đúng        → MOCK
 Giữ behavior thật, đếm calls       → SPY
@@ -279,6 +322,8 @@ Thay thế toàn bộ dependency        → FAKE
 | Service gửi email | Mock email service | `email.send.assert_called_once_with(...)` |
 | Kiểm tra third-party SDK | Spy SDK | `spyOn(client, 'fetch')` |
 | Test repository pattern | Fake in-memory | `FakePostgresRepository` |
+| Test với Redis | Fake Redis | `ioredis-mock` hoặc `fakeredis` |
+| Test với HTTP API | Mock fetch | `vi.stubGlobal('fetch', mockFetch)` |
 
 ---
 
@@ -290,6 +335,8 @@ Thay thế toàn bộ dependency        → FAKE
 | **Test implementation** | Verify mock calls chi tiết quá | Chỉ verify behavior quan trọng |
 | **Không restore spy** | Spy tồn tại qua nhiều test | Luôn `mockRestore()` trong `afterEach` |
 | **Fake quá phức tạp** | Fake gần bằng production code | Giữ fake đơn giản, chỉ đủ cho test |
+| **Mock internal methods** | Test implementation细节 | Test public interface, không private |
+| **False positive mocks** | Mock trả về đúng value nhưng không gọi method thật | Dùng `mockRejectedValue` khi expect throw |
 
 ```typescript
 // ❌ BAD: mocking everything including pure logic
@@ -301,11 +348,36 @@ vi.spyOn(emailService, 'send'); // external dependency
 
 ---
 
+## 🔧 Cheat Sheet: Vitest Mocking API
+
+| Need | Code |
+|------|------|
+| Create mock function | `vi.fn()` |
+| Mock return value | `vi.fn().mockReturnValue(value)` |
+| Mock resolved promise | `vi.fn().mockResolvedValue(value)` |
+| Mock rejected promise | `vi.fn().mockRejectedValue(error)` |
+| Mock implementation | `vi.fn().mockImplementation(fn)` |
+| Spy on method | `vi.spyOn(obj, 'method')` |
+| Restore spy | `spy.mockRestore()` |
+| Clear all mocks | `vi.clearAllMocks()` |
+| Reset all mocks | `vi.resetAllMocks()` |
+| Restore all mocks | `vi.restoreAllMocks()` |
+| Mock module | `vi.mock('./module', () => ({ ... }))` |
+
+> 📌 **Clear vs Reset vs Restore:**
+> - `clearAllMocks()` — reset call history (calls = 0), giữ mock implementation
+> - `resetAllMocks()` — reset call history + mock implementation về `vi.fn()`
+> - `restoreAllMocks()` — restore original implementation (_undo mock_)
+
+---
+
 ## ▶️ Chạy ví dụ
+
+Chạy demo Stub/Mock/Spy/Fake viết tay (không cần vi.fn/vi.spyOn):
 
 ```bash
 cd 07-testing/7.7-mocking-stubbing
-npx vitest run --reporter=verbose
+npx ts-node examples/index.ts
 ```
 
 ---

@@ -12,13 +12,23 @@ Khác với unit test (cô lập 1 function), integration test xác nhận các 
 ┌─────────────────────────────────────────────────────────────┐
 │              INTEGRATION TEST SCOPE                          │
 │                                                             │
-│  [Service A] ──► [Database]   ✅ Kiễm tra cả 2 chạy cùng    │
+│  [Service A] ──► [Database]   ✅ Kiểm tra cả 2 chạy cùng    │
 │  [Controller] ──► [Service]   ✅ HTTP flow đúng            │
 │  [API] ──► [Auth] ──► [DB]    ✅ Full pipeline            │
 │                                                             │
 │  vs Unit Test: chỉ test Service A riêng lẻ (mock DB)        │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### Khi nào Unit Test Không Đủ?
+
+| Tình huống | Unit Test fail | Integration Test giải quyết |
+|------------|----------------|------------------------------|
+| ORM mapping sai | Mock repo → không phát hiện | Test thật với DB schema |
+| API contract mismatch | Mock API → không phát hiện | Gọi thật HTTP endpoint |
+| Transaction rollback không hoạt động | Mock transaction → không phát hiện | Commit thật, verify state |
+| CORS/header issue | Không test HTTP layer | Gọi thật qua HTTP |
+| Connection pool exhaustion | Mock connection → không phát hiện | Test thật với connection limit |
 
 | So sánh | Unit Test | Integration Test |
 |---------|-----------|-----------------|
@@ -27,6 +37,7 @@ Khác với unit test (cô lập 1 function), integration test xác nhận các 
 | Tốc độ | ⚡ ms | 🚗 giây |
 | Độ tin cậy | Cao (cô lập) | Cao hơn thực tế |
 | Chi phí | Rẻ | Trung bình |
+| Phát hiện lỗi | Logic error | Configuration, connection, contract errors |
 
 ---
 
@@ -34,10 +45,10 @@ Khác với unit test (cô lập 1 function), integration test xác nhận các 
 
 ### Docker/Testcontainers
 
-**Testcontainers** tạo container thật (Postgres, Redis, MongoDB...) tạm thời cho mỗi test suite.
+**Testcontainers** tạo container thật (Postgres, Redis, MongoDB...) tạm thời cho mỗi test suite. Ưu điểm: **same OS, same config** như production.
 
-```typescript
-// docker-compose.test.yml
+```yaml
+# docker-compose.test.yml
 services:
   test-postgres:
     image: postgres:16-alpine
@@ -98,6 +109,19 @@ describe("OrderRepository Integration", () => {
     expect(saved).not.toBeNull();
     expect(saved!.total).toBe(1500);
   });
+});
+```
+
+> 📌 **Transaction pattern (tốt hơn):** Thay vì DELETE, wrap mỗi test trong transaction và rollback sau test → data tự clean, parallel tests không conflict.
+
+```typescript
+beforeEach(async () => {
+  await client.query("BEGIN");
+});
+
+afterEach(async () => {
+  await client.query("ROLLBACK");
+  client.release();
 });
 ```
 
@@ -270,6 +294,11 @@ afterAll(async () => {
 });
 ```
 
+> 💡 **Strategy lựa chọn test DB:**
+> - **SQLite in-memory:** Nhanh nhất (< 1ms/setup), không cần Docker, nhưng khác SQL dialect → có thể miss PostgreSQL-specific bugs.
+> - **Testcontainers:** Chậm hơn (~5s startup) nhưng **identical to production**. Dùng cho integration layer quan trọng.
+> - **Local dev DB:** Dễ debug nhất (dùng pgAdmin), nhưng không clean giữa tests → cần transaction pattern.
+
 ---
 
 ## 🔁 So Sánh Các Cấp Độ Test
@@ -284,6 +313,15 @@ afterAll(async () => {
 └──────────────┴──────────────┴────────────────┴─────────────────┘
 ```
 
+**Real-world ratio recommendation:**
+
+| Dự án | Unit % | Integration % | E2E % | Lý do |
+|-------|--------|---------------|-------|-------|
+| Startup MVP | 80% | 15% | 5% | Fast feedback, critical paths only |
+| Enterprise SaaS | 60% | 25% | 15% | Cần coverage API contracts & workflows |
+| Fintech/Banking | 50% | 35% | 15% | Compliance requires heavy integration test |
+| Open source library | 90% | 10% | 0% | Library không có UI, focus unit + integration |
+
 ---
 
 ## ⚠️ Lưu Ý Quan Trọng
@@ -295,15 +333,19 @@ afterAll(async () => {
 | Không đồng nhất môi trường | Container hóa mọi dependency |
 | Overhead khởi tạo | Cache container, dùng parallel workers |
 | Hard dependency vào network | Mock network ở test layer trên |
+| Race condition trong parallel tests | Mỗi test có DB schema riêng (namespace tables) |
+
+> 📌 **Parallel testing tip:** Chạy tests song song (`vitest --pool=forks` hoặc `pytest -n auto`) giảm thời gian đáng kể. Nhưng cần đảm bảo mỗi test **độc lập hoàn toàn** — không share state toàn cục.
 
 ---
 
 ## ▶️ Chạy ví dụ
 
+Chạy demo mô phỏng Service + DB in-memory (không cần Docker/testcontainers):
+
 ```bash
 cd 07-testing/7.2-integration-testing
-npx vitest run
-# cần Docker running cho testcontainers
+npx ts-node examples/index.ts
 ```
 
 ---

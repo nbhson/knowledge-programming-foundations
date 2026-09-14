@@ -6,7 +6,9 @@
 
 ## 🎯 Vấn đề
 
-Bạn muốn tách **nơi gọi** (invoker) khỏi **nơi thực thi** (receiver), và cần undo/redo:
+Bạn muốn tách **nơi gọi** (invoker) khỏi **nơi thực thi** (receiver), và cần undo/redo, queue, hoặc log.
+
+**Command pattern là nền tảng của:** undo/redo trong editor, macro systems, transaction management, job queues (Redis, Bull), web frameworks (request/response middleware), GUI frameworks (button actions).
 
 ```
 ❌ Gọi trực tiếp — hard-code, không undo được
@@ -18,8 +20,6 @@ button.onClick() → editor.write("Hello");
 │ History  │   undo()      │ WriteCmd │           │  Editor  │
 └──────────┘               └──────────┘           └──────────┘
 ```
-
-**Scenario điển hình:** Text editor undo/redo, macro, queue job, transactional operation — cần đóng gói hành động thành object.
 
 ---
 
@@ -54,6 +54,10 @@ Invoker.undo() → Command.undo() → editor.deleteLast(...)
 Invoker.redo() → Command.execute() lại
 ```
 
+**2 biến thể Command:**
+- **Simple Command:** 1 action, 1 undo — `WriteCommand`, `DeleteCommand`.
+- **Composite Command:** multiple actions as 1 — `MacroCommand`, useful for batch operations.
+
 ---
 
 ## 💻 Code ví dụ
@@ -82,10 +86,17 @@ class History {
   execute(cmd: Command): void {
     cmd.execute();
     this.commands = this.commands.slice(0, this.index + 1);
-    this.commands.push(cmd); this.index++;
+    this.commands.push(cmd); 
+    this.index++;
   }
-  undo(): void { if (this.index >= 0) this.commands[this.index--].undo(); }
-  redo(): void { if (this.index < this.commands.length - 1) this.commands[++this.index].execute(); }
+  undo(): void { 
+    if (this.index >= 0) 
+      this.commands[this.index--].undo(); 
+  }
+  redo(): void { 
+    if (this.index < this.commands.length - 1) 
+      this.commands[++this.index].execute(); 
+  }
 }
 
 const editor = new TextEditor();
@@ -97,45 +108,80 @@ history.undo(); // "Hello "
 history.redo(); // "Hello World!"
 ```
 
+**Real-world application — restaurant order system:**
+
+```typescript
+interface OrderCommand { execute(): void; undo(): void; }
+
+class Kitchen {
+  prepare(item: string) { console.log(`🍳 Preparing ${item}`); }
+  clear() { console.log(`🧹 Cleared`); }
+}
+
+class AddOrderCommand implements OrderCommand {
+  constructor(private kitchen: Kitchen, private item: string) {}
+  execute() { this.kitchen.prepare(this.item); }
+  undo() { this.kitchen.clear(); }
+}
+
+// Invoker
+const tickets: OrderCommand[] = [];
+tickets.push(new AddOrderCommand(kitchen, "Burger"));
+tickets.push(new AddOrderCommand(kitchen, "Fries"));
+tickets.forEach(t => t.execute());
+```
+
 ---
 
 ## ✅ Ưu điểm
 
-| Ưu điểm | Giải thích |
-|---------|------------|
-| ↩️ **Undo/Redo** | Mỗi command biết cách revert |
-| 📝 **Lưu lịch sử** | Queue, log, replay |
-| 🧩 **Tách Invoker/Receiver** | Invoker không biết receiver làm gì |
-| 🧱 **Composite command** | Macro = nhiều command gộp |
+| Ưu điểm | Giải thích | Giải thích sâu |
+|---------|------------|----------------|
+| ↩️ **Undo/Redo** | Mỗi command biết cách revert | Implement by storing previous state. |
+| 📝 **Lưu lịch sử** | Queue, log, replay | Audit trail cho operations. |
+| 🧩 **Tách Invoker/Receiver** | Invoker không biết receiver làm gì | Loose coupling giữa UI và business logic. |
+| 🧱 **Composite command** | Macro = nhiều command gộp | Batch operations, transaction-like grouping. |
+| 📥 **Queue & Schedule** | Command có thể được queue | Async execution, background jobs. |
+| 🧪 **Testable** | Test command đơn lẻ | Isolate execute/undo behavior. |
 
 ---
 
 ## ⚠️ Nhược điểm
 
-| Nhược điểm | Giải thích |
-|------------|------------|
-| 🧱 **Nhiều class** | Mỗi hành động 1 command |
-| 💾 **Tốn memory** | Lưu toàn bộ lịch sử |
-| 🧠 **Phức tạp hơn gọi trực tiếp** | Chỉ đáng khi cần queue/undo |
+| Nhược điểm | Giải thích | Giải thích sâu & giảm thiểu |
+|------------|------------|------------------------------|
+| 🧱 **Nhiều class** | Mỗi hành động 1 command | Simple call → 3 classes (Command interface + Concrete + Invoker). *Gi giảm thiểu:* function-based command for simple cases. |
+| 💾 **Tốn memory** | Lưu toàn bộ lịch sử | Long-running app → history bloat. *Gi giảm thiểu:* limit history size, or use ring buffer. |
+| 🧠 **Phức tạp hơn gọi trực tiếp** | Chỉ đáng khi cần queue/undo | Overhead không worth nếu chỉ 1 call. *Gi giảm thiểu:* direct call cho simple cases. |
+| 🔀 **Undo semantic risk** | Undo không phải lúc nào cũng reversible | Payment undo = refund flow phức tạp. *Gi giảm thiểu:* document undo semantics, test edge cases. |
+| 👻 **Command sprawl** | (Failure mode) | Hàng trăm command classes = maintenance nightmare. *Gi giảm thiểu:* command registry, or use function closures. |
 
 ---
 
 ## 🎯 Khi nào dùng?
 
-| Scenario | Khuyến nghị |
-|----------|-------------|
-| Cần undo/redo | ✅ Phù hợp |
-| Queue, schedule, transactional | ✅ Phù hợp |
-| Macro (gộp nhiều thao tác) | ✅ Phù hợp |
-| Chỉ gọi 1 lần, không cần lịch sử | ❌ Gọi trực tiếp |
+| Scenario | Khuyến nghị | Lập luận |
+|----------|-------------|---------|
+| Cần undo/redo | ✅ Rất phù hợp | Text editor, drawing app, design tool. |
+| Queue, schedule, transactional | ✅ Phù hợp | Job queues, saga pattern (5.6.3). |
+| Macro (gộp nhiều thao tác) | ✅ Phù hợp | Batch operations, workflow automation. |
+| Chỉ gọi 1 lần, không cần lịch sử | ❌ Gọi trực tiếp | Command overkill. |
+| Simple getter/setter | ❌ Không cần | Use property accessors directly. |
 
 ---
 
 ## 🔗 Liên quan
 
-- **2.3.8 Chain of Responsibility** — Chain chuyền request, Command đóng gói request
-- **2.3.5 Template Method** — Template khung cố định, Command đóng gói hành động
-- **2.2.1 Adapter** — Adapter đổi interface, Command tách invoker
+- **2.3.8 Chain of Responsibility** — Chain chuyền request, Command đóng gói request.
+- **2.3.5 Template Method** — Template khung cố định, Command đóng gói hành động.
+- **2.2.1 Adapter** — Adapter đổi interface, Command tách invoker.
+- **5.6.3 Saga Pattern** — Saga = sequence of commands with compensating transactions.
+
+**Command trong TypeScript thực tế:**
+- React `onClick={() => dispatch(action)}` — action là command
+- Redux actions — serialized commands
+- GUI frameworks (WPF, Swing) — command pattern core
+- Jest test hooks — beforeEach/afterEach là command pattern
 
 ---
 
@@ -163,6 +209,7 @@ npx ts-node examples/index.ts
 
 - 📖 [Command - Refactoring Guru](https://refactoring.guru/design-patterns/command)
 - 📖 [Command - Source Making](https://sourcemaking.com/design_patterns/command)
+- 📖 [Memento Pattern](https://refactoring.guru/design-patterns/memento) — thường kết hợp với Command để save state.
 
 ---
 

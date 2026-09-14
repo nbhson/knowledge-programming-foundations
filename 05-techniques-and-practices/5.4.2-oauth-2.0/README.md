@@ -196,6 +196,15 @@ async function getGoogleProfile(accessToken: string): Promise<GoogleProfile> {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.4.2-oauth-2.0
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.4.3 XSS Prevention](../5.4.3-xss-prevention/README.md)

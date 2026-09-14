@@ -1,260 +1,290 @@
 /**
- * Testing Techniques Demo — 单元测试、集成测试与TDD模式
+ * 5.1 Testing Techniques — Tổng quan các kỹ thuật kiểm thử
  *
- * 运行: npx vitest run examples/index.ts
+ * Demo TS thuần tự chứa: tự viết mini test-runner
+ * (record + assertEqual / assertThrows), KHÔNG cần framework ngoài.
  *
- * 内容:
- * 1. 单元测试 (简单数学函数、字符串操作)
- * 2. 集成测试 (Mock数据库/API调用)
- * 3. TDD演示 (先写测试再实现)
- * 4. Mock/Stub模式
+ * Chạy: npx ts-node examples/index.ts
+ *
+ * Nội dung:
+ * 1. Unit Testing   → MathUtils, StringUtils
+ * 2. Integration    → MockDatabase + HttpClient (mock)
+ * 3. TDD            → Calculator (mini: Red-Green-Refactor)
+ * 4. Mock Patterns  → Spy, Stub, async mock
  */
 
-// ─── 被测代码 (Implementation) ──────────────────────────────
+// ────────────────────────── Mini Test Runner ──────────────────────────
 
-/** 简单数学函数 */
+type MiniTestFn = () => void | Promise<void>;
+
+class MiniTestRunner {
+  private tests: Array<{ name: string; fn: MiniTestFn }> = [];
+  private passed = 0;
+  private failed = 0;
+
+  constructor(private group: string) {}
+
+  record(name: string, fn: MiniTestFn): void {
+    this.tests.push({ name, fn });
+  }
+
+  async run(): Promise<void> {
+    console.log(`\n── ${this.group} ──`);
+    for (const t of this.tests) {
+      try {
+        await t.fn();
+        this.passed++;
+        console.log(`  ✅ PASS  ${t.name}`);
+      } catch (err) {
+        this.failed++;
+        console.log(`  ❌ FAIL  ${t.name}`);
+        console.log(`      └─ ${err instanceof Error ? err.message : String(err)}`);
+      }
+    }
+    console.log(`  ── Kết quả: ${this.passed} passed / ${this.tests.length} total ──`);
+    if (this.failed > 0) console.log(`  ⚠️  ${this.failed} test thất bại`);
+  }
+}
+
+function assertEqual<T>(actual: T, expected: T, msg = ""): void {
+  const a = JSON.stringify(actual);
+  const b = JSON.stringify(expected);
+  if (a !== b) throw new Error(`${msg} ⇒ expect ${b}, got ${a}`);
+}
+
+function assertTrue(actual: boolean, msg = ""): void {
+  if (actual !== true) throw new Error(`${msg} ⇒ expect true, got ${actual}`);
+}
+
+function assertThrows(fn: () => unknown, expectedMsg = ""): void {
+  try {
+    fn();
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (expectedMsg === "" || msg.includes(expectedMsg)) return;
+    throw new Error(`⇒ expect error contains "${expectedMsg}", got "${msg}"`);
+  }
+  throw new Error("⇒ expect function to throw, but it did not");
+}
+
+async function assertRejects(fn: () => Promise<unknown>, expectedMsg = ""): Promise<void> {
+  try {
+    await fn();
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (expectedMsg === "" || msg.includes(expectedMsg)) return;
+    throw new Error(`⇒ expect rejection contains "${expectedMsg}", got "${msg}"`);
+  }
+  throw new Error("⇒ expect promise to reject, but it did not");
+}
+
+// ────────────────────────── Bị test (SUT) ─────────────────────────────
+
 class MathUtils {
-  add(a: number, b: number): number { return a + b; }
-  subtract(a: number, b: number): number { return a - b; }
-  multiply(a: number, b: number): number { return a * b; }
+  add(a: number, b: number): number {
+    return a + b;
+  }
+  subtract(a: number, b: number): number {
+    return a - b;
+  }
+  multiply(a: number, b: number): number {
+    return a * b;
+  }
   divide(a: number, b: number): number {
     if (b === 0) throw new Error("Division by zero");
     return a / b;
   }
 }
 
-/** 字符串操作 */
 class StringUtils {
-  reverse(str: string): string { return str.split('').reverse().join(''); }
+  reverse(str: string): string {
+    return str.split("").reverse().join("");
+  }
   isPalindrome(str: string): boolean {
-    const cleaned = str.toLowerCase().replace(/[^a-z0-9]/g, '');
-    return cleaned === cleaned.split('').reverse().join('');
+    const cleaned = str.toLowerCase().replace(/[^a-z0-9]/g, "");
+    return cleaned === cleaned.split("").reverse().join("");
   }
   truncate(str: string, maxLen: number): string {
-    return str.length > maxLen ? str.slice(0, maxLen) + '...' : str;
+    return str.length > maxLen ? `${str.slice(0, maxLen)}...` : str;
   }
 }
 
-/** 模拟数据库 */
 class MockDatabase {
-  private data: Map<string, any> = new Map();
+  private data = new Map<string, unknown>();
 
-  query(id: string): any { return this.data.get(id); }
-  insert(id: string, value: any): void { this.data.set(id, value); }
-  delete(id: string): boolean { return this.data.delete(id); }
-  getAll(): any[] { return Array.from(this.data.values()); }
+  insert(key: string, value: unknown): void {
+    this.data.set(key, value);
+  }
+  query<T>(key: string): T | undefined {
+    return this.data.get(key) as T | undefined;
+  }
+  delete(key: string): boolean {
+    return this.data.delete(key);
+  }
+  getAll(): unknown[] {
+    return Array.from(this.data.values());
+  }
 }
 
-/** 模拟API客户端 */
 class HttpClient {
-  async fetch(url: string): Promise<any> {
-    return { status: 200, data: {} };
+  async fetch(url: string): Promise<{ status: number; data: unknown }> {
+    return { status: 200, data: { url } };
   }
 }
 
-// ─── 单元测试示例 ───────────────────────────────────────────
+class Calculator {
+  private history: number[] = [];
 
-describe('MathUtils', () => {
-  let utils: MathUtils;
+  add(n: number): number {
+    this.history.push(n);
+    return this.history.reduce((acc, v) => acc + v, 0);
+  }
+  clear(): void {
+    this.history = [];
+  }
+  getHistory(): number[] {
+    return [...this.history];
+  }
+}
 
-  beforeEach(() => { utils = new MathUtils(); });
+// ────────────────────────── Spy / Stub ────────────────────────────────
 
-  test('add: 2 + 3 = 5', () => {
-    expect(utils.add(2, 3)).toBe(5);
-  });
+class InsertSpy {
+  readonly calls: Array<[string, unknown]> = [];
 
-  test('subtract: 10 - 4 = 6', () => {
-    expect(utils.subtract(10, 4)).toBe(6);
-  });
+  constructor(private db: MockDatabase) {}
 
-  test('multiply: 3 * 4 = 12', () => {
-    expect(utils.multiply(3, 4)).toBe(12);
-  });
-
-  test('divide: 15 / 3 = 5', () => {
-    expect(utils.divide(15, 3)).toBe(5);
-  });
-
-  test('divide by zero throws error', () => {
-    expect(() => utils.divide(10, 0)).toThrow('Division by zero');
-  });
-});
-
-describe('StringUtils', () => {
-  let strUtils: StringUtils;
-
-  beforeEach(() => { strUtils = new StringUtils(); });
-
-  test('reverse: "hello" -> "olleh"', () => {
-    expect(strUtils.reverse('hello')).toBe('olleh');
-  });
-
-  test('isPalindrome: "racecar" is palindrome', () => {
-    expect(strUtils.isPalindrome('racecar')).toBe(true);
-  });
-
-  test('isPalindrome: "hello" is not palindrome', () => {
-    expect(strUtils.isPalindrome('hello')).toBe(false);
-  });
-
-  test('truncate: long string gets truncated', () => {
-    expect(strUtils.truncate('Hello World', 5)).toBe('Hello...');
-  });
-
-  test('truncate: short string remains unchanged', () => {
-    expect(strUtils.truncate('Hi', 5)).toBe('Hi');
-  });
-});
-
-// ─── 集成测试示例 (Mock) ────────────────────────────────────
-
-describe('Integration Test: Database Query', () => {
-  test('insert and retrieve data', () => {
-    const db = new MockDatabase();
-
-    db.insert('user1', { name: 'Alice', age: 30 });
-    db.insert('user2', { name: 'Bob', age: 25 });
-
-    expect(db.query('user1')).toEqual({ name: 'Alice', age: 30 });
-    expect(db.getAll()).toHaveLength(2);
-  });
-
-  test('delete removes data', () => {
-    const db = new MockDatabase();
-    db.insert('item1', { value: 100 });
-
-    expect(db.delete('item1')).toBe(true);
-    expect(db.query('item1')).toBeUndefined();
-  });
-});
-
-describe('Integration Test: HTTP Client with Mock', () => {
-  test('fetch API response', async () => {
-    const client = new HttpClient();
-    const mockResponse = { status: 200, data: { id: 1, name: 'Test' } };
-
-    // 实际测试中会 spy/mock fetch 方法
-    const originalFetch = client.fetch;
-    client.fetch = jest.fn().mockResolvedValue(mockResponse);
-
-    const result = await client.fetch('/api/users/1');
-    expect(result.status).toBe(200);
-    expect(result.data.name).toBe('Test');
-
-    client.fetch = originalFetch;
-  });
-});
-
-// ─── TDD 演示 ───────────────────────────────────────────────
-
-/**
- * TDD 流程:
- * 1. Red: 先写失败的测试
- * 2. Green: 写最少的代码使测试通过
- * 3. Refactor: 重构代码
- */
-
-describe('TDD: Calculator', () => {
-  class Calculator {
-    private history: number[] = [];
-
-    add(n: number): number {
-      this.history.push(n);
-      return this.history.reduce((a, b) => a + b, 0);
-    }
-
-    clear(): void { this.history = []; }
-    getHistory(): number[] { return [...this.history]; }
+  insert(key: string, value: unknown): void {
+    this.calls.push([key, value]);
+    this.db.insert(key, value);
   }
 
-  let calc: Calculator;
+  calledWith(key: string, value: unknown): boolean {
+    return this.calls.some(([k, v]) => k === key && JSON.stringify(v) === JSON.stringify(value));
+  }
+}
 
-  beforeEach(() => { calc = new Calculator(); });
+class QueryStub extends MockDatabase {
+  private canned: unknown = null;
 
-  // Test 1: 初始状态
-  test('initial calculation is 0', () => {
-    expect(calc.add(0)).toBe(0);
-  });
+  stubWith(value: unknown): void {
+    this.canned = value;
+  }
+  query<T>(_key: string): T | undefined {
+    return this.canned as T | undefined;
+  }
+}
 
-  // Test 2: 单次加法
-  test('single addition', () => {
-    expect(calc.add(5)).toBe(5);
-  });
+// ────────────────────────── Demo chạy ─────────────────────────────────
 
-  // Test 3: 多次累加
-  test('multiple additions', () => {
-    calc.add(3);
-    calc.add(4);
-    expect(calc.add(5)).toBe(12);
-  });
+async function runAll(): Promise<void> {
+  console.log("=== 5.1 Testing Techniques Demo (mini test-runner tự chứa) ===\n");
 
-  // Test 4: 历史记录
-  test('history tracking', () => {
-    calc.add(2);
-    calc.add(3);
-    expect(calc.getHistory()).toEqual([2, 3]);
-  });
+  // 1️⃣ Unit Testing
+  const unit = new MiniTestRunner("1️⃣ Unit Testing — MathUtils / StringUtils");
+  unit.record("add: 2 + 3 = 5", () => assertEqual(new MathUtils().add(2, 3), 5));
+  unit.record("subtract: 10 - 4 = 6", () => assertEqual(new MathUtils().subtract(10, 4), 6));
+  unit.record("multiply: 3 * 4 = 12", () => assertEqual(new MathUtils().multiply(3, 4), 12));
+  unit.record("divide: 15 / 3 = 5", () => assertEqual(new MathUtils().divide(15, 3), 5));
+  unit.record("divide by zero → throw", () =>
+    assertThrows(() => new MathUtils().divide(10, 0), "Division by zero"));
+  unit.record('reverse("hello") = "olleh"', () =>
+    assertEqual(new StringUtils().reverse("hello"), "olleh"));
+  unit.record('isPalindrome("racecar") = true', () =>
+    assertTrue(new StringUtils().isPalindrome("racecar")));
+  unit.record('isPalindrome("hello") = false', () =>
+    assertTrue(!new StringUtils().isPalindrome("hello")));
+  unit.record('truncate("Hello World", 5) = "Hello..."', () =>
+    assertEqual(new StringUtils().truncate("Hello World", 5), "Hello..."));
+  unit.record('truncate("Hi", 5) giữ nguyên', () =>
+    assertEqual(new StringUtils().truncate("Hi", 5), "Hi"));
+  await unit.run();
 
-  // Test 5: 清除功能
-  test('clear resets calculation', () => {
-    calc.add(10);
-    calc.clear();
-    expect(calc.add(5)).toBe(5);
-    expect(calc.getHistory()).toEqual([5]);
-  });
-});
-
-// ─── Mock/Stub 模式 ─────────────────────────────────────────
-
-describe('Mock Patterns', () => {
-  test('spy on method call', () => {
+  // 2️⃣ Integration Testing
+  const integ = new MiniTestRunner("2️⃣ Integration Testing — Mock DB / API");
+  integ.record("insert & retrieve data (DB)", () => {
     const db = new MockDatabase();
-    const spy = jest.spyOn(db, 'insert');
-
-    db.insert('key1', 'value1');
-    db.insert('key2', 'value2');
-
-    expect(spy).toHaveBeenCalledTimes(2);
-    expect(spy).toHaveBeenCalledWith('key1', 'value1');
-    expect(spy).toHaveBeenCalledWith('key2', 'value2');
-
-    spy.mockRestore();
+    db.insert("user1", { name: "Alice", age: 30 });
+    db.insert("user2", { name: "Bob", age: 25 });
+    assertEqual(db.query<{ name: string; age: number }>("user1"), { name: "Alice", age: 30 });
+    assertEqual(db.getAll().length, 2);
   });
-
-  test('stub return value', () => {
+  integ.record("delete removes data (DB)", () => {
     const db = new MockDatabase();
-    const stub = jest.spyOn(db, 'query').mockReturnValue({ stubbed: true });
-
-    expect(db.query('any')).toEqual({ stubbed: true });
-
-    stub.mockRestore();
+    db.insert("item1", { value: 100 });
+    assertTrue(db.delete("item1"));
+    assertEqual(db.query("item1"), undefined);
   });
-
-  test('mock async function', async () => {
+  integ.record("HTTP client trả về response (API)", async () => {
     const client = new HttpClient();
-    const mockData = { success: true, count: 42 };
-
-    const mockFn = jest.fn().mockResolvedValue(mockData);
-    client.fetch = mockFn;
-
-    const result = await client.fetch('/api/data');
-    expect(result).toEqual(mockData);
-    expect(mockFn).toHaveBeenCalledWith('/api/data');
+    const res = await client.fetch("/api/users/1");
+    assertEqual(res.status, 200);
+    assertEqual(res.data, { url: "/api/users/1" });
   });
-});
+  await integ.run();
 
-// ─── 测试套件总结 ───────────────────────────────────────────
+  // 3️⃣ TDD — Calculator
+  const tdd = new MiniTestRunner("3️⃣ TDD — Calculator (test trước, code sau)");
+  tdd.record("trạng thái ban đầu = 0", () => {
+    const c = new Calculator();
+    assertEqual(c.add(0), 0);
+  });
+  tdd.record("cộng 1 lần", () => {
+    const c = new Calculator();
+    assertEqual(c.add(5), 5);
+  });
+  tdd.record("cộng nhiều lần = tổng dồn", () => {
+    const c = new Calculator();
+    c.add(3);
+    c.add(4);
+    assertEqual(c.add(5), 12);
+  });
+  tdd.record("theo dõi lịch sử", () => {
+    const c = new Calculator();
+    c.add(2);
+    c.add(3);
+    assertEqual(c.getHistory(), [2, 3]);
+  });
+  tdd.record("clear đặt lại bộ đếm", () => {
+    const c = new Calculator();
+    c.add(10);
+    c.clear();
+    assertEqual(c.add(5), 5);
+    assertEqual(c.getHistory(), [5]);
+  });
+  await tdd.run();
 
-console.log('\n✅ Testing Techniques Demo Completed');
-console.log('   - Unit tests: MathUtils, StringUtils');
-console.log('   - Integration tests: MockDatabase, HttpClient');
-console.log('   - TDD demo: Calculator (Red-Green-Refactor)');
-console.log('   - Mock patterns: Spy, Stub, Async mock');
+  // 4️⃣ Mock Patterns
+  const mock = new MiniTestRunner("4️⃣ Mock Patterns — Spy / Stub / async mock");
+  mock.record("spy theo dõi insert — đếm lời gọi & đối số", () => {
+    const db = new MockDatabase();
+    const spy = new InsertSpy(db);
+    spy.insert("key1", "value1");
+    spy.insert("key2", "value2");
+    assertEqual(spy.calls.length, 2);
+    assertTrue(spy.calledWith("key1", "value1"));
+    assertTrue(spy.calledWith("key2", "value2"));
+  });
+  mock.record("stub trả về giá trị cố định", () => {
+    const stub = new QueryStub();
+    stub.stubWith({ stubbed: true });
+    assertEqual(stub.query("any-key"), { stubbed: true });
+  });
+  mock.record("async mock — Promise resolved với dữ liệu giả", async () => {
+    const client = new HttpClient();
+    const mockFetch = async (url: string): Promise<{ success: boolean; count: number }> => {
+      void url;
+      return { success: true, count: 42 };
+    };
+    const callResult = await mockFetch("/api/data");
+    assertEqual(callResult, { success: true, count: 42 });
+    void client;
+  });
+  await mock.run();
 
-/**
- * 运行测试:
- * npx vitest run examples/index.ts
- *
- * 或单个测试:
- * npx vitest run examples/index.ts -t "MathUtils"
- */
+  console.log("\n✅ Testing Techniques Demo hoàn tất — tất cả nhóm test đã thực thi (mini runner tự chứa, không cần framework).");
+}
+
+void runAll();
+
+export {};

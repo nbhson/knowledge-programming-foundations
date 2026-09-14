@@ -150,6 +150,15 @@ const CommentDangerous = ({ html }: { html: string }) => (
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.4.3-xss-prevention
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.4.4 CSRF Protection](../5.4.4-csrf-protection/README.md)

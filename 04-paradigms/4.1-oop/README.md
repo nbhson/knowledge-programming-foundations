@@ -4,6 +4,18 @@
 
 ---
 
+## Tư duy cốt lõi của OOP
+
+OOP không phải là "class + inheritance" — đó là hiểu lầm phổ biến. OOP là **cách mô hình hóa thế giới thực thành software**. Ý tưởng: thay vì nghĩ "program là tập hợp function", hãy nghĩ "program là tập hợp objects giao tiếp với nhau".
+
+**4 trụ cột — nhưng chỉ có 2 thực sự quan trọng:**
+- **Encapsulation** + **Abstraction** = nền tảng của mọi OOP. Không có 2 cái này = không phải OOP.
+- **Inheritance** + **Polymorphism** = công cụ để đạt được DRY + open/closed — nhưng **composition thường tốt hơn inheritance**.
+
+**Phản đối lập với FP:** OOP nói "state + behavior gói trong object"; FP nói "stateless function, immutable data". Không có cái nào "đúng" hơn — chúng là **cách tiếp cận khác nhau** cho các loại bài toán khác nhau.
+
+---
+
 ## Bốn Trụ Cột Của OOP
 
 ### 1. Đóng Gói (Encapsulation)
@@ -36,8 +48,12 @@ console.log(account.getBalance()); // 70
 // account.balance = 999999; // ❌ Không thể truy cập trực tiếp
 ```
 
-✅ **Ưu điểm:** Dữ liệu được bảo vệ, chỉ qua method mới thay đổi được
-❌ **Nhược điểm:** Cần thiết kế interface rõ ràng
+**Tại sao quan trọng:**
+- **Validation tại 1 chỗ:** rule "không withdraw quá số dư" sống trong method, không phân tán khắp code.
+- **Invariant protection:** object không bao giờ ở state bất hợp lệ (balance âm) vì mọi thay đổi đi qua method có kiểm tra.
+- **Refactor an toàn:** đổi internal storage (balance từ number → string) — public API không đổi, client không ảnh hưởng.
+
+> 💡 **Lưu ý:** Encapsulation ≠ "đặt tất cả private rồi tạo getter/setter". Đó là Java-style anti-pattern. Đúng là **hide implementation, expose behavior**. `getBalance()` là OK (read-only query), nhưng `setBalance(n)` thì thường là design flaw.
 
 ---
 
@@ -76,18 +92,28 @@ dog.sleep();  // Buddy đang ngủ (kế thừa)
 dog.bark();   // Buddy sủa: Gâu gâu! (riêng của Dog)
 ```
 
+**⚠️ Cạm bẫy của Inheritance — "is-a" vs "has-a":**
+- ✅ `Dog is-an Animal` → inheritance OK
+- ❌ `Car has-an Engine` → composition, KHÔNG phải `Car extends Engine`
+
 **Lighthouse pattern** (thay thế kế thừa sâu):
 ```typescript
-// Thay vì extends nhiều lớp, dùng composition
+// ❌ BAD: deep inheritance — fragile, tight coupling
+class ElectricCar extends Car {
+  // override everything...
+}
+
+// ✅ GOOD: composition — flexible, loose coupling
 class Engine {
   start() { console.log("Engine started"); }
 }
-
 class Car {
   private engine = new Engine();
   start() { this.engine.start(); }
 }
 ```
+
+**Hierarchy explosion warning:** N classes mỗi class extend M classes → N×M classes. Dễ vỡ. Prefer **mixin/composition**.
 
 ---
 
@@ -123,6 +149,8 @@ printShape(new Circle(5));     // Tròn bán kính 5, Diện tích: 78.54
 printShape(new Rectangle(4, 6)); // Chữ nhật 4x6, Diện tích: 24
 ```
 
+** runtime polymorphism ** (dynamic dispatch) là cơ chế: cùng lời gọi `shape.area()` nhưng implementation khác nhau tùy object thật. Đây chính là sức mạnh của OOP — **code phụ thuộc abstraction, không concrete**.
+
 ---
 
 ### 4. Trừu Tượng Hóa (Abstraction)
@@ -156,6 +184,11 @@ function driveCar(engine: CarEngine) {
 // DriveCar không cần biết engine hoạt động thế nào
 ```
 
+**Abstraction là gì KHÔNG PHẢI:**
+- ❌ Không phải là "ít code hơn"
+- ❌ Không phải là "đặt tên dài hơn"
+- ✅ Là **che giấu complexity không cần thiết cho caller**
+
 ---
 
 ## So Sánh OOP vs Các Paradigm Khác
@@ -167,6 +200,9 @@ function driveCar(engine: CarEngine) {
 | Xử lý dữ liệu | Method trên object | Function độc lập | Function + biến |
 | Ưu điểm | Mô hình hóa thực tế, reuse | Không side effect, dễ test | Đơn giản, dễ hiểu |
 | Nhược điểm | Overhead, inheritance hell | Khó với state phức tạp | Khó scale |
+| Khi nào dùng | UI, game, domain model | Data pipeline, concurrent | Script nhỏ |
+
+**OOP + FP combo trong thực tế:** TypeScript hiện đại thường kết hợp — domain model (OOP với entity/value object) + service layer (FP với pure functions). Không phải đối kháng, mà là **cộng sinh**.
 
 ---
 
@@ -179,6 +215,7 @@ function driveCar(engine: CarEngine) {
 | Data transformation pipeline | ⚠️ FP更适合 |
 | Script nhỏ, one-off | ⚠️ Procedural đủ |
 | Cần parallel/concurrent | ⚠️ FP/RxJS更适合 |
+| Domain phức tạp, nhiều business rules | ✅ OOP (DDD + OOP mạnh nhất) |
 
 ---
 
@@ -187,6 +224,7 @@ function driveCar(engine: CarEngine) {
 - **4.2 Functional** — FP là đối trọng của OOP
 - **2.1 Creational Patterns** — Factory, Singleton, Builder hỗ trợ OOP
 - **3.2.1 SRP** — Một lớp nên có một lý do thay đổi
+- **1.7 DDD** — Entity, Value Object là OOP áp dụng cho domain modeling
 
 ---
 
@@ -195,6 +233,15 @@ function driveCar(engine: CarEngine) {
 - 📖 [Head First Design Patterns](https://www.oreilly.com/library/view/head-first-design/9780596007126/)
 - 📖 [Martin Fowler - OOP vs FP](https://martinfowler.com/articles/nonOpaque.html)
 - 📖 [TypeScript Classes](https://www.typescriptlang.org/docs/handbook/classes.html)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 04-paradigms/4.1-oop
+npx ts-node examples/index.ts
+```
 
 ---
 

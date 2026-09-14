@@ -164,6 +164,15 @@ app.get('/api/profile', authMiddleware, (req, res) => {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.4.1-jwt-authentication
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.4.2 OAuth 2.0](../5.4.2-oauth-2.0/README.md)

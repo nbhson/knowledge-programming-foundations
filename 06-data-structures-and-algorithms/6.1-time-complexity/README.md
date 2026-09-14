@@ -4,6 +4,20 @@
 
 ---
 
+## Tư duy cốt lõi
+
+**Tại sao complexity analysis quan trọng?**
+- Dự đoán được **scalability**: thuật toán O(n²) với n=1000 chạy ~1 tỷ ops = 10 giây; O(n log n) = ~10 nghìn ops = 10ms. **999x khác biệt!**
+- Tránh được **performance regression** khi thêm tính năng
+- Giao tiếp chuẩn với team: "đây là O(n) solution" = tất cả hiểu
+
+**Big O đo WHAT, không phải HOW:**
+- Không phải thời gian thực (giây) — phụ thuộc hardware
+- Không phải số dòng code — phụ thuộc style
+- Mà là **tốc độ tăng trưởng** khi input tiến tới vô cùng
+
+---
+
 ## Biểu Đồ Tăng Dần
 
 ```
@@ -38,11 +52,20 @@ function getFirst(arr: number[]): number {
 const stack: number[] = [];
 stack.push(1);  // O(1)
 stack.pop();    // O(1)
+
+// O(1) — hash map lookup
+const map = new Map();
+map.set('key', 'value');
+map.get('key'); // O(1) average
 ```
+
+**Lưu ý:** HashMap worst case O(n) khi hash collision — dùng khi confident với hash function.
+
+---
 
 ### O(log n) — Logarithmic
 
-**Giảm nửa input mỗi bước.**
+**Giảm nửa input mỗi bước.** Đây là "sweet spot" cho search.
 
 ```typescript
 // Binary Search — O(log n)
@@ -59,6 +82,13 @@ function binarySearch(arr: number[], target: number): number {
   return -1;
 }
 ```
+
+**Ví dụ thực tế:**
+- BST lookup: O(log n) average, O(n) worst (unbalanced)
+- Heap operations: O(log n)
+- Balanced tree (Red-Black, AVL): O(log n) guaranteed
+
+---
 
 ### O(n) — Linear
 
@@ -82,6 +112,13 @@ function contains(arr: number[], target: number): boolean {
   return false;
 }
 ```
+
+**Pattern nhận diện O(n):**
+- Duyệt mảng một lần
+- Một vòng lặp for/while không lồng
+- String traversal
+
+---
 
 ### O(n log n) — Linearithmic
 
@@ -115,6 +152,12 @@ function merge(left: number[], right: number[]): number[] {
 }
 ```
 
+**Tại sao O(n log n) là giới hạn lower bound cho comparison-based sort?**
+- Có n! permutations, mỗi comparison split 2 branches
+- Cần log₂(n!) ≈ n log n comparisons để distinguish all permutations
+
+---
+
 ### O(n²) — Quadratic
 
 **Vòng lặp lồng nhau — Bubble Sort, Selection Sort.**
@@ -131,7 +174,21 @@ function bubbleSort(arr: number[]): number[] {
   }
   return arr;
 }
+
+// O(n²) — check all pairs
+function hasDuplicate(nums: number[]): boolean {
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] === nums[j]) return true;
+    }
+  }
+  return false;
+}
 ```
+
+**Rule of thumb:** Nếu code có 2 vòng lặp lồng nhau (không phụ thuộc) → thường O(n²).
+
+---
 
 ### O(2ⁿ) — Exponential
 
@@ -150,6 +207,16 @@ function fibMemo(n: number, memo: Map<number, number> = new Map()): number {
   if (memo.has(n)) return memo.get(n)!;
   memo.set(n, fibMemo(n - 1, memo) + fibMemo(n - 2, memo));
   return memo.get(n)!;
+}
+
+// ✅ Even better: O(n) iterative
+function fibIterative(n: number): number {
+  if (n <= 1) return n;
+  let prev = 0, curr = 1;
+  for (let i = 2; i <= n; i++) {
+    [prev, curr] = [curr, prev + curr];
+  }
+  return curr;
 }
 ```
 
@@ -176,12 +243,54 @@ function fibMemo(n: number, memo: Map<number, number> = new Map()): number {
 | n < 100,000 | Cần O(n log n) hoặc tốt hơn |
 | n > 100,000 | Chỉ O(n) hoặc O(log n) |
 
+**Thực tế industry:**
+- n ≤ 10⁴: O(n²) acceptable
+- n ≤ 10⁵: O(n log n) required
+- n > 10⁶: O(n) hoặc sublinear required
+
+---
+
+## Các Quy Tắc Tính Big O
+
+1. **Bỏ hằng số:** O(2n) = O(n)
+2. **Bỏ thuật toán nhỏ hơn:** O(n² + n) = O(n²)
+3. **Tích các biến:** 2 loops lồng = O(n × m)
+4. **Case analysis:** best/average/worst case
+
+**Ví dụ áp dụng:**
+
+```typescript
+// ❌ O(n² + n + 100) — verbose
+function process(arr: number[]): void {
+  for (let i = 0; i < arr.length; i++) {       // O(n)
+    for (let j = 0; j < arr.length; j++) {      // O(n)
+      console.log(arr[i], arr[j]);
+    }
+    console.log(arr[i]);                        // O(n) — outside inner loop
+  }
+  console.log("done");                          // O(1)
+}
+
+// ✅ O(n²) — simplified
+// Dominated by nested loops, everything else negligible
+```
+
 ---
 
 ## 🔗 Liên Quan
 
 - **6.2 Core Data Structures** — Complexity của các cấu trúc
 - **6.3 Essential Algorithms** — Thuật toán sắp xếp, tìm kiếm
+- **5.3 Performance Optimization** —实际应用 complexity analysis
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 06-data-structures-and-algorithms/6.1-time-complexity
+npx ts-node examples/index.ts
+```
 
 ---
 

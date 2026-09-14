@@ -22,6 +22,17 @@ BDD mở rộng từ TDD, tập trung vào **WHAT** (hệ thống làm gì) thay
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### BDD sinh ra từ vấn đề gì?
+
+| Vấn đề | TDD giải quyết | BDD giải quyết |
+|--------|----------------|----------------|
+| Dev và QA hiểu khác spec | ✅ (test là spec) | ✅✅ (Gherkin đọc được bởi mọi stakeholder) |
+| Business không đọc được test code | ❌ | ✅ Scenario file = tài liệu sống |
+| Test implementation details | ❌ | ✅ Test behavior, không implementation |
+| Thiếu communication giữa team | ❌ | ✅ Collaborative: Dev + QA + Product viết scenario |
+
+> 💡 **Misconception:** "BDD thay thế TDD." — Sai. BDD và TDD **bổ sung** nhau. TDD ở tầng unit (dev-focused), BDD ở tầng acceptance (business-focused). Trong Testing Pyramid, BDD scenarios nằm ở đỉnh (few), TDD tests chiếm phần lớn (many).
+
 ---
 
 ## 📝 Gherkin Syntax (Given-When-Then)
@@ -66,8 +77,30 @@ Feature: User Login
 │  Then           → Kết quả mong đợi                          │
 │  And            → Thêm điều kiện/kết quả (giống Given/Then) │
 │  But            → Điều kiện ngược                           │
+│  Examples       → Data table cho Scenario Outline           │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### Scenario Outline (tránh lặp)
+
+```gherkin
+Scenario Outline: Add various quantities
+  Given the product "<product>" costs $<price>
+  When I add "<product>" with quantity <qty>
+  Then total should be $<total>
+
+  Examples:
+    | product | price | qty | total |
+    | Laptop  | 1500  | 1   | 1500  |
+    | Laptop  | 1500  | 2   | 3000  |
+    | Mouse   | 25    | 4   | 100   |
+```
+
+> 📌 **Quy tắc viết Scenario tốt:**
+> 1. Mỗi scenario là **một câu chuyện độc lập** — không phụ thuộc scenario khác
+> 2. Dùng **active voice**: "When user clicks..." thay vì "When click is performed..."
+> 3. Không mô tả UI details: "When user fills email" ✅, "When user types in input#email-field" ❌
+> 4. Mỗi scenario nên có **business value** — trả lời "tại sao test này quan trọng?"
 
 ---
 
@@ -139,6 +172,7 @@ npx cucumber-js features/login.feature --format progress
 | **Đọc được bởi** | Developer | Mọi stakeholder |
 | **Công cụ** | Jest, Vitest | Cucumber, Behave |
 | **Output** | Pass/Fail tests | Business-readable report |
+| **Timing** | Viết trước implementation | Viết trước hoặc cùng lúc với feature |
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -158,13 +192,14 @@ npx cucumber-js features/login.feature --format progress
 
 ### Khi nào dùng cái nào?
 
-| Trường hợp | Chọn |
-|------------|------|
-| Test logic nội bộ, algorithm | TDD |
-| Test API contract, unit function | TDD |
-| Test user flow, acceptance criteria | BDD |
-| Cần business team tham gia viết test | BDD |
-| Quick feedback loop cho dev | TDD |
+| Trường hợp | Chọn | Lý do |
+|------------|------|-------|
+| Test logic nội bộ, algorithm | TDD | Developer-centric, fast feedback |
+| Test API contract, unit function | TDD | Detailed, precise assertions |
+| Test user flow, acceptance criteria | BDD | Business-readable, collaborative |
+| Cần business team tham gia viết test | BDD | Gherkin không cần technical knowledge |
+| Quick feedback loop cho dev | TDD | Chạy nhanh, inline với coding |
+| Compliance/Audit requirements | BDD | Scenario file = audit trail |
 
 ---
 
@@ -230,33 +265,24 @@ Then("the total should be ${int}", (expectedTotal: number) => {
 
 | Pitfall | Cách tránh |
 |---------|------------|
-| Scenario quá chi tiết (implementation) | Giữ ở mức business |
-|过多 scenarios lặp lại | Dùng Scenario Outline |
-| Step definition dài, phức tạp | Tách thành helper functions |
-| Không có business value | Mỗi scenario phải trả lời "why" |
+| Scenario quá chi tiết (implementation) | Giữ ở mức business — không nói "click button #id" |
+| Quá nhiều scenarios lặp lại | Dùng Scenario Outline + Examples table |
+| Step definition dài, phức tạp | Tách thành helper functions, mỗi step ~1 dòng logic |
+| Không có business value | Mỗi scenario phải trả lời "why" — tại sao feature này quan trọng? |
+| Scenario phụ thuộc nhau | Mỗi scenario self-contained, không rely state từ scenario khác |
+| Gherkin viết bởi dev chỉ | Involve product/QA trong writing session (specification by example) |
 
-### Scenario Outline (tránh lặp)
-
-```gherkin
-Scenario Outline: Add various quantities
-  Given the product "<product>" costs $<price>
-  When I add "<product>" with quantity <qty>
-  Then total should be $<total>
-
-  Examples:
-    | product | price | qty | total |
-    | Laptop  | 1500  | 1   | 1500  |
-    | Laptop  | 1500  | 2   | 3000  |
-    | Mouse   | 25    | 4   | 100   |
-```
+> 📌 **Best practice:** Tổ chức **3 Amigos session** — Dev + QA + Product cùng ngồi viết Gherkin scenarios. Ba bên có perspective khác nhau: Product biết business rule, QA biết edge cases, Dev biết technical feasibility. Kết quả: scenarios chất lượng cao, ít phải sửa sau này.
 
 ---
 
 ## ▶️ Chạy ví dụ
 
+Chạy demo mini spec runner (Feature/Scenario/Given/When/Then), không cần Cucumber:
+
 ```bash
 cd 07-testing/7.5-bdd
-npx cucumber-js features/ --format html:report.html
+npx ts-node examples/index.ts
 ```
 
 ---

@@ -18,7 +18,13 @@ Manager → Director → CEO
   $20000 → Manager → Director → CEO duyệt
 ```
 
-**Scenario điển hình:** Approval flow, middleware (Express/Koa), event bubbling, validation chain.
+**Bản chất CoR:** tách **sender** khỏi **receiver** bằng cách để nhiều object có cơ hội xử lý request, theo thứ tự. Sender chỉ gửi cho **đầu chuỗi**, không biết ai sẽ xử lý cuối cùng.
+
+**Scenario điển hình:** Approval flow, middleware (Express/Koa), event bubbling, validation chain, exception handling.
+
+**2 biến thể CoR:**
+- **Pure Chain:** request đi tới khi được xử lý, **dừng lại** ở handler đầu tiên xử lý (approval flow).
+- **Impure Chain:** mọi handler đều có cơ hội xử lý (middleware chain — Express `next()`).
 
 ---
 
@@ -100,45 +106,79 @@ manager.handle(20000); // CEO
 
 > 💡 `passToNext` nên log khi không có `next` để tránh request rơi im lặng.
 
+**Middleware chain (Impure CoR — Express/Koa):**
+
+```typescript
+// Mỗi middleware là 1 handler, next() = passToNext
+app.use((req, res, next) => {
+  console.log('Auth check');
+  if (!req.user) return res.status(401).send();  // xử lý, dừng
+  next();  // chuyền tiếp
+});
+app.use((req, res, next) => {
+  console.log('Logging');
+  next();
+});
+app.use((req, res) => {
+  res.send('OK');  // cuối chuỗi
+});
+```
+
 ---
 
 ## ✅ Ưu điểm
 
-| Ưu điểm | Giải thích |
-|---------|------------|
-| 🔗 **Tách người gửi/khỏi người xử lý** | Sender chỉ biết đầu chuỗi |
-| 🔄 **Dễ reorder/thêm handler** | Thêm VP, đổi thứ tự không sửa client |
-| 🧩 **Single Responsibility** | Mỗi handler 1 ngưỡng |
-| ⛓️ **Chain linh hoạt runtime** | Xây chuỗi động |
+| Ưu điểm | Giải thích | Giải thích sâu |
+|---------|------------|----------------|
+| 🔗 **Tách người gửi khỏi người xử lý** | Sender chỉ biết đầu chuỗi | Không cần biết ai xử lý cuối cùng. |
+| 🔄 **Dễ reorder/thêm handler** | Thêm VP, đổi thứ tự không sửa client | Insert `VicePresident` giữa Director và CEO — chỉ wiring. |
+| 🧩 **Single Responsibility** | Mỗi handler 1 ngưỡng | Manager chỉ biết ngưỡng $500, không biết quy tắc others. |
+| ⛓️ **Chain linh hoạt runtime** | Xây chuỗi động | Chain được compose theo config/runtime. |
+| 🎯 **Open/Closed** | Thêm handler mới, không sửa cũ | New approval level = new class. |
 
 ---
 
 ## ⚠️ Nhược điểm
 
-| Nhược điểm | Giải thích |
-|------------|------------|
-| 🕳️ **Request có thể không được xử lý** | Nếu chuỗi không có handler cuối catch-all |
-| 🐢 **Chậm nếu chuỗi dài** | Duyệt tuyến tính |
-| 🧠 **Khó debug** | Không rõ ai xử lý |
+| Nhược điểm | Giải thích | Giải thích sâu & giảm thiểu |
+|------------|------------|------------------------------|
+| 🕳️ **Request có thể không được xử lý** | Nếu chuỗi không có handler cuối catch-all | Request trôi hết chuỗi, không ai xử lý → silent failure. *Giảm thiểu:* luôn có default/terminal handler. |
+| 🐢 **Chậm nếu chuỗi dài** | Duyệt tuyến tính O(n) | 20 handlers = 20 function calls trước khi xử lý. *Gi giảm thiểu:* reorder (frequently-hit first). |
+| 🧠 **Khó debug** | Không rõ ai xử lý | Request đi qua chain, breakpoint ở đâu? *Giảm thiểu:* log mỗi hop, correlation id. |
+| 👻 **Hidden control flow** | Logic phân tán qua nhiều handler | Rất khó trả lời "request này xử lý thế nào?". *Gi giảm thiểu:* document chain order, visualize. |
+| 🔀 **Order dependency** | Thứ tự handler quan trọng | Sai order → behavior sai (auth sau business logic = leak). *Giảm thiểu:* explicit chain definition. |
+| 🧱 **Nhiều class** | Mỗi handler 1 class | *Gi giảm thiểu:* function-based middleware. |
 
 ---
 
 ## 🎯 Khi nào dùng?
 
-| Scenario | Khuyến nghị |
-|----------|-------------|
-| Nhiều handler, không biết trước ai xử lý | ✅ Phù hợp |
-| Muốn handler quyết định chuyền tiếp | ✅ Phù hợp |
-| Middleware, filter chain | ✅ Phù hợp |
-| Chỉ 1 handler cố định | ❌ Gọi trực tiếp |
+| Scenario | Khuyến nghị | Lập luận |
+|----------|-------------|---------|
+| Nhiều handler, không biết trước ai xử lý | ✅ Rất phù hợp | Approval flow, support escalation. |
+| Muốn handler quyết định chuyền tiếp | ✅ Phù hợp | Mỗi handler know its own threshold. |
+| Middleware, filter chain | ✅ Rất phù hợp | Express/Koa/Nest pipes. |
+| Validation pipeline | ✅ Phù hợp | Chained validators. |
+| Exception handling | ✅ Phù hợp | try/catch bubbling. |
+| Chỉ 1 handler cố định | ❌ Gọi trực tiếp | Chain overkill. |
+| Cần biết chính xác handler nào xử lý | ⚠️ Cân nhắc | CoR hides selection — explicit routing better. |
 
 ---
 
 ## 🔗 Liên quan
 
-- **2.3.3 Command** — Command đóng gói request, Chain chuyền request
-- **2.3.7 Mediator** — Mediator tập trung, Chain tuyến tính
-- **2.3.1 Strategy** — Strategy chọn 1 thuật toán, Chain thử từng handler
+- **2.3.3 Command** — Command đóng gói request, Chain chuyền request.
+- **2.3.7 Mediator** — Mediator tập trung, Chain tuyến tính.
+- **2.3.1 Strategy** — Strategy chọn 1 thuật toán, Chain thử từng handler.
+- **2.3.2 Observer** — Observer broadcast tới tất cả, Chain pass until handled.
+
+**CoR vs Mediator vs Observer — so sánh 3 pattern xử lý giao tiếp:**
+
+| Pattern | Flow | Khi nào dùng |
+|---------|------|--------------|
+| **Chain of Responsibility** | Tuyến tính, pass until handled | Escalation, middleware |
+| **Mediator** | Star topology, qua trung tâm | Complex coordination N↔N |
+| **Observer** | Broadcast 1→N | State propagation |
 
 ---
 

@@ -4,9 +4,12 @@
 
 ---
 
-## Đặc Điểm Cốt Lõi
+## Tư duy cốt lõi
 
-### Cấu Trúc Chương Trình
+Procedural programming chia chương trình thành **các procedure (hàm)** thực hiện một nhiệm vụ cụ thể. Mỗi procedure nhận input, xử lý, và trả về output (hoặc mutate state).
+
+**Khác với OOP:** Không có object, không có encapsulation — chỉ có function và global/local state.
+**Khác với FP:** Không yêu cầu pure functions, có thể có side effects.
 
 ```typescript
 // Procedure (thủ tục) — không trả về giá trị
@@ -23,6 +26,10 @@ function calculateTotal(items: number[]): number {
   return total;
 }
 ```
+
+---
+
+## Đặc Điểm Cốt Lõi
 
 ### Step-by-Step Execution
 
@@ -46,6 +53,16 @@ function processOrder(items: OrderItem[], discount: number): string {
   return formatted;
 }
 ```
+
+**Ưu điểm procedural:**
+- **Dễ hiểu** — đọc từ trên xuống, như hướng dẫn từng bước
+- **Dễ debug** — breakpoint ở bất kỳ dòng nào
+- **Hiệu suất cao** — không có overhead của class/object
+
+**Nhược điểm procedural:**
+- **State lan tỏa** — global variables dễ gây bug
+- **Khó reuse** — function phụ thuộc nhiều vào context
+- **Khó test** — side effects khó isolate
 
 ---
 
@@ -78,6 +95,10 @@ class Rectangle implements Shape {
 }
 ```
 
+**Khi nào chọn procedural vs OOP:**
+- **Procedural** khi: logic đơn giản, ít state, script nhỏ
+- **OOP** khi: có nhiều đối tượng có quan hệ, cần encapsulation, mô hình hóa domain
+
 ---
 
 ## Ưu và Nhược Điểm
@@ -88,6 +109,7 @@ class Rectangle implements Shape {
 | Hiệu suất cao | Hard to reuse code |
 | Không cần overhead | State khó quản lý |
 | Phù hợp script nhỏ | Khó parallelize |
+| Fast prototyping | Không enforce best practices |
 
 ---
 
@@ -100,6 +122,7 @@ class Rectangle implements Shape {
 | Utility functions | ✅ Procedural |
 | Large enterprise app | ❌ Dùng OOP/FP |
 | Complex state management | ❌ Dùng OOP/FP |
+| Performance-critical path | ✅ Procedural (tối ưu hơn) |
 
 ---
 
@@ -121,12 +144,18 @@ function doEverything(data: any): any {
 }
 ```
 
+**Quy tắc gold:**
+- Function ≤ 20 dòng, ≤ 3 levels indentation
+- Mỗi function làm 1 việc, đặt tên rõ intent
+- Tránh global state — truyền qua parameter
+
 ---
 
 ## 🔗 Liên Quan
 
 - **4.1 OOP** — Procedural đơn giản hơn OOP
 - **4.2 FP** — Procedural có thể kết hợp với FP
+- **4.5 Declarative vs Imperative** — Procedural thường imperative
 
 ---
 
@@ -134,6 +163,16 @@ function doEverything(data: any): any {
 
 - 📖 [Procedural Programming - Wikipedia](https://en.wikipedia.org/wiki/Procedural_programming)
 - 📖 [Structure and Interpretation of Computer Programs](https://sarabander.github.io/sicp/)
+- 📖 [Clean Code - Robert C. Martin (chương functions)](https://www.oreilly.com/library/view/clean-code/9780132350884/)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 04-paradigms/4.4-procedural
+npx ts-node examples/index.ts
+```
 
 ---
 

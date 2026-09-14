@@ -27,6 +27,18 @@ Khác với functional test (kiểm tra đúng/sai), performance test kiểm tra
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### Khi nào cần Performance Test?
+
+| Tình huống | Tại sao cần perf test |
+|------------|----------------------|
+| Ứng dụng sắp launch public | Tìm bottlenecks trước khi user thật đến |
+| Black Friday / flash sale chuẩn bị | Đảm bảo system chịu được 10x traffic spike |
+| API bị complaint "chậm" | Đo latency thực tế, identify slow queries |
+| Architecture change (microservice split) | So sánh perf trước/sau refactor |
+| Database scale up decision | Biết giới hạn current DB để plan migration |
+
+> 💡 **Misconception:** "Performance test chỉ cần cho high-traffic apps." — Sai. Ngay cả internal tool với 50 users có thể có query O(n²) gây timeout khi data grows. Perf test **phát hiện vấn đề tiềm tàng** trước khi nó thành incident.
+
 ---
 
 ## 📊 Key Metrics (Chỉ Số Chính)
@@ -42,15 +54,17 @@ Khác với functional test (kiểm tra đúng/sai), performance test kiểm tra
 
 ```
 Latency Distribution Example:
-──────────────────────────────────────────────
+─────────────────────────────────────────────
   p50 (median):  45ms   ← 50% request ≤ 45ms
   p90:          120ms  ← 90% request ≤ 120ms
   p95:          250ms  ← 5% request chậm hơn
   p99:          800ms  ← 1% request rất chậm (tail latency)
   max:         5000ms  ← request chậm nhất
-──────────────────────────────────────────────
+─────────────────────────────────────────────
 → Tập trung tối ưu p95/p99, không chỉ average!
 ```
+
+> 📌 **Tại sao p95/p99 quan trọng hơn average?** Average bị che bởi outliers. 99% users experience 45ms latency nhưng 1% users chờ 5 giây — đó là những user giận dữ sẽ leave app. Tối ưu p99 = cải thiện trải nghiệm cho minority đang suffer.
 
 ---
 
@@ -217,27 +231,56 @@ vus                     50         峰值 concurrent users
 ⚠️ Nếu p95 > 500ms hoặc error_rate > 1% → cần optimize
 ```
 
+### Đọc hiểu result chi tiết
+
+| Metric | Giá trị | Đánh giá | Action nếu bad |
+|--------|---------|----------|----------------|
+| `http_reqs` | 3,200 | Total throughput | So sánh với target RPS |
+| `avg` latency | 85ms | Trung bình | Look at p95/p99 — avg bị che outliers |
+| `p95` latency | 180ms | 95% requests < 180ms | Target: < 500ms cho web API |
+| `p99` latency | 800ms | 1% requests rất chậm | Investigate outliers — slow queries? |
+| `error_rate` | 0.5% | 95 errors/3200 requests | > 1% = red flag, check logs |
+| `vus` | 50 | Peak concurrent users | Compare with production traffic |
+
+> 📌 **Baseline trước khi optimize:** Luôn chạy load test TRƯỚC khi optimize để có baseline. Sau khi optimize, chạy lại → đo improvement thực tế. Đừng optimize dựa trên intuition.
+
 ---
 
 ## ✅ Best Practices
 
 | Thực hành | Giải thích |
 |-----------|------------|
-| **Test môi trường giống production** | Result không chính xác nếu config khác |
-| **Baseline trước khi optimize** | Đo trước/sau để biết improvement |
-| **Theo dõi p95/p99** | Average bị che bởi outliers |
-| **Test gradual increase** | Ramp-up từ từ, không nhảy vọt |
-| **Monitor resource** | CPU, memory, DB connections trong khi test |
-| **Make it part of CI** | Chạy load test tự động mỗi deploy |
+| **Test môi trường giống production** | Result không chính xác nếu config khác (CPU, RAM, DB size) |
+| **Baseline trước khi optimize** | Đo trước/sau để biết improvement thực |
+| **Theo dõi p95/p99** | Average bị che bởi outliers — p95 mới反映真实用户体验 |
+| **Test gradual increase** | Ramp-up từ từ, không nhảy vọt → tìm breaking point chính xác |
+| **Monitor resource** | CPU, memory, DB connections trong khi test — bottleneck có thể ở infrastructure |
+| **Make it part of CI** | Chạy load test tự động mỗi deploy → phát hiện regression performance sớm |
+| **Test real data** | Data thật (hoặc data replication) cho kết quả chính xác hơn test data giả |
+| **Define SLA/SLO** | Trước khi test, định rõ target: "p95 < 200ms, error_rate < 0.1%" |
+
+---
+
+## 🔧 Common Performance Anti-Patterns
+
+| Anti-Pattern | Vấn đề | Giải pháp |
+|--------------|--------|-----------|
+| **N+1 queries** | 1 query lấy list + N queries chi tiết | Batch query, eager loading, JOIN |
+| **Missing index** | Full table scan trên large table | Thêm index, analyze query plan |
+| **Sync blocking** | Blocking call trên event loop | Async/await, non-blocking I/O |
+| **Unbounded result** | Return toàn bộ table không pagination | LIMIT/OFFSET, cursor-based pagination |
+| **No caching** | Tính lại data đã có cache | Redis/Memcached, CDN, HTTP cache headers |
+| **Synchronous external calls** | Chờ 3rd party API synchronously | Fire-and-forget, timeout, circuit breaker |
 
 ---
 
 ## ▶️ Chạy ví dụ
 
+Chạy demo micro-benchmark so sánh thuật toán (không cần k6/Artillery):
+
 ```bash
 cd 07-testing/7.6-performance-testing
-k6 run load-tests/basic.js
-artillery run load-test.yml
+npx ts-node examples/index.ts
 ```
 
 ---

@@ -183,6 +183,15 @@ app.use((err, req, res, next) => {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.4.5-owasp-top-10
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
-→ [5.5 State Management](../../5.5-state-management/README.md)
+→ [5.5 State Management](../5.5-state-management/README.md)

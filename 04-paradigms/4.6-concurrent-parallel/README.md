@@ -4,6 +4,32 @@
 
 ---
 
+## Phân biệt Concurrency và Parallelism
+
+Đây là 2 khái niệm hay bị nhầm:
+
+| | **Concurrency** | **Parallelism** |
+|---|---|---|
+| Định nghĩa | Nhiều task xen kẽ | Nhiều task đồng thời |
+| Core | Cùng 1 core | Nhiều cores |
+| Cơ chế | Context switching | Multi-threading |
+| JavaScript | ✅ Event loop | ❌ Single-thread |
+| Node.js | ✅ OS threads | ❌ require Worker |
+| Rust/Go | ✅ Native support | ✅ Native support |
+
+```
+Concurrent (Event Loop):
+Time → | Task A | Task B | Task A | Task B |
+        (xen kẽ, cùng core)
+
+Parallel (Multi-core):
+Core 1 → | Task A | Task A | Task A |
+Core 2 → | Task B | Task B | Task B |
+        (đồng thời, khác core)
+```
+
+---
+
 ## Concurrent Programming (Bất Đồng Bộ)
 
 JavaScript event loop — các task xen kẽ nhau.
@@ -41,6 +67,10 @@ async function loadData() {
   }
 }
 ```
+
+**Promise vs Observable:**
+- `Promise` = single value, không cancel được
+- `Observable` = stream of values, có thể subscribe/unsubscribe
 
 ---
 
@@ -162,6 +192,10 @@ async function incrementSafe() {
 }
 ```
 
+**Phân biệt race condition vs deadlock:**
+- **Race condition:** kết quả phụ thuộc thứ tự thực thi
+- **Deadlock:** các thread chờ nhau vĩnh viễn
+
 ---
 
 ## Khi Nào Dùng Cái Gì?
@@ -172,6 +206,7 @@ async function incrementSafe() {
 | CPU bound computation | ❌ Event loop block | ✅ Web Workers |
 | Real-time updates | ✅ RxJS streams | — |
 | Heavy data processing | ⚠️ Chunk it | ✅ Parallel workers |
+| Machine learning inference | ⚠️ GPU offload | ✅ GPU parallel |
 
 ---
 
@@ -180,6 +215,8 @@ async function incrementSafe() {
 - **4.2 Functional** — Immutable data giúp parallel safe
 - **5.12 Functional Concepts** — Immutability, pure functions
 - **12-concurrency** (folder trong repo) — chi tiết threading
+- **12.1 async-await** — pattern căn bản
+- **12.2 Promises** — foundation của async
 
 ---
 
@@ -188,6 +225,15 @@ async function incrementSafe() {
 - 📖 [MDN - Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
 - 📖 [JavaScript Event Loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
 - 📖 [Promise.all vs forkJoin](https://rxjs.dev/api/index/function/forkJoin)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 04-paradigms/4.6-concurrent-parallel
+npx ts-node examples/index.ts
+```
 
 ---
 

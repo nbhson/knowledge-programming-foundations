@@ -5,11 +5,11 @@
  * thay vì khởi tạo lại từ đầu (tốn kém).
  */
 
-interface Prototype {
-  clone(): Prototype;
+interface Cloneable {
+  clone(): Cloneable;
 }
 
-class Report implements Prototype {
+class SalesReport implements Cloneable {
   constructor(
     public title: string,
     public data: number[],
@@ -17,8 +17,8 @@ class Report implements Prototype {
   ) {}
 
   // Deep copy — clone nested object
-  clone(): Report {
-    return new Report(
+  clone(): SalesReport {
+    return new SalesReport(
       this.title,
       [...this.data],
       {
@@ -34,7 +34,7 @@ console.log("=== Prototype Demo ===");
 console.log("");
 
 // Tạo report gốc (trong thực tế tốn kém: query DB, parse file...)
-const original = new Report("Sales Q1", [100, 200, 300], {
+const original = new SalesReport("Sales Q1", [100, 200, 300], {
   author: "Alice",
   createdAt: new Date("2026-01-15"),
 });

@@ -4,6 +4,40 @@
 
 ---
 
+## Tư duy cốt lõi của Reactive
+
+**Reactive = lập trình với luồng thời gian.** Thay vì "gọi hàm khi cần" (imperative), bạn "đăng ký lắng nghe stream, xử lý khi có value mới" (declarative reactive).
+
+**4 đặc trưng:**
+1. **Asynchronous data streams** — mọi thứ là stream theo thời gian
+2. **Push-based** — source đẩy data tới subscriber, không phải subscriber poll
+3. **Declarative operators** — biến đổi bằng `map`, `filter`, `merge`...
+4. **Composable** — kết hợp nhiều stream thành stream mới
+
+**So sánh 2 cách cùng 1 bài toán:**
+
+```typescript
+// ❌ Imperative/pull — bạn phải tự hỏi "có gì mới không?"
+let previousValue = null;
+setInterval(() => {
+  const current = getSensorValue();
+  if (current !== previousValue) {
+    process(current);
+    previousValue = current;
+  }
+}, 100);
+
+// ✅ Reactive/push — tự động khi có value mới
+sensor$
+  .pipe(
+    distinctUntilChanged(),
+    debounceTime(100)
+  )
+  .subscribe(value => process(value));
+```
+
+---
+
 ## Khái Niệm Cốt Lõi
 
 ### Observable Stream
@@ -21,6 +55,11 @@ click$.subscribe(event => {
   console.log('Clicked at', event.clientX, event.clientY);
 });
 ```
+
+**3 trạng thái của observable:**
+- `next(value)` — phát giá trị mới (nhiều lần)
+- `error(err)` — lỗi, kết thúc stream (1 lần)
+- `complete()` — stream kết thúc thành công (1 lần)
 
 ### RxJS Operators
 
@@ -199,7 +238,7 @@ class Store {
 
 - **4.2 Functional** — RxJS dùng FP principles
 - **5.5 State Management** — NgRx dùng RxJS
-- **Event Techniques** — Pub/Sub pattern
+- **12.6 Observables** — folder trong repo — chi tiết RxJS
 
 ---
 
@@ -208,6 +247,15 @@ class Store {
 - 📖 [RxJS Documentation](https://rxjs.dev/)
 - 📖 [Learn RxJS](https://www.learnrxjs.io/)
 - 📖 [RxJS Operators Cheat Sheet](https://braziljs.org/static/cheatsheets/rxjs/operators_cheat_sheet.png)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 04-paradigms/4.3-reactive
+npx ts-node examples/index.ts
+```
 
 ---
 

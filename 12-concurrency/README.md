@@ -6,6 +6,19 @@
 
 ---
 
+## 📚 Mục lục
+
+| # | Chủ đề | Giải thích | Link |
+|---|--------|-----------|------|
+| 12.1 | **Async/Await** | Cú pháp bất đồng bộ hiện đại, tuần tự vs song song, error handling | [→ 12.1](12.1-async-await/README.md) |
+| 12.2 | **Promises** | Callback → promise chain, Promise.all/race/any/allSettled | [→ 12.2](12.2-promises/README.md) |
+| 12.3 | **Event Loop** | Microtask vs macrotask, phiên xử lý, tránh block main thread | [→ 12.3](12.3-event-loop/README.md) |
+| 12.4 | **Web Workers** | Offload tính toán nặng, message-passing, worker pool | [→ 12.4](12.4-web-workers/README.md) |
+| 12.5 | **Race Conditions** | Đoán trước lỗi shared state, giải pháp lock/mutex/version | [→ 12.5](12.5-race-conditions/README.md) |
+| 12.6 | **Observables** | Luồng dữ liệu push-based, subscribe/unsubscribe, operators | [→ 12.6](12.6-observables/README.md) |
+
+---
+
 ## 📑 Mục Lục
 
 1. [Tổng Quan](#1-tổng-quan)
@@ -25,10 +38,12 @@
 
 ### Tại sao cần Concurrency?
 
-- **Tăng throughput:** Xử lý nhiều request cùng lúc
-- **Responsive UI:** Không block giao diện khi xử lý nặng
-- **Tận dụng hardware:** Sử dụng hết multi-core CPU
-- **I/O efficiency:** Không lãng phí CPU khi chờ I/O
+- **Tăng throughput:** Xử lý nhiều request cùng lúc mà không xếp hàng chờ IO.
+- **Responsive UI:** Không block giao diện khi xử lý nặng.
+- **Tận dụng hardware:** Sử dụng hết multi-core CPU thay vì để 3/4 nhân nghỉ.
+- **I/O efficiency:** Không lãng phí CPU khi chờ I/O (network, disk).
+
+> 💡 **Con số thực tế:** Single-threaded Node.js server có thể handle ~50k–100k simultaneous open connections với chi phí memory ~ vài MB. Mỗi thread OS truyền thống tiêu tốn ~8 MB stack. Đây là lý do JS runtime chọn event loop + non-blocking I/O thay vì 1 thread/connection.
 
 ---
 
@@ -46,12 +61,17 @@ Parallelism (Song song):
   → Chạy đồng thời trên nhiều cores
 ```
 
-| Khía cạnh | Concurrency | Parallelism |
-|-----------|-------------|-------------|
-| **Định nghĩa** | Quản lý nhiều task | Chạy nhiều task cùng lúc |
-| **Hardware** | 1 core đủ | Cần multi-core |
-| **Mục tiêu** | Cấu trúc chương trình | Tăng tốc độ |
-| **Ví dụ** | Async I/O, coroutines | MapReduce, GPU computing |
+**Định nghĩa chuẩn (Rob Pike, Go creators):**
+> *Concurrency is about dealing with lots of things at once. Parallelism is about doing lots of things at once.*
+
+| Khía cạnh | Concurrency | Parallelism | Giải thích sâu |
+|-----------|-------------|-------------|----------------|
+| **Định nghĩa** | Quản lý nhiều task | Chạy nhiều task cùng lúc | Concurrency là **structure**; parallelism là **execution**. |
+| **Hardware** | 1 core đủ | Cần multi-core | Event loop là concurrency model chạy được trên 1 core. |
+| **Mục tiêu** | Cấu trúc chương trình | Tăng tốc độ | Bạn có thể viết code concurrent mà không chạy song song (overhead context-switch có thể làm chậm). |
+| **Ví dụ** | Async I/O, coroutines | MapReduce, GPU computing | Web server là concurrency; matrix multiply là parallelism. |
+
+> ⚠️ **Hiểu lầm phổ biến:** "concurrent = nhanh hơn". Không nhất thiết. Concurrency tốt cho **I/O-bound**; nếu work là **CPU-bound** pure, việc thêm concurrency chỉ tăng overhead schedule → chậm hơn. Dùng đúng mô hình mới tăng throughput.
 
 ---
 
@@ -74,12 +94,15 @@ Process
 
 **Ưu điểm:**
 - True parallelism trên multi-core
-- Shared memory → giao tiếp nhanh
+- Shared memory → giao tiếp nhanh (vài ns read/write)
 
 **Nhược điểm:**
-- Race conditions
-- Deadlock risks
-- Khó debug
+- Race conditions nếu không đồng bộ
+- Deadlock risks khi nested locks
+- Khó debug (timing-sensitive bugs)
+- Memory overhead ~8 MB/thread (OS default stack)
+
+**Best practice:** giữ critical section nhỏ, dùng lock-free structures khi có thể, tránh nested lock (deadlock recipe).
 
 ### 3.2 Multi-Processing
 
@@ -92,9 +115,11 @@ Process 1              Process 2
 ```
 
 **Khi nào dùng:**
-- CPU-intensive tasks
+- CPU-intensive tasks (video encode, ML training)
 - Cần isolation (crash 1 process không ảnh hưởng process khác)
 - Bypass GIL (Python)
+
+**IPC costs:** shared memory ~µs–ms, pipe/socket ~µs, RPC ~ms. Chọn IPC phù hợp workload.
 
 ### 3.3 Green Threads / Coroutines
 
@@ -107,9 +132,11 @@ OS Thread
 ```
 
 **Đặc điểm:**
-- Rất nhẹ (KB thay vì MB)
-- User-space scheduling
-- Ví dụ: Go goroutines, Kotlin coroutines, Python asyncio
+- Rất nhẹ (KB thay vì MB) — tạo hàng triệu coroutine dễ dàng
+- User-space scheduling → ít context-switch overhead
+- Ví dụ: Go goroutines, Kotlin coroutines, Python asyncio, Rust async/await
+
+**Giới hạn:** vẫn cần OS thread pool để thật sự chạy song song trên multi-core (trong Go gọi M:N scheduling). Single-threaded coroutine vẫn single-core về execution.
 
 ---
 
@@ -123,6 +150,9 @@ Thread B: wait....... → lock(mutex) → [critical section] → unlock(mutex)
 ```
 
 **Dùng khi:** Chỉ cho phép 1 thread truy cập resource tại 1 thời điểm.
+**Chi phí:** lock/unlock ~10–100 ns (contended), ~1 ns (uncontended).
+
+**Pitfall:** nested locks → deadlock nếu acquire order không consistent. Quy tắc: luôn acquire locks theo thứ tự cố định (ví dụ alphabetically by resource ID).
 
 ### 4.2 Semaphore
 
@@ -135,7 +165,7 @@ Semaphore(3):  // Cho phép tối đa 3 threads
   Thread 1: release → Thread 4: acquire ✅
 ```
 
-**Dùng khi:** Giới hạn số lượng truy cập đồng thời (connection pool, rate limiting).
+**Dùng khi:** Giới hạn số lượng truy cập đồng thời (connection pool, rate limiting, bounded parallelism).
 
 ### 4.3 Read-Write Lock
 
@@ -146,7 +176,7 @@ Readers (đồng thời):     Writer (exclusive):
   Reader 3: read ✅        Writer: write ✅
 ```
 
-**Dùng khi:** Nhiều readers, ít writers (caches, config).
+**Dùng khi:** Nhiều readers, ít writers (caches, config). Giảm contention so với mutex khi read-heavy.
 
 ### 4.4 Atomic Operations
 
@@ -157,7 +187,7 @@ Atomic counter:
   → Không cần lock, hardware-level guarantee
 ```
 
-**Dùng khi:** Các phép toán đơn giản trên shared variables.
+**Dùng khi:** Các phép toán đơn giản trên shared variables (counter, flag, bitset). Fastest primitive — CPU instruction级别的 `LOCK XADD`, `CMPXCHG`.
 
 ---
 
@@ -185,8 +215,8 @@ Atomic counter:
 
 ```
 Synchronous:                  Asynchronous:
-  fetch data    ████ 2s        fetch data    ██── 
-  process       ██   1s        process       ──██ 
+  fetch data    ████ 2s        fetch data    ██──
+  process       ██   1s        process       ──██
   fetch more    ████ 2s        fetch more    ██──
   Total:        5s             Total:        ~3s (overlapping I/O)
 ```
@@ -198,12 +228,12 @@ Synchronous:                  Asynchronous:
 
 ### 5.3 So Sánh Models
 
-| Model | Best For | Ví dụ |
-|-------|----------|-------|
-| **Multi-threading** | CPU-bound + shared state | Image processing |
-| **Async/Await** | I/O-bound, high concurrency | Web servers, API calls |
-| **Multi-processing** | CPU-bound + isolation | Data science, ML training |
-| **Actor Model** | Distributed, fault-tolerant | Akka, Erlang/OTP |
+| Model | Best For | Ví dụ | Giải thích sâu |
+|-------|----------|-------|----------------|
+| **Multi-threading** | CPU-bound + shared state | Image processing | Parallel true, nhưng shared-memory race condition rủi ro cao |
+| **Async/Await** | I/O-bound, high concurrency | Web servers, API calls | Low overhead (no thread per connection), single-core friendly |
+| **Multi-processing** | CPU-bound + isolation | Data science, ML training | No shared memory = no race, but IPC costly |
+| **Actor Model** | Distributed, fault-tolerant | Akka, Erlang/OTP | Each actor has own state + mailboxes, message passing only |
 
 ---
 
@@ -218,6 +248,7 @@ Producer → [Buffer/Queue] → Consumer
 ```
 
 **Dùng khi:** Tách biệt việc tạo và xử lý data (message queues, job workers).
+**Variants:** bounded buffer (backpressure), unbounded (memory risk), multiple producers/consumers.
 
 ### 6.2 Thread Pool
 
@@ -229,7 +260,8 @@ Thread Pool:  Worker1  Worker2  Worker3
               done→[T4] done→[T5] done→[T6]
 ```
 
-**Lợi ích:** Tái sử dụng threads, tránh overhead tạo/hủy thread.
+**Lợi ích:** Tái sử dụng threads, tránh overhead tạo/hủy thread (~µs).
+**Size tuning:** I/O-bound ≈ `2 × CPU_count`; CPU-bound ≈ `CPU_count + 1`.
 
 ### 6.3 Future/Promise
 
@@ -237,11 +269,13 @@ Thread Pool:  Worker1  Worker2  Worker3
 main() {
   future1 = async fetchUser()     // Bắt đầu ngay
   future2 = async fetchOrders()   // Bắt đầu ngay
-  
+
   user   = await future1          // Chờ kết quả
   orders = await future2          // Có thể đã xong
 }
 ```
+
+**Key insight:** khởi phát trước, await sau — đây là cách viết parallelism rõ ràng nhất trong async/await.
 
 ### 6.4 Actor Model
 
@@ -259,15 +293,24 @@ Actor A                    Actor B
 - Giao tiếp qua messages
 - Fault-tolerant (supervisor hierarchy)
 
+**Trade-off:** message serialization/latency; debug harder (message ordering, delivery semantics).
+
 ### 6.5 CSP (Communicating Sequential Processes)
 
 ```
 Goroutine A ──→ [Channel] ──→ Goroutine B
                    ↕
-             Synchronized
+              Synchronized
 ```
 
 **Triết lý:** "Don't communicate by sharing memory; share memory by communicating." — Go proverb
+
+**So sánh Actor vs CSP:**
+| Actor | CSP |
+|-------|-----|
+| Push-based (actor push message vào mailbox) | Pull/sync (channel blocking send/receive) |
+|-Mailbox không giới hạn (memory risk) | Buffer có thể bounded (backpressure tự nhiên) |
+| Akka, Erlang | Go channels, Java Channel API |
 
 ---
 
@@ -282,6 +325,7 @@ Expected: x=2, Actual: x=1 ❌
 ```
 
 **Giải pháp:** Mutex, atomic operations, immutable data.
+**JS đặc biệt:** `await` boundary là race window — nhiều async function cùng chạy giữa 2 await → race. Xem [12.5 Race Conditions](12.5-race-conditions/README.md).
 
 ### 7.2 Deadlock
 
@@ -297,7 +341,11 @@ Thread B: lock(Resource2) → wait(Resource1) ⏳
 3. No Preemption
 4. Circular Wait
 
-**Giải pháp:** Lock ordering, timeout, deadlock detection.
+**Giải pháp:**
+- **Lock ordering:** luôn acquire theo thứ tự cố định (ví dụ theo ID).
+- **Timeout:** `tryLock(timeout)` → fallback nếu không lấy được.
+- **Deadlock detection:** periodic graph scan (heavy).
+- **Avoid nested locks:** thiết kế lại để không cần.
 
 ### 7.3 Starvation
 
@@ -306,7 +354,7 @@ High-priority threads: luôn được chạy ✅✅✅
 Low-priority thread:   chờ mãi... ⏳⏳⏳
 ```
 
-**Giải pháp:** Fair scheduling, priority aging.
+**Giải pháp:** Fair scheduling, priority aging (nâng prio thread chờ lâu).
 
 ### 7.4 Livelock
 
@@ -316,7 +364,7 @@ Thread B: "Không, bạn đi trước" ←  →  ←  →
 → Cả hai cứ nhường nhau, không ai tiến! 🔄
 ```
 
-**Giải pháp:** Random backoff, asymmetric algorithm.
+**Giải pháp:** Random backoff, asymmetric algorithm (một bên luôn nhường trước).
 
 ---
 
@@ -343,3 +391,5 @@ Thread B: "Không, bạn đi trước" ←  →  ←  →
 > 💡 **Lời khuyên:** Bắt đầu với **async/await** cho I/O-bound,
 > **thread pool** cho CPU-bound,
 > và **luôn luôn** nghĩ về race conditions trước khi viết concurrent code!
+>
+> Thứ tự học đề xuất: (1) Event loop fundamentals → (2) Promises/async-await → (3) Race conditions → (4) Synchronization → (5) Advanced patterns.

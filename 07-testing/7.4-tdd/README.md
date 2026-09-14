@@ -10,12 +10,26 @@ Kent Beck (người sáng lập TDD) mô tả:
 
 ```
 "Make it work. Make it right. Make it fast."
-         ↓              ↓              ↓
-       Write test   Write minimal   Refactor code
-       that fails    code to pass     safely
+          ↓              ↓              ↓
+        Write test   Write minimal   Refactor code
+        that fails    code to pass     safely
 ```
 
 **TDD không phải là "test nhiều hơn" — nó là "thiết kế từ test".**
+
+### TDD khác gì với "write tests after coding"?
+
+| Aspect | Post-test (Traditional) | TDD |
+|--------|------------------------|-----|
+| Thứ tự | Code → Test | Test → Code |
+| Coverage | Thấp, thường chỉ test happy path | Cao, test mọi edge case từ đầu |
+| Design | Code quyết định trước, test theo sau | Interface quyết định trước, implementation theo sau |
+| Refactor | Sợ đổi vì không có test bao phủ | Tự tin refactor vì có test bảo vệ |
+| Confidence | "Code chạy được" | "Code chạy được + mọi edge case đã được verify" |
+| Time (ngắn hạn) | Nhanh hơn | Chậm hơn 10-20% |
+| Time (dài hạn) | Chậm hơn (debug nhiều, fear of change) | Nhanh hơn ( Regression ít, velocity ổn định) |
+
+> 💡 **Misconception:** "TDD làm tôi coding chậm hơn." — Đúng trong 2-4 tuần đầu (learning curve), nhưng sau đó **velocity tăng** vì: (1) không cần debug lâu, (2) không sợ refactor, (3) test docs tự động. Nhiều nghiên cứu công nghiệp cho thấy TDD giảm defect density 40-80%.
 
 ---
 
@@ -35,11 +49,11 @@ Kent Beck (người sáng lập TDD) mô tả:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-| Giai đoạn | Hành động | Thời gian |
-|-----------|-----------|-----------|
-| 🔴 **Red** | Viết test mô tả behavior chưa có | 1-2 phút |
-| 🟢 **Green** | Viết code tối thiểu để test pass | 1-5 phút |
-| 🔵 **Refactor** | Dọn code, không đổi behavior | 1-3 phút |
+| Giai đoạn | Hành động | Thời gian | Quy tắc |
+|-----------|-----------|-----------|---------|
+| 🔴 **Red** | Viết test mô tả behavior chưa có | 1-2 phút | Test PHẢI fail (không được cheat) |
+| 🟢 **Green** | Viết code tối thiểu để test pass | 1-5 phút | **Chỉ đủ** để pass, không thêm tính năng |
+| 🔵 **Refactor** | Dọn code, không đổi behavior | 1-3 phút | Chạy lại test sau mỗi refactor để đảm bảo không break |
 
 ---
 
@@ -164,13 +178,13 @@ describe("Stack (tiếp)", () => {
 
 ```
 Traditional:                              TDD:
-─────────────                             ─────────
+────────────                             ─────────
 ┌─────────┐    ┌─────────┐    ┌────────┐  ┌────────┐   ┌────────┐   ┌────────┐
 │ Viết    │───▶│ Chạy    │───▶│ Sửa    │  │ Viết   │──▶│ Chạy   │──▶│ Sửa    │
 │ code    │   │ test    │    │ bug    │  │ test   │   │ test   │   │ code   │
 └─────────┘    └─────────┘    └────────┘  └──▲─────┘   └────────┘   └──▲─────┘
                                               │                        │
-                                     Kiểm soát chất lượng          Debug khó
+                                      Kiểm soát chất lượng          Debug khó
 ```
 
 | Khía cạnh | Traditional | TDD |
@@ -181,27 +195,42 @@ Traditional:                              TDD:
 | Refactor | Sợ đổi vì không có test | Tự tin refactor |
 | Thời gian đầu | Nhanh hơn | Chậm hơn 10-20% |
 | Thời gian dài hạn | Chậm hơn (debug nhiều) | Nhanh hơn (ít bug) |
+| Regression bugs | Thường gặp | Hiếm gặp |
 
 ---
 
 ## ✅ Lợi Ích TDD
 
-| Lợi ích | Giải thích |
-|---------|------------|
-| 🎯 **Design tốt hơn** | Phải nghĩ đến interface trước khi implement |
-| 📖 **Documentation sống** | Test là tài liệu về behavior |
-| 🛡️ **Refactor an toàn** | Test suite bảo vệ khỏi regression |
-| 🐛 **Giảm bug** | Phát hiện lỗi ngay khi viết |
-| 💪 **Tự tin deploy** | Suite test chạy qua = hệ thống ổn định |
+| Lợi ích | Giải thích | Lập luận |
+|---------|------------|----------|
+| 🎯 **Design tốt hơn** | Phải nghĩ đến interface trước khi implement | Interface-first design → code modular, dễ test, dễ maintain |
+| 📖 **Documentation sống** | Test là tài liệu về behavior | Đọc test file = đọc spec. Spec luôn update vì test phải pass |
+| 🛡️ **Refactor an toàn** | Test suite bảo vệ khỏi regression | Bạn có thể đổi implementation thoải mái, test sẽ catch nếu break behavior |
+| 🐛 **Giảm bug** | Phát hiện lỗi ngay khi viết | Bug phát hiện trong vài phút (red phase) thay vì vài ngày (production incident) |
+| 💪 **Tự tin deploy** | Suite test chạy qua = hệ thống ổn định | Deploy decision dựa trên data (test pass rate) thay vì gut feeling |
+| 🧠 **Focus better** | Mỗi cycle chỉ làm 1 thing nhỏ | Chia nhỏ problem → giảm cognitive load, tăng quality per feature |
+
+---
 
 ## ⚠️ Thách Thức TDD
 
 | Thách thức | Cách vượt qua |
 |------------|---------------|
-| Chậm ban đầu | Coi như đầu tư dài hạn |
-| Khó test legacy code | Dùng wrapper / dependency injection |
-| Không biết viết test nào trước | Bắt đầu từ case đơn giản nhất |
-| Pressure deadline | Ưu tiên TDD cho core logic |
+| Chậm ban đầu | Coi như đầu tư dài hạn — ROI rõ sau 2-3 tháng |
+| Khó test legacy code | Dùng wrapper / dependency injection để tách logic khỏi framework |
+| Không biết viết test nào trước | Bắt đầu từ case đơn giản nhất, thêm edge cases sau |
+| Pressure deadline | Ưu tiên TDD cho core logic (payment, auth, data processing), không phải cho CRUD boilerplate |
+| Khó với UI code | Kết hợp TDD với BDD — viết scenario Gherkin trước, implement sau |
+| Test too brittle | Test behavior, không test implementation — dùng stable abstractions |
+
+> 📌 **Pragmatic TDD:** Không phải mọi code cần TDD. Ưu tiên TDD cho:
+> - Core business logic ( Pricing, calculation, state machine)
+> - Complex algorithms
+> - Code dễ break khi refactor
+> Bỏ qua TDD cho:
+> - Simple CRUD getters/setters
+> - One-off scripts
+> - UI wiring (dùng BDD/E2E thay thế)
 
 ---
 
@@ -213,15 +242,19 @@ Traditional:                              TDD:
 3. ONLY viết production code vừa đủ để test PASS
 ```
 
-> — **Kent Beck**, *Test-Driven Development by Example*
+> — **Kent Beck**, *Test-Driven Development: By Example*
+
+> 💡 **Thực tế:** Rule 1 là rule quan trọng nhất. Khi bạn viết code TRƯỚC test, bạn đang viết code không có contract — và contract đó thường không đủ chặt. Khi test viết trước, bạn đã **design** interface trước khi **implement** — đây là khác biệt then chốt.
 
 ---
 
 ## ▶️ Chạy ví dụ
 
+Chạy demo vòng lặp Red → Green → Refactor:
+
 ```bash
 cd 07-testing/7.4-tdd
-npx vitest run --reporter=verbose
+npx ts-node examples/index.ts
 ```
 
 ---

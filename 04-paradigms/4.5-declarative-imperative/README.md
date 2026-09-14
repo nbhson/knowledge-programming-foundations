@@ -24,7 +24,7 @@ for (let i = 0; i < numbers.length; i++) {
 **Đặc điểm:**
 - Control flow rõ ràng: for, while, if, else
 - State thay đổi qua các biến
--程序员 quyết định từng bước
+- Programmer quyết định từng bước
 
 ---
 
@@ -57,6 +57,7 @@ const result = numbers
 | Readability | Cần đọc kỹ | Dễ hiểu ý định |
 | Mutation | Thường có | Tránh mutation |
 | Parallelize | Khó | Dễ hơn |
+| Performance control | Cao | Thấp (engine tối ưu) |
 
 ### Ví Dụ SQL
 
@@ -90,6 +91,20 @@ function Greeting(name: string) {
 
 ---
 
+## Phân biệt Declarative và FP
+
+**Lưu ý quan trọng:** Declarative ≠ Functional Programming.
+
+| | Declarative | Functional Programming |
+|---|---|---|
+| Mục tiêu | Mô tả WHAT | Sử dụng pure functions, immutability |
+| Bắt buộc | Không | Có |
+| Ví dụ | SQL, React JSX, CSS | RxJS, fp-ts, Redux |
+
+Bạn có thể viết **imperative nhưng declarative** (SQL), hoặc **declarative nhưng có side effects** (React component không pure).
+
+---
+
 ## Khi Nào Dùng Gì?
 
 | Scenario | Khuyến Nghị |
@@ -99,6 +114,7 @@ function Greeting(name: string) {
 | UI description (React, HTML) | ✅ Declarative |
 | Performance-critical code | ✅ Imperative (dễ optimize) |
 | Quick scripts | ✅ Imperative |
+| Complex business logic | ⚠️ Kết hợp cả hai |
 
 ---
 
@@ -126,6 +142,8 @@ function processUsers(users: User[]): Report {
 }
 ```
 
+**Best practice:** Dùng declarative cho data transformation, imperative cho control flow phức tạp.
+
 ---
 
 ## 🔗 Liên Quan
@@ -140,6 +158,16 @@ function processUsers(users: User[]): Report {
 
 - 📖 [Declarative vs Imperative Programming](https://www.freecodecamp.org/news/imperative-vs-declarative-programming/)
 - 📖 [React Docs - Declarative vs Imperative](https://react.dev/learn/describing-the-ui)
+- 📖 [SQL as Declarative Language](https://en.wikipedia.org/wiki/SQL#Declarative_nature)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 04-paradigms/4.5-declarative-imperative
+npx ts-node examples/index.ts
+```
 
 ---
 

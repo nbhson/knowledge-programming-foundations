@@ -201,6 +201,15 @@ class TodoView {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.5.4-flux
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.5.5 EventEmitter](../5.5.5-event-emitter/README.md)

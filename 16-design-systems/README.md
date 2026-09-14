@@ -1,6 +1,6 @@
 # 🎨 Lớp 16: Design Systems (Hệ Thống Thiết Kế)
 
-> **Design System** là **nguồn sự thật duy nhất** (source of truth) cho tất cả các thành phần thiết kế và mã nguồn của sản phẩm, giúp đảm bảo tính nhất quán và hiệu quả trong phát triển giao diện người dùng.
+> **Design System** là **nguồn sự thật duy nhất** (source of truth) cho tất cả các thành phần thiết kế và mã nguồn của sản phẩm, giúp đảm bảo tính nhất quán và hiệu quả trong phát triển giao diện người dùng. Đây không phải chỉ là component library — đó là **systematic approach** đến UI development.
 
 ---
 
@@ -22,73 +22,115 @@
 ### 1. Single Source of Truth
 
 ```
-设计稿（Figma/Sketch）
-        │
-        ▼
-   Design Tokens  ← 唯一数据源
-        │
-   ┌────┼────┐
-   ▼    ▼    ▼
- Code  Docs  组件库
+Thiết kế (Figma/Sketch)
+         │
+         ▼
+    Design Tokens  ← 唯一数据源
+         │
+    ┌────┼────┐
+    ▼    ▼    ▼
+ Code  Docs  Component Library
 ```
+
+**Tại sao Single Source of Truth quan trọng?**
+- Khi thiết kế thay đổi (rebrand, dark mode), chỉ cần update **1 nơi** (token file) → code tự động reflect
+- Không có "design drift" — developer và designer nói cùng 1 ngôn ngữ
+- Prevent "I used #3B82F6 here but the design says #3A81E5" inconsistency
 
 ### 2. Consistency Across Platforms
 
 ```
 Web:    Button → color: var(--color-primary), size: var(--size-md)
-iOS:    Button → color: UIColor.primary, size: .medium
+iOS:    Button → color: UIColor(named: "primary"), size: .medium
 Android: Button → color: R.color.primary, size: @dimen/md
+React Native: Button → color: tokens.color.primary, size: tokens.spacing.md
 ```
+
+**Key insight:** Design tokens là **bridge** giữa design và code. Same token name, different implementation per platform.
 
 ### 3. Scalability
 
 ```
-✅ Good: Token-based
+✅ Token-based (scalable):
    --spacing-sm = 8px
    --spacing-md = 16px
    --spacing-lg = 24px
+   → Đổi 1 token → toàn bộ hệ thống update
 
-❌ Bad: Hard-coded
+❌ Hard-coded (không scalable):
    padding: 8px;  // Where does 8 come from?
    margin: 16px;  // What if we need to change?
+   → Phải grep + replace thủ công, dễ漏
 ```
 
 ---
 
-## 📊 Token Hierarchy
+## 📊 Token Hierarchy — 3 layers
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  Foundation Tokens                                  │
-│  ── color.primary, spacing.base, font.size.base    │
+│  ① Foundation Tokens (nguyên liệu thô)              │
+│     ── color.primary (#3B82F6),                     │
+│        spacing.base (4px), font.size.base (16px)    │
 ├─────────────────────────────────────────────────────┤
-│  Component Tokens                                   │
-│  ── button.padding, input.border-radius             │
+│  ② Component Tokens (ghép từ foundation)            │
+│     ── button.padding (var(--spacing-md)),          │
+│        input.border-radius (var(--radius-sm))       │
 ├─────────────────────────────────────────────────────┤
-│  Page Tokens                                        │
-│  ── layout.gutter, card.margin                      │
+│  ③ Page/Theme Tokens (context-specific overrides)   │
+│     ── page.background (var(--color-surface)),      │
+│        card.shadow (0 2px 8px rgba(0,0,0,0.1))     │
 └─────────────────────────────────────────────────────┘
 ```
+
+**Flow:** Foundation → Component → Theme. Mỗi lớp kế thừa từ lớp dưới. Không bao giờ override foundation từ component.
+
+---
+
+## 🔑 Why Design Systems Matter
+
+| Problem without DS | Solution with DS |
+|--------------------|------------------|
+| Mỗi dev tự pick màu → UI inconsistent | Tokens = 1 source of truth |
+| Component giống nhau nhưng code khác | Reusable component library |
+| Designers và developers nói khác ngôn ngữ | Tokens as shared vocabulary |
+| Onboarding dev mới mất tuần | Storybook docs + component usage examples |
+| Dark mode = rewrite CSS | Theme tokens override foundation |
+
+---
+
+## 🧩 Design System ≠ Component Library
+
+| Aspect | Component Library | Design System |
+|--------|------------------|---------------|
+| Scope | UI components only | Components + tokens + guidelines + docs |
+| Governance | Code-only | Code + design + process |
+| Audience | Developers | Devs + designers + PMs |
+| Example | Material-UI, Ant Design | Google Material Design, Shopify Polaris |
+
+> 💡 Component library là **part** của design system, không phải toàn bộ. Design system还包括 guidelines, tokens, contribution guide, và governance process.
 
 ---
 
 ## 🔗 Related Chapters
 
-- **16.1 Design Tokens** — Cơ sở của design system
-- **16.2 Component Library** — Xây dựng components
-- **16.3 Storybook** — Tài liệu hóa components
-- **16.4 Accessibility** — Đảm bảo tiếp cận
-- **16.5 Design Tokens Deep Dive** — Chi tiết tokens
-- **16.6 Consistency Guidelines** — Nguyên tắc nhất quán
+- **16.1 Design Tokens** — Foundation of everything
+- **16.2 Component Library** — Building reusable components
+- **16.3 Storybook** — Documentation and visual testing
+- **16.4 Accessibility** — Ensuring inclusive experiences
+- **16.5 Design Tokens Deep Dive** — Naming and structure
+- **16.6 Consistency Guidelines** — Spacing, typography scale
 
 ---
 
 ## 📚 Tài Liệu Tham Khảo
 
-- 📖 [Design Tokens Guide](https://design-tokens.github.io/community-group/format/)
-- 📖 [Style Dictionary](https://amzn.github.io/style-dictionary/)
+- 📖 [Design Tokens Guide — W3C CG](https://design-tokens.github.io/community-group/format/)
+- 📖 [Style Dictionary — Amazon](https://amzn.github.io/style-dictionary/)
 - 📖 [Storybook Documentation](https://storybook.js.org/)
-- 📖 [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- 📖 [WCAG 2.2 Guidelines](https://www.w3.org/WAI/WCAG22/quickref/)
+- 📖 [Design Systems — Vahe Bayandour](https://designsystemsbook.com/)
+- 📖 [Atomic Design — Brad Frost](http://atomicdesign.bradfrost.com/)
 
 ---
 

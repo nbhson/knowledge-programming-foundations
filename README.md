@@ -7,6 +7,8 @@
 
 ## 📋 Mục Lục
 
+### 🎓 6 Lớp Kiến Thức Cốt Lõi
+
 | # | Lớp | Mô Tả | Chi Tiết |
 |---|-----|-------|----------|
 | 1 | [🏛️ Architecture](01-architecture/) | Cách tổ chức TOÀN BỘ hệ thống (MVC, Microservices, Clean Arch, DDD...) | [→ Xem chi tiết](01-architecture/README.md) |
@@ -15,6 +17,21 @@
 | 4 | [🧠 Paradigms](04-paradigms/) | Cách tư duy & tiếp cận VẤN ĐỀ khi viết code (OOP, FP, Reactive...) | [→ Xem chi tiết](04-paradigms/README.md) |
 | 5 | [⚙️ Techniques & Practices](05-techniques-and-practices/) | Các phương pháp LÀM VIỆC cụ thể (TDD, CI/CD, Refactoring...) | [→ Xem chi tiết](05-techniques-and-practices/README.md) |
 | 6 | [📐 DSA](06-data-structures-and-algorithms/) | Nền tảng TOÁN HỌC của lập trình (Array, Tree, Graph, Sorting...) | [→ Xem chi tiết](06-data-structures-and-algorithms/README.md) |
+
+### 🚀 Các Lớp Kiến Thức Mở Rộng
+
+| # | Lớp | Mô Tả | Chi Tiết |
+|---|-----|-------|----------|
+| 7 | [🧪 Testing](07-testing/) | Kiểm thử phần mềm (Unit, Integration, E2E, TDD, BDD...) | [→ Xem chi tiết](07-testing/README.md) |
+| 8 | [⚡ DevOps & CI/CD](08-devops-cicd/) | Tự động hóa và vận hành (Docker, K8s, GitHub Actions, Terraform...) | [→ Xem chi tiết](08-devops-cicd/README.md) |
+| 9 | [🔐 Security](09-security/) | An toàn bảo mật (JWT, OAuth 2.0, OWASP Top 10, Encryption...) | [→ Xem chi tiết](09-security/README.md) |
+| 10 | [🗄️ Database](10-database/) | Lưu trữ và truy vấn dữ liệu (SQL, MongoDB, Prisma, Redis...) | [→ Xem chi tiết](10-database/README.md) |
+| 11 | [🌐 Networking & APIs](11-networking-apis/) | Giao tiếp mạng và thiết kế API (HTTP, REST, GraphQL, WebSocket...) | [→ Xem chi tiết](11-networking-apis/README.md) |
+| 12 | [⚛️ Concurrency](12-concurrency/) | Lập trình song song và bất đồng bộ (Promise, Event Loop, Web Workers...) | [→ Xem chi tiết](12-concurrency/README.md) |
+| 13 | [🏗️ System Design](13-system-design/) | Thiết kế hệ thống quy mô lớn (Load Balancer, CDN, Sharding, CAP...) | [→ Xem chi tiết](13-system-design/README.md) |
+| 14 | [✨ Clean Code](14-clean-code/) | Viết code sạch, dễ bảo trì (Naming, Comments, Error Handling...) | [→ Xem chi tiết](14-clean-code/README.md) |
+| 15 | [🌿 Version Control](15-version-control/) | Quản lý phiên bản (Git, Branching, Merging, Rebase, Hooks...) | [→ Xem chi tiết](15-version-control/README.md) |
+| 16 | [🎨 Design Systems](16-design-systems/) | Hệ thống thiết kế UI (Tokens, Component Library, Storybook, A11y...) | [→ Xem chi tiết](16-design-systems/README.md) |
 
 ---
 
@@ -58,6 +75,11 @@ Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
                 └── Techniques  ← Cách thực hành hàng ngày
                     └── DSA  ← Nền tảng toán học
 ```
+
+> **📁 Cấu trúc thư mục thực tế:** Ngoài 6 lớp cốt lõi, repository được mở rộng thêm
+> **10 lớp kiến thức thực hành** (`07` → `16`): Testing, DevOps/CI/CD, Security, Database,
+> Networking/APIs, Concurrency, System Design, Clean Code, Version Control, Design Systems.
+> Mỗi lớp có đầy đủ README hướng dẫn và ví dụ chạy được. Xem [📋 Mục Lục](#-mục-lục) ở trên.
 
 ---
 

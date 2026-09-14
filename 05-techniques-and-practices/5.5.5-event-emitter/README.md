@@ -145,6 +145,15 @@ emitter.emit('user:login', { id: '1', name: 'John' });
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.5.5-event-emitter
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bạn đã hoàn thành 5.5 State Management!
 
-→ [5.6 Error Handling Techniques](../../5.6-error-handling-techniques/README.md)
+→ [5.6 Error Handling Techniques](../5.6-error-handling-techniques/README.md)

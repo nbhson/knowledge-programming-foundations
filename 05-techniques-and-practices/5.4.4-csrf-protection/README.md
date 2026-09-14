@@ -142,6 +142,15 @@ res.cookie('session', sessionId, {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.4.4-csrf-protection
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.4.5 OWASP Top 10](../5.4.5-owasp-top-10/README.md)

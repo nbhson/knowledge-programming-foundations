@@ -21,7 +21,15 @@ else if (type === "free") cost = 0
 └──────────┘   └──────────────────┘   └────────────────┘
 ```
 
-**Scenario điển hình:** Khi cần nhiều biến thể thuật toán (ShipCost: Normal/Express/Free, Discount: 10%/20%/VIP) và muốn đổi linh hoạt, tránh `if/else` chồng chất, tuân thủ Open/Closed.
+**Tại sao Strategy pattern quan trọng?** Nó giải quyết **vi phạm Open/Closed Principle (OCP)** trong conditional logic. Mỗi khi thêm new strategy, bạn sửa code cũ — đó là red flag rõ nhất của anti-pattern.
+
+**Phân biệt Strategy vs State vs Template Method:**
+
+| Pattern | Mục đích | Khi nào thay đổi | Ai quyết định |
+|---------|----------|------------------|---------------|
+| **Strategy** | Chọn algorithm | Khi client muốn đổi cách thực hiện | **Client** (explicit) |
+| **State** | Thay đổi hành vi theo trạng thái nội bộ | Khi state object đổi | **Internal state** (automatic) |
+| **Template Method** | Khung cố định, subclass override step | Khi subclass override method | **Inheritance** (compile-time) |
 
 ---
 
@@ -46,8 +54,8 @@ else if (type === "free") cost = 0
 
 ```
 Client tạo Order với NormalShipping
-        │ setShipping(ExpressShipping)  ← đổi lúc runtime
-        ▼
+         │ setShipping(ExpressShipping)  ← đổi lúc runtime
+         ▼
 Order.checkout() → strategy.calculate(weightKg) → trả cost
 ```
 
@@ -92,45 +100,79 @@ order.setShipping(new FreeShipping());
 order.checkout(); // 0
 ```
 
+**TypeScript practical variant — function-based strategy:**
+
+```typescript
+// Function là first-class value — dùng function làm strategy
+const strategies: Record<string, (w: number) => number> = {
+  normal: (w) => w * 10_000,
+  express: (w) => w * 20_000 + 30_000,
+  free: () => 0,
+};
+
+const cost = strategies['express'](2);  // dynamic lookup
+```
+
+Function strategy đơn giản hơn class strategy cho trường hợp không cần state internal.
+
 ---
 
 ## ✅ Ưu điểm
 
-| Ưu điểm | Giải thích |
-|---------|------------|
-| 🔄 **Đổi thuật toán lúc runtime** | `setShipping()` không cần sửa Context |
-| 🧩 **Open/Closed** | Thêm strategy mới chỉ thêm class |
-| 🧹 **Hết if/else** | Mỗi thuật toán cô lập, dễ test riêng |
-| 🧪 **Test dễ** | Test từng strategy độc lập |
+| Ưu điểm | Giải thích | Giải thích sâu |
+|---------|------------|----------------|
+| 🔄 **Đổi thuật toán lúc runtime** | `setShipping()` không cần sửa Context | Context không biết sẽ dùng strategy nào — flexibility cao. |
+| 🧩 **Open/Closed** | Thêm strategy mới chỉ thêm class | Không đụng code cũ → giảm regression risk. |
+| 🧹 **Hết if/else** | Mỗi thuật toán cô lập, dễ test riêng | Condition logic → pure function/class → maintainability tăng. |
+| 🧪 **Test dễ** | Test từng strategy độc lập | Unit test strategy với mock inputs, không cần integration test. |
+| 🧬 **Composition over inheritance** | Strategy injectable, flexible | Không cần subclass nhiều biến thể. |
+| 🔀 **Dynamic selection** | Chọn strategy dựa trên runtime data | Config-driven, user-driven, environment-driven. |
 
 ---
 
 ## ⚠️ Nhược điểm
 
-| Nhược điểm | Giải thích |
-|------------|------------|
-| 🧱 **Nhiều class** | Mỗi biến thể 1 class, overkill nếu chỉ 1-2 case |
-| 🧠 **Client phải biết strategy** | Phải chọn strategy phù hợp ở đâu đó |
-| 🔀 **Khó quản lý khi nhiều** | Nhiều strategy cần factory/registry |
+| Nhược điểm | Giải thích | Giải thích sâu & giảm thiểu |
+|------------|------------|------------------------------|
+| 🧱 **Nhiều class** | Mỗi biến thể 1 class, overkill nếu chỉ 1-2 case | *Gi giảm thiểu:* function strategy cho simple cases. |
+| 🧠 **Client phải biết strategy** | Phải chọn strategy phù hợp ở đâu đó | Nếu client không biết nên dùng strategy nào → cần Factory/Registry. |
+| 🔀 **Khó quản lý khi nhiều** | Nhiều strategy cần factory/registry | *Gi giảm thiểu:* Registration map + default strategy. |
+| 👻 **Strategy sprawl** | (Failure mode) | Nhiều strategy cùng mục đích = redundancy. *Gi giảm thiểu:* quy tắc naming + documentation. |
+| 📉 **Abstraction cost** | Interface overhead cho function đơn giản | 3 dòng function vs 20 dòng class/interface — ROI thấp. *Gi giảm thiểu:* quy tắc "function < 10 dòng, class ≥ 10 dòng". |
 
 ---
 
 ## 🎯 Khi nào dùng?
 
-| Scenario | Khuyến nghị |
-|----------|-------------|
-| Nhiều biến thể cùng 1 thuật toán | ✅ Phù hợp |
-| Muốn tránh `if/else` / `switch` lớn | ✅ Phù hợp |
-| Cần đổi thuật toán lúc runtime | ✅ Phù hợp |
-| Chỉ 1 thuật toán, không đổi | ❌ Không cần |
+| Scenario | Khuyến nghị | Lập luận |
+|----------|-------------|---------|
+| Nhiều biến thể cùng 1 thuật toán | ✅ Rất phù hợp | `CalculateDiscount: Percentage/Fixed/VIP`. |
+| Muốn tránh `if/else` / `switch` lớn | ✅ Phù hợp | Condition spaghetti → Strategy refactor. |
+| Cần đổi thuật toán lúc runtime | ✅ Phù hợp | User có thể chọn delivery type tại checkout. |
+| Chỉ 1 thuật toán, không đổi | ❌ Không cần | Function direct call là đủ. |
+| Thuật toán phụ thuộc state nội bộ | ⚠️ State pattern phù hợp hơn | Strategy do client chọn, State tự động change. |
+| Simple function < 10 dòng | ⚠️ Function direct đủ |.overhead không worth. |
+
+**Decision flowchart thực tế:**
+1. Có ≥ 2 algorithms cho cùng operation? → Yes → Go 2
+2. Algorithms cần đổi runtime? → Yes → Strategy
+3. Algorithms phụ thuộc state object? → Yes → State
+4. Algorithms khác nhau compile-time (inheritance)? → Yes → Template Method
 
 ---
 
 ## 🔗 Liên quan
 
-- **2.3.4 State** — State đổi hành vi theo trạng thái nội bộ, Strategy đổi thuật toán do client chọn
-- **2.3.2 Observer** — Observer thay đổi hành vi subscriber khi subject đổi
-- **2.1.2 Factory Method** — Factory có thể tạo Strategy phù hợp
+- **2.3.4 State** — State đổi hành vi theo trạng thái nội bộ, Strategy đổi thuật toán do client chọn.
+- **2.3.2 Observer** — Observer thay đổi hành vi subscriber khi subject đổi.
+- **2.1.2 Factory Method** — Factory có thể tạo Strategy phù hợp.
+- **5.9.2 Feature-based Organization** — Chiến lược per feature folder structure.
+
+**Strategy trong TypeScript thực tế:**
+- `Array.sort(comparator)` — comparator là strategy
+- `fetch(url, options)` — options điều khiển behavior
+- Redux thunks/sagas — async action creators
+- Middleware pattern — each middleware is a strategy
 
 ---
 

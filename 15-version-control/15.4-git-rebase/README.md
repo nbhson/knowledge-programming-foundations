@@ -1,39 +1,45 @@
 # 🔄 15.4 Git Rebase (Tái cấu trúc Git)
 
-> **Rebase** là kỹ thuật di chuyển branch dựa trên commit mới nhất của branch khác, tạo lịch sử linear.
+> **Rebase** là kỹ thuật di chuyển branch dựa trên commit mới nhất của branch khác, tạo lịch sử linear. Khác với merge (giữ nguyên graph), rebase **viết lại history** bằng cách replay commits lên base mới.
 
 ---
 
 ## 🎯 Vấn Đề
 
 ```
-❌ Không có rebase:
+❌ Không có rebase (chỉ dùng merge):
 ├─ Lịch sử commit rối rắm khi merge nhiều branch
-├─ Nhiều merge commit không cần thiết
-└─ Khó đọc history
+├─ Nhiều merge commit không cần thiết ("merge noise")
+├─ Khó đọc `git log` — branch graph phức tạp
+└─ `git bisect` kém hiệu quả do branch merging
 
 ✅ Git Rebase giải quyết bằng:
-├─ Tạo linear history
-├─ Loại bỏ merge commit
-├─ Dễ đọc và debug
-└─ Clean project history
+├─ Tạo linear history — commits xếp thành hàng dọc
+├─ Loại bỏ merge commit không cần thiết
+├─ Dễ đọc và debug — log rõ ràng
+└─ PR đẹp: mỗi PR là 1 chuỗi commit clean, không chen ngang merge
 ```
+
+**Cơ chế:** Rebase tìm divergence point, rồi "cut" series commits từ branch và "paste" lên đầu branch target. Result: commits mới có parent khác (commit hash thay đổi), nhưng content giống hệt.
 
 ---
 
-## 📊 Merge vs Rebase
+## 📊 Merge vs Rebase — Deep comparison
 
 ```
-MERGE (giữ nguyên):              REBASE (viết lại):
+MERGE (giữ nguyên):                          REBASE (viết lại):
 
-A---B---C---M                    A---B---C---D'---E'
- \         /                     \         /
-  D---E───/                       F---G
-(feature merge)                   (feature replayed)
+main:    A---B---C---M                       main:    A---B---C
+            \         /                               \
+feature:   D---E───/                         feature: D'---E'
+(feature merge commit)                        (feature replayed)
 
-→ Giữ merge commit                → Linear history
-→ An toàn                         → Sạch sẽ hơn
+→ Giữ merge commit M                          → Linear history
+→ An toàn — không rewrite                     → Sạch, dễ đọc
+→ visible branch structure                    → commit hashes thay đổi
 ```
+
+**Sự thật quan trọng:** D' và E' có **hash khác** D và E (vì parent khác), nhưng **content giống hệt**. Đây là lý do rebase danger zone: hash change = history rewrite.
 
 ---
 
@@ -45,13 +51,18 @@ A---B---C---M                    A---B---C---D'---E'
 # Rebase feature branch lên main mới nhất
 git checkout feature/login
 git rebase main
+# Kết quả: D và E được replay lên đầu của main (C)
 
-# Hoặc rebase main vào feature
+# Rebase main vào feature (rare — thường không nên)
 git checkout main
 git rebase feature/payment
+# ⚠️ Rewrites main history — DANGER cho shared branches
+
+# Rebase lên remote branch (sync với colleague's work)
+git rebase origin/main
 ```
 
-### Interactive Rebase
+### Interactive Rebase — powerful editing tool
 
 ```bash
 # Mở interactive rebase (3 commit gần nhất)
@@ -62,21 +73,32 @@ pick abc123 feat: add login form
 pick def456 feat: add validation
 pick ghi789 fix: update styles
 
-# Các lệnh có thể dùng:
+# Các lệnh có thể dùng (thay 'pick' bằng):
 # pick    - Giữ nguyên commit
 # reword  - Sửa message commit
-# edit    - Dừng lại để sửa code
-# squash  - Gộp vào commit trước
-# fixup   - Góp và bỏ message
-# drop    - Xóa commit
+# edit    - Dừng lại để sửa code, rồi continue
+# squash  - Gộp vào commit trước (giữ message cả 2)
+# fixup   - Góp và bỏ message (giữ commit trước)
+# drop    - Xóa commit hoàn toàn
+# exec    - Chạy lệnh shell tại đây
 ```
+
+**Interactive rebase use cases:**
+| Mục đích |操作 |
+|----------|------|
+| Gom 5 WIP commits thành 1 | pick → squash × 4 |
+| Sửa commit message sai | pick → reword |
+| Xóa commit không cần | drop |
+| Sửa code trong commit cũ | pick → edit → sửa → `git add .` → `git commit --amend` → `git rebase --continue` |
+| Đảo thứ tự commits | đổi line order |
 
 ### Amend Commit
 
 ```bash
-# Sửa commit cuối cùng
-git add file.js
+# Sửa commit cuối cùng (chưa push)
+git add fixed_file.js
 git commit --amend -m "fix: corrected validation logic"
+# → commit hash thay đổi, content + message mới
 
 # Sửa commit ở giữa (cần rebase)
 git rebase -i HEAD~3
@@ -93,53 +115,65 @@ git rebase --continue
 ```
 ❌ CẤM REBASE PUBLIC BRANCH!
    → dev/main, release/* nếu đã push lên remote
+   → bất kỳ branch nào người khác đã clone
 
 ✅ AN TOÀN REBASE:
    → Feature branch cá nhân (chưa push)
    → Local-only changes
    → Private work in progress
+   → Branch trước khi mở PR
 ```
 
 ### Tại sao cấm rebase public branch?
 
 ```
-Người A:     A---B---C (push main)
-Người B:     A---B---C---D (pull, rebase, push)
-Người A:     ❌ Không pull được vì history bị rewrite
-             → Phải force push → Mất work của B
+Người A:     A---B---C (push main lên remote)
+Người B:     A---B---C---D (pull main, rebase feature lên C, push)
+Người A:     ❌ Khi pull, git thấy C ≠ C' (hash khác sau rebase)
+              → Phải force push hoặc手动 resolve
+              → Có thể mất work của A nếu không cẩn thận
 ```
+
+> 📌 **Quy tắc vàng:** Chỉ rebase những commit **chỉ bạn mới có**. Nếu commit đã push lên remote và người khác có thể dựa vào, dùng merge thay thế.
+
+** exception:** `git pull --rebase` an toàn vì nó chỉ rebase **local commits của bạn** lên remote的最新 commits, không rebase shared branches.
 
 ---
 
-## 🛠 Rebase các tùy chọn
+## 🛠 Các tùy chọn Rebase
 
 ```bash
-# Skip commit message check
+# Skip pre-rebase hook check
 git rebase --no-verify
 
-# Giữ date gốc của commit
-git rebase --preserve-merges
+# Giữ merge commits trong quá trình rebase (preserve structure)
+git rebase --preserve-merges    # cũ
+git rebase --rebase-merges      # Git 2.27+
 
-# Abort rebase nếu gặp vấn đề
+# Abort rebase nếu gặp vấn đề (quay lại trạng thái trước rebase)
 git rebase --abort
 
 # Tiếp tục rebase sau khi fix conflict
 git rebase --continue
 
-# Xem trạng thái rebase
+# Xem patch đang apply
 git rebase --show-current-patch
+
+# Rebase với conflict strategy
+git rebase -X theirs main    # prefer incoming changes on conflict
+git rebase -X ours main     # prefer current branch on conflict
 ```
 
 ---
 
 ## ✅ Ưu điểm Rebase
 
-| Ưu điểm | Giải thích |
-|---------|------------|
-| 📐 Linear history | Dễ đọc, dễ theo dõi |
-| 🧹 Clean project | Không có merge commit rác |
-| 🔍 Dễ debug | Bisect hoạt động tốt hơn |
-| 📋 PR đẹp | Mỗi PR là một chuỗi commit clean |
+| Ưu điểm | Giải thích sâu |
+|---------|----------------|
+| 📐 Linear history | Lịch sử dạng cây thẳng, dễ đọc `git log --oneline` |
+| 🧹 Clean project | Không có merge commit noise — mỗi PR là chuỗi commit clean |
+| 🔍 Dễ debug | `git bisect` hoạt động tốt hơn trên linear history |
+| 📋 PR đẹp | Reviewer thấy commits theo thứ tự thời gian, không chen merge |
 
 ---
 
@@ -147,21 +181,48 @@ git rebase --show-current-patch
 
 | Nhược điểm | Cách giảm thiểu |
 |------------|-----------------|
-| 🔴 Rewrite history | Chỉ rebase local branch |
-| 🔴 Mất work nếu sai | Backup trước khi rebase |
-| 🟡 Học curve | Thực hành nhiều |
+| 🔴 Rewrite history | Chỉ rebase local branch, không rebase shared |
+| 🔴 Mất work nếu sai | Backup branch trước khi rebase: `git branch backup-feature` |
+| 🟡 Học curve | Thực hành với local repo trước, dùng `--abort` khi cần undo |
+| 🟡 Force push required | Luôn dùng `--force-with-lease` thay vì `--force` |
+
+**Mitigation tips:**
+```bash
+# Backup trước khi rebase lớn
+git branch backup/my-feature-before-rebase
+
+# Force push an toàn (chỉ overwrite nếu remote chưa có commit mới)
+git push --force-with-lease origin feature/login
+
+# Undo rebase nếu sai
+git reflog              # tìm commit trước rebase
+git reset --hard <before-rebase-commit>
+```
 
 ---
 
-## 🎯 Khi nào dùng gì?
+## 🎯 Khi nào dùng gì? — Bảng quyết định
 
-| Scenario | Khuyến nghị |
-|----------|-------------|
-| Giữ history nguyên vẹn | `git merge` |
-| Muốn linear history | `git rebase` |
-| Public/shared branch | `git merge` (không rebase) |
-| Cleanup PR trước merge | `git rebase -i` |
-| Fix commit message | `git rebase -i` + amend |
+| Scenario | Khuyến nghị | Lập luận |
+|----------|-------------|----------|
+| Giữ history nguyên vẹn (branch shared) | `git merge` | Tránh rewrite history gây vấn đề cho team |
+| Muốn linear history (branch local only) | `git rebase` | History sạch, dễ đọc |
+| Public/shared branch | `git merge` (không rebase) | Quy tắc vàng: không rewrite shared history |
+| Cleanup PR trước merge | `git rebase -i` | Gom WIP commits, sửa message trước khi merge |
+| Sync feature branch với main mới nhất | `git rebase main` | Tránh merge commit noise khi PR merge sau |
+| Fix commit message sai | `git rebase -i` + reword | Sửa history local trước khi push |
+| Incorporate main updates vào feature | `git rebase main` hoặc `git merge main` | Nếu feature chưa push → rebase; nếu đã push → merge |
+
+---
+
+## 💡 Common Misconceptions
+
+| Quan niệm sai | Sự thật |
+|--------------|---------|
+| "Rebase và merge giống nhau" | Merge giữ graph; rebase rewrite parent chain → hash thay đổi |
+| "Rebase luôn tốt hơn merge" | Không — rebase danger zone khi branch đã shared |
+| "Interactive rebase nguy hiểm" | Chỉ nguy hiểm khi dùng trên shared branch. Local branch → an toàn |
+| "Rebase = mất commits" | Rebase không xóa commit — nó tạo commit mới với parent khác. Commit cũ vẫn tồn tại trong reflog |
 
 ---
 
@@ -176,8 +237,18 @@ git rebase --show-current-patch
 ## 📚 Tài liệu tham khảo
 
 - 📖 [Git Rebase - Official Docs](https://git-scm.com/docs/git-rebase)
-- 📖 [Interactive Rebase](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
-- 📖 [When to Rebase](https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase)
+- 📖 [Interactive Rebase — Pro Git](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
+- 📖 [When to Rebase — Atlassian](https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase)
+- 📖 [Git Rebase Demo —interactive rebase visualization](https://git-rebase.info/)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 15-version-control/15.4-git-rebase
+npx ts-node examples/index.ts
+```
 
 ---
 

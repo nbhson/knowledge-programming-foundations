@@ -1,6 +1,7 @@
 # 🔄 8.3 Jenkins (Pipeline as Code)
 
 > **Jenkins** là nền tảng **CI/CD open-source** mạnh mẽ — định nghĩa toàn bộ workflow dưới dạng **Pipeline as Code** qua `Jenkinsfile` (Groovy), hỗ trợ **Declarative** & **Scripted** pipeline.
+> Self-hosted, không phụ thuộc cloud provider, 1800+ plugin ecosystem.
 
 ---
 
@@ -11,12 +12,29 @@
 - [Agents và Stages](#agents-và-stages)
 - [Post Actions](#post-actions)
 - [Pipeline as Code thực tế](#pipeline-as-code-thực-tế)
+- [Shared Libraries](#shared-libraries)
 - [Jenkins vs GitHub Actions](#jenkins-vs-github-actions)
 - [Best Practices](#best-practices)
 
 ---
 
 ## Tổng quan
+
+### Jenkins là gì?
+
+Jenkins là CI/CD server open-source đầu tiên (2011), viết bằng Java. Khác với GitHub Actions (cloud-hosted), Jenkins **self-hosted** — bạn cài trên server riêng, hoàn toàn kiểm soát.
+
+**Tại sao chọn Jenkins thay vì GitHub Actions?**
+
+| | Jenkins | GitHub Actions |
+|---|---|---|
+| **Hosting** | Self-hosted (tự quản) | GitHub-hosted hoặc self-hosted |
+| **Config** | `Jenkinsfile` (Groovy) | `.github/workflows/*.yml` (YAML) |
+| **Cài đặt** | Cần cài server + plugin | Có sẵn trong GitHub repo |
+| **Chi phí** | Free (self-hosted) + server cost | Gratis + paid minutes |
+| **Plugins** | 1800+ plugins | GitHub Marketplace |
+| **Phù hợp** | Enterprise, custom infra, data sovereignty | Cloud-native, rapid iteration |
+| **Parallelism** | Multi-node tốt (Agent pool) | Matrix strategy |
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -34,15 +52,19 @@
 │   │  Agent / Node (nhiều máy song song)       │                │
 │   │  Build → Test → Lint → Security → Deploy  │                │
 │   └───────────────────────────────────────────┘                │
+│                                                                  │
+│  Controller (Master): điều phối, lưu config, scheduling          │
+│  Agent (Node): thực thi pipeline (có thể nhiều agent khác nhau)  │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
 | Thành phần | Mô tả |
 |---|---|
-| **Master/Controller** | Máy chủ chính điều phối, lưu config, scheduling |
-| **Agent/Node** | Máy thực thi pipeline (có thể nhiều máy) |
+| **Master/Controller** | Máy chủ chính điều phối, lưu config, scheduling, UI |
+| **Agent/Node** | Máy thực thi pipeline (có thể nhiều máy, nhiều OS) |
 | **Pipeline** | Tập hợp các stages thực thi tuần tự hoặc song song |
-| **Plugin** | Mở rộng functionality (Git, Docker, Slack...) |
+| **Plugin** | Mở rộng functionality (Git, Docker, Slack, K8s...) |
+| **Jenkinsfile** | Code định nghĩa pipeline, commit vào git — version-controlled |
 
 ---
 
@@ -91,6 +113,18 @@ pipeline {
     }
 }
 ```
+
+### Declarative vs Scripted Pipeline
+
+| | Declarative | Scripted |
+|---|---|---|
+| **Cú pháp** | `pipeline {}` block | Groovy script tự do |
+| **Học** | Dễ, structured | Khó hơn, flexible |
+| **Syntax error** | Catch lúc parse | Catch lúc runtime |
+| **Khuyến nghị** | ✅ Đa số trường hợp | Chỉ khi cần logic phức tạp |
+| **Ví dụ** | Đoạn code trên | `node { stage('...') { ... } }` |
+
+> 💡 **Thực hành:** Luôn dùng Declarative pipeline trừ khi cần logic điều khiển phức tạp (dynamic stages, conditional logic khó biểu diễn).
 
 ---
 
@@ -149,11 +183,30 @@ pipeline {
 
 | Agent type | Mô tả | Use case |
 |---|---|---|
-| `agent any` | Bất kỳ agent nào | Pipeline đơn giản |
-| `agent none` | Không cần agent | Chạy script lightweight |
-| `agent { label 'x' }` | Agent có label cụ thể | Máy chuyên dụng |
-| `agent { docker {...} }` | Trong container | Isolated environment |
-| `agent { kubernetes {...} }` | Trên K8s pod | Cloud-native CI/CD |
+| `agent any` | Bất kỳ agent nào | Pipeline đơn giản, không quan tâm machine |
+| `agent none` | Không cần agent | Chạy script lightweight (notify, cleanup) |
+| `agent { label 'x' }` | Agent có label cụ thể | Máy chuyên dụng (docker, k8s, large-memory) |
+| `agent { docker {...} }` | Trong container | Isolated environment, reproducible |
+| `agent { kubernetes {...} }` | Trên K8s pod | Cloud-native CI/CD, autoscaling agents |
+
+### Stages và Parallelism
+
+```groovy
+stage('Testing') {
+    parallel {
+        stage('Unit Tests') {
+            steps { sh 'npm run test:unit' }
+        }
+        stage('Integration Tests') {
+            steps { sh 'npm run test:integration' }
+        }
+        stage('E2E Tests') {
+            steps { sh 'npm run test:e2e' }
+        }
+    }
+}
+// Cả 3 stage chạy SONG SONG trên các agent khác nhau
+```
 
 ---
 
@@ -165,8 +218,8 @@ pipeline {
 post {
     // ✅ Chạy LUÔN LUÔN — bất kể kết quả
     always {
-        junit 'test-results/*.xml'
-        cleanWs()
+        junit 'test-results/*.xml'           // Upload test report
+        cleanWs()                            // Dọn workspace
         slackSend color: 'good', message: "Build: ${env.BUILD_NUMBER}"
     }
 
@@ -193,8 +246,8 @@ post {
 | Condition | Trigger khi | Thường dùng cho |
 |---|---|---|
 | `always` | Mọi trường hợp | Cleanup, upload report, notify |
-| `success` | Pipeline pass ✅ | Celebration, auto-deploy |
-| `failure` | Pipeline fail ❌ | Alert, archive logs |
+| `success` | Pipeline pass ✅ | Celebration, auto-deploy, notify #success |
+| `failure` | Pipeline fail ❌ | Alert, archive logs, notify #alerts |
 | `aborted` | Pipeline bị hủy ⏹️ | Notify team |
 
 ---
@@ -229,9 +282,10 @@ pipeline {
     }
 
     options {
-        timeout(time: 30, unit: 'MINUTES')
-        disableConcurrentBuilds()
-        timestamps()
+        timeout(time: 30, unit: 'MINUTES')         // Giới hạn 30 phút
+        disableConcurrentBuilds()                   // Tránh race condition
+        timestamps()                                // Thêm timestamp vào log
+        buildDiscarder(logRotator(numToKeepStr: '20')) // Giữ 20 builds gần nhất
     }
 
     environment {
@@ -254,8 +308,12 @@ pipeline {
 
         stage('Test') {
             parallel {
-                stage('Unit')    { steps { sh 'npm run test:unit -- --coverage' } }
-                stage('Integration') { steps { sh 'npm run test:integration' } }
+                stage('Unit') {
+                    steps { sh 'npm run test:unit -- --coverage' }
+                }
+                stage('Integration') {
+                    steps { sh 'npm run test:integration' }
+                }
             }
         }
 
@@ -309,6 +367,65 @@ pipeline {
 
 ---
 
+## Shared Libraries
+
+**Shared Library** = code Groovy tái sử dụng giữa nhiều Jenkinsfile. Giống như npm package cho CI/CD.
+
+```groovy
+// pipelines/shared-library/src/org/example/Build.groovy
+package org.example
+
+def call(Map config = [:]) {
+    stage('Install') {
+        sh 'npm ci'
+    }
+    stage('Lint') {
+        sh 'npm run lint'
+    }
+    stage('Test') {
+        sh "npm test -- ${config.coverage ? '--coverage' : ''}"
+    }
+}
+
+// pipelines/shared-library/src/org/example/Deploy.groovy
+package org.example
+
+def call(Map config = [:]) {
+    def namespace = config.namespace ?: 'staging'
+    sh """
+        kubectl set image deployment/${config.app} \\
+            ${config.app}=${config.image} \\
+            --namespace=${namespace}
+    """
+}
+```
+
+```groovy
+// Jenkinsfile chính
+@Library('org-example') _
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                org.example.Build(coverage: true)
+            }
+        }
+        stage('Deploy Staging') {
+            when { branch 'main' }
+            steps {
+                org.example.Deploy(app: 'my-app', image: env.IMAGE_TAG, namespace: 'staging')
+            }
+        }
+    }
+}
+```
+
+> 💡 **Lợi ích:** Khi rule CI thay đổi (ví dụ thêm step security scan), chỉ sửa ở 1 nơi trong shared library — tất cả pipeline tự động cập nhật.
+
+---
+
 ## Jenkins vs GitHub Actions
 
 | Tiêu chí | Jenkins | GitHub Actions |
@@ -317,9 +434,11 @@ pipeline {
 | **Config** | `Jenkinsfile` (Groovy) | `.github/workflows/*.yml` (YAML) |
 | **Cài đặt** | Cần cài server + plugin | Có sẵn trong GitHub repo |
 | **Parallelism** | Multi-node tốt | Matrix strategy |
-| **Chi phí** | Free (self-hosted) | Gratis + paid minutes |
+| **Chi phí** | Free (self-hosted) + server cost | Gratis + paid minutes |
 | **Plugins** | 1800+ plugins | GitHub Marketplace |
 | **Phù hợp** | Enterprise, custom infra | Cloud-native, rapid iteration |
+| **Learning curve** | Cao (Groovy, Jenkins DSL) | Thấp (YAML, familiar syntax) |
+| **Debugging** | Xem console log trực tiếp | Xem logs trong UI GitHub |
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -329,7 +448,8 @@ pipeline {
 │  ├─ Cần self-hosted (data sovereignty, compliance)             │
 │  ├─ Enterprise với nhiều custom plugins                        │
 │  ├─ Cần parallel builds trên nhiều agent nodes                 │
-│  └─ Legacy infrastructure, muốn duy trì                        │
+│  ├─ Legacy infrastructure, muốn duy trì                        │
+│  └─ Team đã quen Jenkins, không muốn đổi                       │
 │                                                                 │
 │  GitHub Actions ✅ khi:                                         │
 │  ├─ Repo đã trên GitHub, muốn setup nhanh                       │
@@ -364,14 +484,17 @@ pipeline {
 ├─ Đặt `timeout` tránh pipeline treo vô hạn
 ├─ Dùng `options { disableConcurrentBuilds() }` tránh race condition
 ├─ Archive artifacts quan trọng (report, logs)
-└─ Dùng shared library (`@Library`) tái sử dụng logic
+├─ Dùng shared library (`@Library`) tái sử dụng logic
+├─ Dùng `when { branch ... }` để tránh deploy sai branch
+└─ Monitor agent health (xóa agent không dùng)
 
 ❌ KHÔNG bao giờ:
-├─ Hardcode credentials trong Jenkinsfile
+├─ Hardcode credentials trong Jenkinsfile (dùng Credentials Plugin)
 ├─ Bỏ qua `cleanWs()` — tốn disk nhanh
 ├─ Để pipeline chạy > 30 phút (dùng parallel tối ưu)
 ├─ Deploy production không qua approval gate
-└─ Dùng `npm install` thay vì `npm ci` (không reproducible)
+├─ Dùng `npm install` thay vì `npm ci` (không reproducible)
+└─ Chạy Jenkins controller trên máy có tài nguyên thấp
 ```
 
 ---
@@ -386,6 +509,7 @@ pipeline {
 | **Stage** | Giai đoạn logic trong pipeline |
 | **Post actions** | `always` / `success` / `failure` / `aborted` |
 | **Kubernetes agent** | Chạy pipeline trong containerized environment |
+| **Shared Library** | Code Groovy tái sử dụng giữa nhiều pipeline |
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -398,12 +522,24 @@ pipeline {
 │  Env vars     → environment { KEY = 'value' }               │
 │  Options      → timeout / disableConcurrent / timestamps    │
 │  Post         → always / success / failure / aborted         │
+│  Library      → @Library('my-lib') _                        │
 │                                                              │
 │  Alternatives: GitHub Actions / GitLab CI / CircleCI        │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 > **"Infrastructure as Code applies to CI/CD too — your pipeline should live in git."**
+
+---
+
+## ▶️ Chạy ví dụ
+
+Chạy demo Jenkinsfile + mô phỏng pipeline:
+
+```bash
+cd 08-devops-cicd/8.3-jenkins
+npx ts-node examples/index.ts
+```
 
 ---
 
@@ -415,3 +551,4 @@ pipeline {
 | [GitHub Actions](../8.2-github-actions/README.md) | Alternative CI/CD platform |
 | [Docker](../8.4-docker/README.md) | Containerized Jenkins agents |
 | [Kubernetes](../8.5-kubernetes/README.md) | K8s-based Jenkins pipelines |
+| [Terraform](../8.6-terraform/README.md) | Infrastructure cho Jenkins cluster |

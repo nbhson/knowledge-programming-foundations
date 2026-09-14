@@ -24,6 +24,18 @@ Unit test kiểm tra **từng phần tử riêng lẻ** của hệ thống — t
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### Đặc trưng của Unit Test tốt
+
+| Đặc tính | Giải thích | Ví dụ |
+|----------|------------|-------|
+| **Fast** | Chạy trong vài ms, không chậm hơn 10ms/test | 1000 tests chạy < 10 giây |
+| **Isolated** | Không phụ thuộc test khác, không có side effects | Mỗi test tự setup/teardown |
+| **Deterministic** | Cùng input → cùng output, không random | Không dùng Date.now(), Math.random() |
+| **Self-checking** | Tự động pass/fail, không cần người đọc log | `expect(result).toBe(expected)` |
+| **Focused** | Mỗi test kiểm tra MỘT behavior duy nhất | Không test 5 thứ trong 1 test |
+
+> 💡 **Misconception:** "Unit test phải test function đơn giản nhất." — Không đúng. Unit test có thể test cả class phức tạp, miễn là **all dependencies are mocked/stubbed**. Giới hạn của unit test là **sự cô lập**, không phải độ phức tạp.
+
 ---
 
 ## 📐 AAA Pattern (Arrange - Act - Assert)
@@ -39,6 +51,8 @@ Unit test kiểm tra **từng phần tử riêng lẻ** của hệ thống — t
 │  ASSERT (Kiểm tra)  → Xác nhận kết quả mong đợi                 │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**Tỷ lệ thời gian lý tưởng:** Arrange 60% : Act 10% : Assert 30%. Nếu Arrange quá dài (> 80%), test có thể đang test quá nhiều thứ hoặc có design smell.
 
 ---
 
@@ -120,16 +134,98 @@ describe("calculateDiscount()", () => {
 });
 ```
 
+### ✅ Test class phức tạp hơn — UserService
+
+```typescript
+// ─── userValidator.ts ──────────────────────────────────────────
+export class UserValidator {
+  static validateEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  static validatePassword(password: string): boolean {
+    return password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password);
+  }
+
+  static validate(username: string, email: string, password: string): string[] {
+    const errors: string[] = [];
+    if (username.length < 3) errors.push("Username must be at least 3 characters");
+    if (!this.validateEmail(email)) errors.push("Invalid email format");
+    if (!this.validatePassword(password)) errors.push("Password must be 8+ chars with uppercase and digit");
+    return errors;
+  }
+}
+
+// ─── userValidator.test.ts ─────────────────────────────────────
+import { describe, it, expect } from "vitest";
+import { UserValidator } from "./userValidator";
+
+describe("UserValidator", () => {
+  describe("validateEmail()", () => {
+    it("email hợp lệ", () => {
+      expect(UserValidator.validateEmail("user@example.com")).toBe(true);
+    });
+
+    it("thiếu @ sign", () => {
+      expect(UserValidator.validateEmail("userexample.com")).toBe(false);
+    });
+
+    it("thiếu domain", () => {
+      expect(UserValidator.validateEmail("user@")).toBe(false);
+    });
+
+    it("empty string", () => {
+      expect(UserValidator.validateEmail("")).toBe(false);
+    });
+  });
+
+  describe("validatePassword()", () => {
+    it("password đủ điều kiện", () => {
+      expect(UserValidator.validatePassword("Abc12345")).toBe(true);
+    });
+
+    it("quá ngắn", () => {
+      expect(UserValidator.validatePassword("Ab1")).toBe(false);
+    });
+
+    it("thiếu uppercase", () => {
+      expect(UserValidator.validatePassword("abc12345")).toBe(false);
+    });
+
+    it("thiếu digit", () => {
+      expect(UserValidator.validatePassword("Abcdefgh")).toBe(false);
+    });
+  });
+
+  describe("validate() — full validation", () => {
+    it("valid inputs → no errors", () => {
+      const errors = UserValidator.validate("john", "john@test.com", "Pass1234");
+      expect(errors).toEqual([]);
+    });
+
+    it("invalid username → specific error", () => {
+      const errors = UserValidator.validate("jo", "john@test.com", "Pass1234");
+      expect(errors).toContain("Username must be at least 3 characters");
+    });
+
+    it("multiple errors returned together", () => {
+      const errors = UserValidator.validate("jo", "invalid", "short");
+      expect(errors).toHaveLength(3);
+    });
+  });
+});
+```
+
 ---
 
 ## 🔧 Mocking vs Stubbing vs Spying
 
-| Kỹ thuật | Mục đích | Ví dụ |
-|----------|----------|-------|
-| **Mock** | Giả lập object, verify tương tác | Kiểm tra service có gọi đúng method không |
-| **Stub** | Trả về giá trị cố định | Cần data giả để test logic |
-| **Spy** | Wrap object thật + ghi lại calls | Giữ behavior thật, chỉ theo dõi |
-| **Fake** | Implementation đơn giản thay real | In-memory DB thay database thật |
+| Kỹ thuật | Mục đích | Ví dụ | Giải thích sâu |
+|----------|----------|-------|----------------|
+| **Mock** | Giả lập object, verify tương tác | Kiểm tra service có gọi đúng method không | Mock **chứng minh** tương tác: số lần gọi, arguments, thứ tự |
+| **Stub** | Trả về giá trị cố định | Cần data giả để test logic | Stub **cung cấp** data, không quan tâm call count |
+| **Spy** | Wrap object thật + ghi lại calls | Giữ behavior thật, chỉ theo dõi | Spy **gần như thật** — chỉ thêm khả năng quan sát |
+| **Fake** | Implementation đơn giản thay real | In-memory DB thay database thật | Fake **thay thế hoàn toàn** dependency bằng version nhẹ |
 
 ### Ví dụ chi tiết
 
@@ -223,6 +319,8 @@ describe("OrderService", () => {
 └─────────────┴───────────────────────┴──────────────────────────┘
 ```
 
+> 💡 **Quy tắc vàng:** Chỉ mock/stub những **external boundaries** (DB, API, file system, email service). Đừng mock pure functions hoặc logic nội bộ — test chúng trực tiếp.
+
 ---
 
 ## ✍️ Viết Unit Test Tốt
@@ -239,15 +337,17 @@ Ví dụ:
 ✅ test_placeOrder_withInvalidUser_returnsFailure()
 ```
 
+**Tại sao tên dài?** Vì tên test là **documentation** đầu tiên dev đọc khi test fail. "test_divideByZero_throwsError" nói ngay điều gì sai — không cần đào sâu vào code test.
+
 ### Nguyên Tắc F.I.R.S.T
 
 | Chữ | Nguyên tắc | Giải thích |
 |-----|-----------|------------|
-| **F** | Fast | Test chạy trong vài ms |
-| **I** | Independent | Mỗi test độc lập, không phụ thuộc |
-| **R** | Repeatable | Kết quả luôn giống nhau, mọi môi trường |
-| **S** | Self-validating | Tự động pass/fail, không đọc log |
-| **T** | Timely | Viết trước hoặc cùng lúc với code (TDD) |
+| **F** | Fast | Test chạy trong vài ms. Nếu test chậm > 1s, có thể đang test quá nhiều hoặc access DB/network |
+| **I** | Independent | Mỗi test độc lập, không phụ thuộc test khác. Test A fail không làm Test B fail |
+| **R** | Repeatable | Chạy lại luôn cho ra cùng kết quả, mọi môi trường. Không phụ thuộc timezone, random, network |
+| **S** | Self-validating | Tự động pass/fail, không cần người đọc log. Output rõ ràng: "Expected X but got Y" |
+| **T** | Timely | Viết test kịp thời (trước hoặc cùng lúc với code — TDD). Test sau code thường thiếu coverage |
 
 ---
 
@@ -262,6 +362,7 @@ Ví dụ:
 | **Hardcoded values** | Data test hardcode cứng nhắc | Dùng factory, fixture, parameterized |
 | **No assertions** | Test không assert → luôn pass | Mỗi test phải có ít nhất 1 assert |
 | **Complex setup** | Setup rườm rà, khó đọc | Dùng beforeEach, factory functions |
+| **Assertion rot** | Tăng dần số assertions trong 1 test | Tách thành nhiều test nhỏ |
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -278,15 +379,27 @@ Ví dụ:
 └─────────────────────────────────────────────────────────────┘
 ```
 
+> 📌 **Parameterized tests** (viết 1 test, chạy nhiều data sets):
+> ```typescript
+> it.each([
+>   [100, 10, 90],
+>   [100, 0, 100],
+>   [100, 100, 0],
+>   [200, 25, 150],
+> ])("discount %d%% of %d = %d", (price, discount, expected) => {
+>   expect(calculateDiscount(price, discount)).toBe(expected);
+> });
+> ```
+
 ---
 
 ## ▶️ Chạy ví dụ
 
+Chạy demo mini test runner tự viết (không cần cài vitest/jest):
+
 ```bash
 cd 07-testing/7.1-unit-testing
-npx vitest run
-# hoặc với Jest
-npx jest
+npx ts-node examples/index.ts
 ```
 
 ---

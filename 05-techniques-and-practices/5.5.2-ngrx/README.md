@@ -200,6 +200,15 @@ export class CounterComponent implements OnInit {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.5.2-ngrx
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.5.3 XState](../5.5.3-xstate/README.md)

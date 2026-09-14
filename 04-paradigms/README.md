@@ -7,6 +7,19 @@
 
 ---
 
+## 📚 Mục lục
+
+| # | Paradigm | Giải thích | Link |
+|---|----------|------------|------|
+| 4.1 | **Object-Oriented Programming (OOP)** | Tổ chức code theo đối tượng; 4 trụ cột: đóng gói, kế thừa, đa hình, trừu tượng hóa | [→ 4.1](4.1-oop/README.md) |
+| 4.2 | **Functional Programming (FP)** | Hàm thuần túy, bất biến, HOF, currying, function composition | [→ 4.2](4.2-functional/README.md) |
+| 4.3 | **Reactive Programming** | Luồng dữ liệu (stream) tự động push tới observer, không cần polling | [→ 4.3](4.3-reactive/README.md) |
+| 4.4 | **Procedural Programming** | Chia bài toán thành các procedure, chạy tuần tự từng bước | [→ 4.4](4.4-procedural/README.md) |
+| 4.5 | **Declarative vs Imperative** | Khai báo (WHAT) vs Thủ tục (HOW) — cùng bài toán, 2 cách viết | [→ 4.5](4.5-declarative-imperative/README.md) |
+| 4.6 | **Concurrent & Parallel Programming** | Promise.all vs tuần tự; concurrency single-thread của JS/Node | [→ 4.6](4.6-concurrent-parallel/README.md) |
+
+---
+
 ## Tổng Quan
 
 | # | Paradigm | Triết Lý |

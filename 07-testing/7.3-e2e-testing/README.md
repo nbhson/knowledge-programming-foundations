@@ -26,6 +26,8 @@ E2E test xác nhận ứng dụng hoạt động đúng từ đầu đến cuố
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### So sánh các cấp độ test
+
 | So sánh | Unit Test | Integration Test | E2E Test |
 |---------|-----------|-----------------|----------|
 | Phạm vi | 1 function | 2+ component | Toàn bộ hệ thống |
@@ -33,6 +35,10 @@ E2E test xác nhận ứng dụng hoạt động đúng từ đầu đến cuố
 | Tốc độ | ⚡ ms | 🚗 giây | 🐢 phút |
 | Chi phí | Thấp | Trung bình | Cao |
 | Độ tin cậy | Cao | Cao | Thấp hơn (flaky) |
+| Phát hiện lỗi | Logic error | Connection/contract error | User experience, full flow |
+| Maintenance | Thấp | Trung bình | Cao (UI thay đổi thường) |
+
+> 💡 **Misconception:** "E2E test thay thế được unit/integration test." — Hoàn toàn sai. E2E test **bổ sung** chứ không thay thế. Unit tests rẻ hơn 100x và chạy nhanh hơn 1000x — đừng dùng E2E cho logic đơn giản.
 
 ---
 
@@ -101,6 +107,12 @@ export default defineConfig({
   },
 });
 ```
+
+**Config giải thích:**
+- `fullyParallel: true` — chạy tất cả spec files song song (tối ưu CI time)
+- `retries: 2` — retry 2 lần cho flaky tests trong CI
+- `trace: "on-first-retry"` — lưu video/screenshot khi retry fail (debug E2E)
+- `webServer` — tự động start app trước khi chạy test, kill sau khi xong
 
 ---
 
@@ -200,6 +212,8 @@ test("đăng nhập sai mật khẩu", async ({ page }) => {
   await expect(loginPage.errorMessage).toBeVisible();
 });
 ```
+
+> 💡 **POM benefit:** Khi UI thay đổi (vd: email input đổi từ `#email` sang `[data-testid="email"]`), chỉ sửa **1 file** `LoginPage.ts` thay vì sửa 20+ test files.
 
 ---
 
@@ -315,27 +329,59 @@ test("checkout flow complete", async ({ page }) => {
 });
 ```
 
+> 📌 **Best practice:** Luôn seed + clean data trong `beforeEach`/`afterEach`. E2E test không bao giờ nên phụ thuộc vào state từ test trước.
+
 ---
 
 ## ✅ Best Practices
 
 | Nguyên tắc | Giải thích |
 |------------|------------|
-| **Test behavior, không implementation** | Focus vào user flow, không click chi tiết |
+| **Test behavior, không implementation** | Focus vào user flow, không click chi tiết DOM |
 | **Sử dụng stable selectors** | `getByRole`, `getByText` tốt hơn `getByTestId` phức tạp |
 | **Timeout hợp lý** | Không set timeout quá cao, để test fail nhanh |
 | **Parallel execution** | Chạy song song để tiết kiệm thời gian |
 | **Retry thông minh** | Retry 1-2 lần cho network flaky, không retry vô hạn |
 | **Tránh sleep()** | Dùng `waitFor` thay vì `setTimeout` |
+| **One assertion per concept** | Mỗi test verify một hành vi chính |
+| **Test happy path + edge cases** | Không chỉ test successful flow |
+
+```typescript
+// ❌ BAD: Testing implementation details
+test("click button and check DOM", async ({ page }) => {
+  await page.click("#submit-btn");
+  expect(await page.$("#result")).toBeTruthy();
+});
+
+// ✅ GOOD: Testing user-visible behavior
+test("submitting form shows success message", async ({ page }) => {
+  await page.getByRole("button", { name: "Submit" }).click();
+  await expect(page.getByText("Success!")).toBeVisible();
+});
+```
+
+---
+
+## 🆚 E2E vs Integration vs Unit — Quick Decision
+
+| Câu hỏi | Chọn |
+|---------|------|
+| Test logic pure function? | Unit test |
+| Test service + DB together? | Integration test |
+| Test full user workflow? | E2E test |
+| Test API contract between services? | Contract test (Pact) |
+| Test UI rendering? | E2E test (hoặc component test) |
+| Test performance under load? | Performance test |
 
 ---
 
 ## ▶️ Chạy ví dụ
 
+Chạy demo mô phỏng user flow (không cần Playwright/browser):
+
 ```bash
 cd 07-testing/7.3-e2e-testing
-npx playwright test
-# hoặc với CI: npx playwright test --project=chromium
+npx ts-node examples/index.ts
 ```
 
 ---

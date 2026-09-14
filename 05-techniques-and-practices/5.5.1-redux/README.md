@@ -171,6 +171,15 @@ function Counter() {
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.5.1-redux
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.5.2 NgRx](../5.5.2-ngrx/README.md)

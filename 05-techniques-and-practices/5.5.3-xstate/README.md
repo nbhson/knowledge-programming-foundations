@@ -168,6 +168,15 @@ const formMachine = createMachine({
 
 ---
 
+## ▶️ Chạy ví dụ
+
+```bash
+cd 05-techniques-and-practices/5.5.3-xstate
+npx ts-node examples/index.ts
+```
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [5.5.4 Flux](../5.5.4-flux/README.md)

@@ -1,6 +1,6 @@
 # 🗂️ 5.2 Development Methodologies (Phương Pháp Phát Triển)
 
-> **Development Methodologies** là các **khuôn khổ & quy trình** tổ chức cách một team phát triển phần mềm: lập kế hoạch, phân chia công việc, theo dõi tiến độ, và cải tiến liên tục.
+> **Development Methodologies** là các **khuôn khổ & quy trình** tổ chức cách một team phát triển phần mềm: lập kế hoạch, phân chia công việc, theo dõi tiến độ, và cải tiến liên tục. Không có "phương pháp tốt nhất" — chỉ có **phương pháp phù hợp nhất** với ngữ cảnh team, dự án, và tổ chức hiện tại.
 
 ---
 
@@ -28,26 +28,26 @@
 ```
 BẮT ĐẦU: Team & dự án của bạn như thế nào?
 │
-├─ Yêu cầu thay đổi thường xuyên, cần phản hồi nhanh?
+├─ Yêu cầu thay đổi thường xuyên, cần phản hồi nhanh? (Agile zone)
 │   ├─ Team nhỏ (1-9 người)?
-│   │   ├─ Cần kỷ luật kỹ thuật cao: → 5.2.3 XP
-│   │   ├─ Cần quy trình rõ ràng, sprint: → 5.2.1 Scrum
-│   │   └─ Cần flow liên tục, ít ceremony: → 5.2.2 Kanban
+│   │   ├─ Cần kỷ luật kỹ thuật cao, quality是第一优先级 → 5.2.3 XP
+│   │   ├─ Cần quy trình rõ ràng, role phân định, sprint fixed → 5.2.1 Scrum
+│   │   └─ Cần flow liên tục, ít ceremony, công việc đến liên tục → 5.2.2 Kanban
 │   ├─ Team vừa (10-50 người)?
-│   │   ├─ Nhiều team Scrum phối hợp: → 5.2.7 LeSS
-│   │   └─ Cần tối ưu giá trị, loại lãng phí: → 5.2.4 Lean
-│   └─ Team lớn (50+ người, nhiều cấp quản lý)?
+│   │   ├─ 2-8 team cùng 1 sản phẩm, muốn giữ Scrum gốc → 5.2.7 LeSS
+│   │   └─ Muốn tối ưu giá trị, loại lãng phí across team → 5.2.4 Lean
+│   └─ Team lớn (50+ người, nhiều cấp quản lý, enterprise)?
 │       └─→ 5.2.6 SAFe
 │
-├─ Yêu cầu ổn định, đã hiểu rõ, ít thay đổi?
+├─ Yêu cầu ổn định, đã hiểu rõ, ít thay đổi? (Predictive zone)
 │   └─→ 5.2.5 Waterfall
 │
 ├─ Dự án rủi ro cao, công nghệ mới, chưa chắc chắn?
 │   └─→ 5.2.11 Spiral
 │
 ├─ Cần prototype nhanh, demo cho khách hàng sớm?
-│   ├─ Team nhỏ, thời gian ngắn: → 5.2.12 RAD
-│   └─ Cần khung đầy đủ, business value: → 5.2.10 DSDM
+│   ├─ Team nhỏ, thời gian ngắn, UI là trọng tâm → 5.2.12 RAD
+│   └─ Cần khung đầy đủ, business value đảm bảo, deadline cứng → 5.2.10 DSDM
 │
 ├─ Team nhỏ, ít quy trình, tùy biến theo ngữ cảnh?
 │   └─→ 5.2.8 Crystal
@@ -56,6 +56,8 @@ BẮT ĐẦU: Team & dự án của bạn như thế nào?
     └─→ 5.2.9 FDD
 ```
 
+> 💡 **Sự thật thực tế:** Hầu hết team thành công không dùng "nguyên chất" 1 framework. Phổ biến là **Scrum + XP practices** (Scrum cho management, XP cho engineering), hoặc **Scrumban** (Scrum + Kanban board).
+
 ---
 
 ## 🔗 Mối quan hệ giữa các phương pháp
@@ -63,23 +65,23 @@ BẮT ĐẦU: Team & dự án của bạn như thế nào?
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    TRUYỀN THỐNG (Predictive)                        │
-│   Waterfall ──cải tiến──→ Spiral (thêm vòng lặp + rủi ro)           │
-│        │                                                           │
-│        └───→ RAD (thêm prototype nhanh)                            │
+│   Waterfall ──cải tiến──→ Spiral (thêm vòng lặp + risk analysis)   │
+│        │                                                       │
+│        └───→ RAD (thêm prototype nhanh + user involvement)      │
 ├─────────────────────────────────────────────────────────────────────┤
 │                    AGILE (Adaptive)                                 │
-│   Scrum ──tối giản──→ LeSS (nhiều team)                            │
-│   Scrum ──mở rộng──→ SAFe (nhiều team + cấp quản lý)               │
-│   Scrum ──kỹ thuật──→ XP (TDD, Pair Programming)                   │
-│   Scrum ──flow──→ Kanban (liên tục, WIP limit)                     │
-│   Agile ──tinh gọn──→ Lean (loại lãng phí)                         │
-│   Agile ──nhẹ──→ Crystal (tùy biến theo team)                      │
-│   Agile ──feature──→ FDD (mô hình hóa + feature)                   │
-│   Agile ──business──→ DSDM (business value)                        │
+│   Scrum ──tối giản──→ LeSS (nhiều team, giữ 1 backlog)            │
+│   Scrum ──mở rộng──→ SAFe (nhiều team + cấp quản lý enterprise)   │
+│   Scrum ──kỹ thuật──→ XP (TDD, Pair, CI)                          │
+│   Scrum ──flow──→ Kanban (liên tục, WIP limit, no sprint)         │
+│   Agile ──tinh gọn──→ Lean (loại waste, optimize value stream)     │
+│   Agile ──nhẹ──→ Crystal (tùy biến theo team size & criticality)  │
+│   Agile ──feature──→ FDD (mô hình hóa + feature tracking)         │
+│   Agile ──business──→ DSDM (timebox + MoSCoW prioritization)      │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-> 💡 **Lưu ý:** Các phương pháp **không loại trừ nhau**. Nhiều team dùng **Scrum + XP** (Scrum cho quy trình, XP cho kỹ thuật), hoặc **Scrum + Kanban** (Scrumban) cho flow linh hoạt hơn.
+> 💡 **Lưu ý quan trọng:** Các phương pháp **không loại trừ nhau**. Nhiều team dùng **Scrum + XP** (Scrum cho quy trình, XP cho kỹ thuật), hoặc **Scrum + Kanban** (Scrumban) cho flow linh hoạt hơn. Chọn methodology = chọn **phần management**; kỹ thuật (TDD, CI, refactoring) có thể thêm vào bất kỳ framework nào.
 
 ---
 
@@ -87,7 +89,7 @@ BẮT ĐẦU: Team & dự án của bạn như thế nào?
 
 ### 5.2.1 Scrum
 
-Framework Agile phổ biến nhất. Làm việc theo **Sprint** (2-4 tuần), vai trò rõ ràng (Product Owner, Scrum Master, Dev Team), ceremonies cố định.
+Framework Agile phổ biến nhất. Làm việc theo **Sprint** (2-4 tuần), vai trò rõ ràng (Product Owner, Scrum Master, Dev Team), ceremonies cố định. Dựa trên **empiricism** — minh bạch, kiểm tra, thích ứng.
 
 ```
 Product Backlog → Sprint Planning → Sprint Backlog → Daily Standup
@@ -103,7 +105,7 @@ Product Backlog → Sprint Planning → Sprint Backlog → Daily Standup
 
 ### 5.2.2 Kanban
 
-Tối ưu **flow liên tục** — kéo công việc khi có capacity, giới hạn WIP, không sprint cố định.
+Tối ưu **flow liên tục** — kéo công việc khi có capacity, giới hạn WIP, không sprint cố định. Xuất phát từ hệ thống sản xuất Toyota, áp dụng cho phát triển phần mềm để giảm thời gian vòng lặp (cycle time).
 
 ```
 To Do → In Progress (WIP: 3) → Review (WIP: 2) → Done
@@ -234,13 +236,48 @@ Phát triển **prototype nhanh** với sự tham gia liên tục của người
 
 | Tiêu chí | Scrum | Kanban | XP | Waterfall | SAFe | LeSS |
 |----------|-------|--------|-----|-----------|------|------|
-| Loại | Agile | Agile | Agile | Truyền thống | Agile (Scale) | Agile (Scale) |
-| Vòng lặp | Sprint 2-4 tuần | Liên tục | Iteration 1-2 tuần | Tuần tự 1 lần | PI 8-12 tuần | Sprint 2-4 tuần |
-| Vai trò | PO, SM, Dev | Không cố định | Customer, Dev, Coach | PM, Architect, Dev | Nhiều cấp | PO, SM, Dev |
-| Ceremony | 4 ceremonies | Tối thiểu | Nhiều kỹ thuật | Giai đoạn | Rất nhiều | 4 ceremonies |
-| Quy mô team | 1-9 | Bất kỳ | 2-12 | Bất kỳ | 50-125+ | 2-8 team |
-| Thay đổi yêu cầu | Trong sprint hạn chế | Bất kỳ lúc nào | Bất kỳ lúc nào | Rất khó | Theo PI | Trong sprint hạn chế |
-| Kỹ thuật | Không quy định | Không quy định | TDD, Pair, CI | Không quy định | Không quy định | Không quy định |
+| **Loại** | Agile | Agile | Agile | Truyền thống | Agile (Scale) | Agile (Scale) |
+| **Vòng lặp** | Sprint 2-4 tuần | Liên tục | Iteration 1-2 tuần | Tuần tự 1 lần | PI 8-12 tuần | Sprint 2-4 tuần |
+| **Vai trò** | PO, SM, Dev | Không cố định | Customer, Dev, Coach | PM, Architect, Dev | Nhiều cấp | PO, SM, Dev |
+| **Ceremony** | 4 ceremonies | Tối thiểu | Nhiều kỹ thuật | Giai đoạn | Rất nhiều | 4 ceremonies |
+| **Quy mô team** | 1-9 | Bất kỳ | 2-12 | Bất kỳ | 50-125+ | 2-8 team |
+| **Thay đổi yêu cầu** | Trong sprint hạn chế | Bất kỳ lúc nào | Bất kỳ lúc nào | Rất khó | Theo PI | Trong sprint hạn chế |
+| **Kỷ luật kỹ thuật** | Không quy định | Không quy định | TDD, Pair, CI (bắt buộc) | Không quy định | Không quy định | Không quy định |
+| **Chi phí chuyển đổi** | Thấp | Rất thấp | Trung bình | — | Rất cao | Thấp |
+| **Độ bền vững** | Trung bình | Cao (với kỷ luật) | Rất cao | Thấp | Trung bình (phụ thuộc coach) | Cao |
+
+**Bảng bổ sung — khi nào nên tránh:**
+
+| Phương pháp | Cảnh báo đỏ (red flag) |
+|-------------|------------------------|
+| Scrum | PO không có quyền quyết định, team > 10 người, management can thiệp daily |
+| Kanban | Team không đo được metrics, WIP limit không được tôn trọng |
+| XP | Team thiếu senior developer, không có CI/CD infrastructure, deadline quá gấp (2 tuần) |
+| Waterfall | Yêu cầu chưa rõ, công nghệ mới, dự án > 6 tháng |
+| SAFe | Team < 50 người, chưa có Scrum成熟, ngân sách training < $100k |
+| LeSS | Các team làm product khác nhau, thiếu giao tiếp trực tiếp |
+| Crystal | Không có senior người hiểu biết để "tinh chỉnh" quy trình |
+
+---
+
+## 🎯 Khung lựa chọn thực tế (decision framework)
+
+**3 câu hỏi then chốt trước khi chọn:**
+
+1. **Yêu cầu thay đổi nhanh hay ổn định?**
+   - Thay đổi liên tục → Agile (Scrum/Kanban/XP)
+   - Ổn định, đã hiểu rõ → Waterfall hoặc Spiral
+
+2. **Quy mô team và tổ chức?**
+   - 1–9 người → Scrum/Kanban/XP/Crystal
+   - 10–50 người → LeSS/XP/Lean
+   - 50–125+ người → SAFe
+
+3. **Độ rủi ro công nghệ/dự án?**
+   - Rủi ro cao, công nghệ mới → Spiral, RAD
+   - Rủi ro thấp, domain quen thuộc → Scrum, Kanban
+
+> 💡 **Thực tế industry:** Theo State of DevOps Report (2023), **67% công ty Fortune 500** dùng Agile (chủ yếu Scrum variant); ~15% dùng hybrid Scrum+Kanban; < 5% dùng thuần Waterfall. Tuy nhiên, **thành công không nằm ở framework** — nằm ở **văn hóa giao tiếp và continuous improvement**.
 
 ---
 
@@ -258,9 +295,10 @@ Phát triển **prototype nhanh** với sự tham gia liên tục của người
 - 📖 [DSDM Consortium](https://www.agilebusiness.org/)
 - 📖 [Spiral Model - Barry Boehm](https://en.wikipedia.org/wiki/Spiral_model)
 - 📖 [RAD - James Martin](https://en.wikipedia.org/wiki/Rapid_application_development)
+- 📖 [State of DevOps Report - Puppet/DORA](https://www.puppet.com/state-of-devops)
 
 ---
 
 ## ⏭️ Bài tiếp theo
 
-→ [5.3 Performance Optimization](../README.md#53-performance-optimization-techniques)
+→ [5.3 Performance Optimization](../5.3-performance-optimization/README.md)

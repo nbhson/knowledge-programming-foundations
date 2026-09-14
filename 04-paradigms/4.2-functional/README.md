@@ -4,6 +4,34 @@
 
 ---
 
+## Tư duy cốt lõi của FP
+
+FP không phải là "dùng map/filter/reduce" — đó là hiểu lầm. FP là **cách nhìn nhận computation**: chương trình là **evaluation của functions**, state là **giả dối**, mutation là **tai nạn**.
+
+**3 nguyên tắc nền tảng:**
+1. **Pure functions** — cùng input → cùng output, không side effect
+2. **Immutability** — data không đổi, tạo bản mới khi cần thay đổi
+3. **First-class functions** — function là giá trị, truyền vào/tra về được
+
+```
+❌ Impure — side effect, mutation
+let taxRate = 0.1;
+function calculatePrice(price: number): number {
+  return price * (1 + taxRate); // phụ thuộc global mutable
+}
+
+✅ Pure — deterministic, no side effect
+function calculatePricePure(price: number, taxRate: number): number {
+  return price * (1 + taxRate);
+}
+```
+
+**Phân biệt FP với "functional-style" trong JS:**
+- `map/filter/reduce` ≠ FP — đó là **function iteration** (chỉ là công cụ)
+- FP thực sự = **pure + immutable + composition** — mindset, không phải syntax
+
+---
+
 ## Nguyên Tắc Cốt Lõi
 
 ### Pure Functions (Hàm Thuần Túy)
@@ -33,6 +61,14 @@ function addTodoPure(todos: string[], todo: string): string[] {
 }
 ```
 
+**Kiểm tra pure function:**
+1. Cùng input → cùng output? ✅
+2. Có mutation bên ngoài? ❌
+3. Có gọi DB/network/io? ❌
+4. Có phụ thuộc global state? ❌
+
+Nếu bất kỳ câu nào = ❌ → impure.
+
 ---
 
 ### Immutability (Bất Biến)
@@ -55,6 +91,12 @@ const config = Object.freeze({ apiUrl: "https://api.example.com" });
 const nums = [1, 2, 3];
 const newNums = nums.map(n => n * 2); // [2, 4, 6], nums vẫn [1, 2, 3]
 ```
+
+**tại sao immutability quan trọng?**
+- **Predictability:** data không đổi = dễ trace, debug.
+- **Concurrency safe:** multiple threads đọc cùng data → không race condition.
+- **Time-travel debugging:** Redux devtools lưu history của immutable state.
+- **Reference equality fast:** `a === b` check O(1), không cần deep compare.
 
 ---
 
@@ -81,6 +123,8 @@ const triple = multiplier(3);
 console.log(double(5)); // 10
 console.log(triple(5)); // 15
 ```
+
+**Closure** là "function nhớ environment khi nó được tạo" — nền tảng của currying, partial application.
 
 ---
 
@@ -160,6 +204,10 @@ const isValidUsername = (value: string) =>
 | Test | Cần mock object | Dễ test, deterministic |
 | Parallel | Cần sync, phức tạp | Safe, immutable data |
 | Debug | State thay đổi khó trace | Pure function dễ trace |
+| Học curve | Thấp (tự nhiên) | Cao (tư duy khác) |
+| Best for | Domain modeling, UI | Data pipeline, concurrent |
+
+**Thực tế:** most production codebase là **hybrid** — OOP cho domain, FP cho data transformation. TypeScript Hỗ trợ cả hai.
 
 ---
 
@@ -181,7 +229,7 @@ const isValidUsername = (value: string) =>
 ```typescript
 // 1. Option/Maybe — handle null safely
 type Maybe<T> = {
-  some: (fn: (v: T) => R) => Maybe<R>;
+  some: (fn: (v: T) => Maybe<R>) => Maybe<R>;
   none: () => Maybe<R>;
 };
 
@@ -222,6 +270,7 @@ function memoize<T extends (...args: any[]) => any>(fn: T): T {
 - **4.1 OOP** — Đối trọng của FP
 - **4.3 Reactive** — RxJS dùng FP principles
 - **5.5 State Management** — Redux là FP-inspired
+- **2.1.5 Prototype** — FP style shallow/deep copy
 
 ---
 
@@ -230,6 +279,16 @@ function memoize<T extends (...args: any[]) => any>(fn: T): T {
 - 📖 [Functional-Light JavaScript](https://github.com/getify/Functional-Light-JS)
 - 📖 [FP in TypeScript](https://typelearn.github.io/typescript-book/chapter11/)
 - 📖 [fp-ts Library](https://gcanti.github.io/fp-ts/)
+- 📖 [Introduction to Functional Programming with TypeScript](https://leanpub.com/functional-typescript)
+
+---
+
+## ▶️ Chạy ví dụ
+
+```bash
+cd 04-paradigms/4.2-functional
+npx ts-node examples/index.ts
+```
 
 ---
 
