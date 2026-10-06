@@ -14,6 +14,11 @@
 | 6.1 | Time Complexity (Độ Phức Tạp Thời Gian) | Big O Notation — đo hiệu suất thuật toán khi input tăng | [6.1-time-complexity](6.1-time-complexity/README.md) |
 | 6.2 | Core Data Structures (Cấu Trúc Dữ Liệu Cốt Lõi) | Array, Stack, Queue, Linked List, Tree, BST, Graph, HashMap | [6.2-core-data-structures](6.2-core-data-structures/README.md) |
 | 6.3 | Essential Algorithms (Thuật Toán Cốt Lõi) | Sorting, Searching, DP, Greedy, Backtracking, Graph algorithms | [6.3-essential-algorithms](6.3-essential-algorithms/README.md) |
+| 6.4 | Sorting & Searching (Sắp Xếp & Tìm Kiếm) | Bubble/Insertion/Merge/Quick + Linear/Binary search, khi nào dùng cái gì | [6.4-sorting-searching](6.4-sorting-searching/README.md) |
+| 6.5 | Dynamic Programming (Quy Hoạch Động) | Memoization vs tabulation, fib, 0/1 knapsack, LCS | [6.5-dynamic-programming](6.5-dynamic-programming/README.md) |
+| 6.6 | Graph Algorithms (Thuật Toán Đồ Thị) | BFS/DFS, Dijkstra, Bellman-Ford, topological sort, Union-Find | [6.6-graph-algorithms](6.6-graph-algorithms/README.md) |
+| 6.7 | String Algorithms (Thuật Toán Chuỗi) | Naive vs KMP, Rabin-Karp, sliding-window, two-pointer | [6.7-string-algorithms](6.7-string-algorithms/README.md) |
+| 6.8 | Recursion & Complexity (Đệ Quy & Độ Phức Tạp Nâng Cao) | Recursion vs iteration, recurrence, amortized, space, NP-complete | [6.8-recursion-complexity](6.8-recursion-complexity/README.md) |
 
 ---
 
@@ -39,6 +44,25 @@ Data Structures & Algorithms
         ├── Dynamic Programming — overlapping subproblems
         ├── Greedy              — local optimal → global
         └── Backtracking        — exhaustive search with pruning
+├── 6.4 Sorting & Searching (chi tiết)
+│   ├── Bubble/Insertion — O(n²), mảng nhỏ/gần sorted
+│   ├── Merge/Quick     — O(n log n), stable vs in-place
+│   └── Linear/Binary   — O(n) vs O(log n), khi nào sort trước
+├── 6.5 Dynamic Programming (chi tiết)
+│   ├── Memoization vs Tabulation — top-down vs bottom-up
+│   ├── Fibonacci / 0/1 Knapsack  — 1D vs 2D DP
+│   └── LCS                       — so sánh chuỗi, diff/DNA
+├── 6.6 Graph Algorithms (chi tiết)
+│   ├── BFS/DFS          — O(V+E), shortest unweighted vs cycle/topo
+│   ├── Dijkstra/Bellman-Ford — trọng số dương vs cạnh âm
+│   └── Topological sort + Union-Find — DAG order, gom nhóm O(α(n))
+├── 6.7 String Algorithms
+│   ├── Naive vs KMP / Rabin-Karp — O(n·m) vs O(n+m)
+│   └── Sliding-window / Two-pointer — chuỗi con tối ưu, palindrome
+└── 6.8 Recursion & Complexity (nâng cao)
+    ├── Recursion vs Iteration — O(depth) stack vs O(1)
+    ├── Recurrence + Amortized — Master theorem, push O(1)
+    └── Space + NP-complete    — memory Big O, P vs NP, heuristic
 ```
 
 ---
@@ -169,6 +193,26 @@ npx ts-node examples/index.ts
 
 # 6.3 Essential Algorithms
 cd 06-data-structures-and-algorithms/6.3-essential-algorithms
+npx ts-node examples/index.ts
+
+# 6.4 Sorting & Searching
+cd 06-data-structures-and-algorithms/6.4-sorting-searching
+npx ts-node examples/index.ts
+
+# 6.5 Dynamic Programming
+cd 06-data-structures-and-algorithms/6.5-dynamic-programming
+npx ts-node examples/index.ts
+
+# 6.6 Graph Algorithms
+cd 06-data-structures-and-algorithms/6.6-graph-algorithms
+npx ts-node examples/index.ts
+
+# 6.7 String Algorithms
+cd 06-data-structures-and-algorithms/6.7-string-algorithms
+npx ts-node examples/index.ts
+
+# 6.8 Recursion & Complexity
+cd 06-data-structures-and-algorithms/6.8-recursion-complexity
 npx ts-node examples/index.ts
 ```
 

@@ -12,8 +12,8 @@
 | # | Nhóm | Mô tả | Patterns |
 |---|------|-------|----------|
 | 2.1 | [Creational](#21-creational-patterns-mẫu-tạo-đối-tượng) | Tạo đối tượng linh hoạt | Singleton, Factory Method, Abstract Factory, Builder, Prototype |
-| 2.2 | [Structural](#22-structural-patterns-mẫu-cấu-trúc) | Kết hợp đối tượng thành cấu trúc lớn | Adapter, Decorator, Facade, Proxy, Composite, Bridge |
-| 2.3 | [Behavioral](#23-behavioral-patterns-mẫu-hành-vi) | Giao tiếp & phân phối trách nhiệm | Observer, Strategy, Command, State, Iterator, Chain of Responsibility, Template Method, Mediator |
+| 2.2 | [Structural](#22-structural-patterns-mẫu-cấu-trúc) | Kết hợp đối tượng thành cấu trúc lớn | Adapter, Decorator, Facade, Proxy, Composite, Bridge, Flyweight |
+| 2.3 | [Behavioral](#23-behavioral-patterns-mẫu-hành-vi) | Giao tiếp & phân phối trách nhiệm | Observer, Strategy, Command, State, Iterator, Chain of Responsibility, Template Method, Mediator, Memento, Visitor, Interpreter |
 
 ---
 
@@ -58,11 +58,15 @@
 │  │  • Abstract     │ │  • Facade       │ │  • Command    │  │
 │  │    Factory      │ │  • Proxy        │ │  • State      │  │
 │  │  • Builder      │ │  • Composite    │ │  • Iterator   │  │
-│  │  • Prototype    │ │  • Bridge       │ │  • Chain of   │  │
+│   │  • Prototype    │ │  • Bridge       │ │  • Chain of   │  │
+│   │                 │ │  • Flyweight    │ │    Resp.      │  │
 │  │                 │ │                 │ │    Resp.      │  │
 │  │  "Làm sao tạo   │ │  "Làm sao kết   │ │  • Template   │  │
 │  │   object?"      │ │   hợp object?"  │ │    Method     │  │
-│  │                 │ │                 │ │  • Mediator   │  │
+│   │                 │ │                 │ │  • Mediator   │  │
+│   │                 │ │                 │ │  • Memento    │  │
+│   │                 │ │                 │ │  • Visitor    │  │
+│   │                 │ │                 │ │  • Interpreter│  │
 │  │                 │ │                 │ │               │  │
 │  │                 │ │                 │ │  "Làm sao     │  │
 │  │                 │ │                 │ │   giao tiếp?" │  │
@@ -90,7 +94,8 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
 │   ├─ Subsystem phức tạp, muốn interface đơn giản? → Facade
 │   ├─ Kiểm soát truy cập / lazy load object? → Proxy
 │   ├─ Cấu trúc cây, xử lý đồng nhất leaf & composite? → Composite
-│   └─ Tách abstraction khỏi implementation? → Bridge
+│   ├─ Tách abstraction khỏi implementation? → Bridge
+│   └─ Nhiều object trùng dữ liệu, muốn tiết kiệm RAM? → Flyweight
 │
 └─ VỀ HÀNH VI (Behavioral)
     ├─ 1 thay đổi → nhiều object được thông báo? → Observer
@@ -100,7 +105,10 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
     ├─ Duyệt collection không lộ cấu trúc? → Iterator
     ├─ Request đi qua chuỗi handler? → Chain of Responsibility
     ├─ Skeleton algorithm, subclass override bước? → Template Method
-    └─ Nhiều object giao tiếp, muốn giảm coupling? → Mediator
+    ├─ Nhiều object giao tiếp, muốn giảm coupling? → Mediator
+    ├─ Snapshot state để undo/khôi phục? → Memento
+    ├─ Thêm operation lên structure ổn định? → Visitor
+    └─ Diễn giải ngôn ngữ mini / biểu thức? → Interpreter
 ```
 
 ---
@@ -131,6 +139,7 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
 | 2.2.4 | **Proxy** | Đại diện kiểm soát truy cập | [→ Xem](2.2-structural/2.2.4-proxy/README.md) |
 | 2.2.5 | **Composite** | Cấu trúc cây, xử lý đồng nhất | [→ Xem](2.2-structural/2.2.5-composite/README.md) |
 | 2.2.6 | **Bridge** | Tách abstraction khỏi implementation | [→ Xem](2.2-structural/2.2.6-bridge/README.md) |
+| 2.2.7 | **Flyweight** | Chia sẻ state dùng chung, tiết kiệm RAM | [→ Xem](2.2-structural/2.2.7-flyweight/README.md) |
 
 ### 2.3 Behavioral Patterns (Mẫu Hành Vi)
 
@@ -146,6 +155,9 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
 | 2.3.6 | **Iterator** | Duyệt collection không lộ cấu trúc | [→ Xem](2.3-behavioral/2.3.6-iterator/README.md) |
 | 2.3.7 | **Mediator** | Điều phối giao tiếp, giảm coupling | [→ Xem](2.3-behavioral/2.3.7-mediator/README.md) |
 | 2.3.8 | **Chain of Responsibility** | Request qua chuỗi handler | [→ Xem](2.3-behavioral/2.3.8-chain-of-responsibility/README.md) |
+| 2.3.9 | **Memento** | Snapshot state để undo/khôi phục | [→ Xem](2.3-behavioral/2.3.9-memento/README.md) |
+| 2.3.10 | **Visitor** | Tách operation khỏi object structure | [→ Xem](2.3-behavioral/2.3.10-visitor/README.md) |
+| 2.3.11 | **Interpreter** | Grammar + interpret ngôn ngữ mini | [→ Xem](2.3-behavioral/2.3.11-interpreter/README.md) |
 
 ---
 
@@ -183,7 +195,8 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
 │   ├── 2.2.3-facade/
 │   ├── 2.2.4-proxy/
 │   ├── 2.2.5-composite/
-│   └── 2.2.6-bridge/
+│   ├── 2.2.6-bridge/
+│   └── 2.2.7-flyweight/
 └── 2.3-behavioral/
     ├── README.md                # Tổng quan nhóm Behavioral
     ├── 2.3.1-strategy/
@@ -193,7 +206,10 @@ BẮT ĐẦU: Bạn đang gặp vấn đề gì?
     ├── 2.3.5-template-method/
     ├── 2.3.6-iterator/
     ├── 2.3.7-mediator/
-    └── 2.3.8-chain-of-responsibility/
+    ├── 2.3.8-chain-of-responsibility/
+    ├── 2.3.9-memento/
+    ├── 2.3.10-visitor/
+    └── 2.3.11-interpreter/
 ```
 
 ---

@@ -1,28 +1,29 @@
 # 🔬 5.3.5 Tree Shaking
 
-> **Tree Shaking** 是一种通过死代码检测来消除未使用导出的技术，在构建阶段移除打包中不会被使用的代码。
+> **Tree Shaking** là kỹ thuật loại bỏ code chết (dead code) — phát hiện các export không được dùng và gỡ chúng khỏi gói build (bundle) ngay ở giai đoạn build.
 
 ```
-❌ VẤN ĐỀ: 打包体积过大
-math.ts 导出: add, subtract, multiply, divide
-app.ts     只导入: add
-→ 打包结果: 4个函数全都在bundle里 (浪费空间)
+❌ VẤN ĐỀ: Kích thước gói build (bundle) quá lớn
+math.ts export: add, subtract, multiply, divide
+app.ts     chỉ import: add
+→ Kết quả build: cả 4 hàm đều nằm trong bundle (lãng phí dung lượng)
 
 ✅ GIẢI PHÁP: Tree Shaking
-app.ts 只 import { add }
-→ 打包结果: 只保留 add 函数
-→ subtract, multiply, divide 被"摇掉"(丢弃)
+app.ts chỉ import { add }
+→ Kết quả build: chỉ giữ lại hàm add
+→ subtract, multiply, divide bị "rung cây" rụng xuống (loại bỏ)
 ```
 
 ---
 
 ## 🎯 Vấn Đề
 
-打包时包含大量未使用代码：
-- **Bundle体积膨胀**：用户下载无用代码
-- **加载缓慢**：初始加载时间增加
-- **带宽浪费**：传输不必要的数据
-- **内存占用高**：浏览器解析多余代码
+Khi build mà chứa nhiều code không dùng đến:
+
+- **Bundle phình to**: người dùng phải tải code vô ích
+- **Tải chậm**: thời gian tải lần đầu tăng lên
+- **Lãng phí băng thông**: truyền dữ liệu không cần thiết
+- **Tốn bộ nhớ cao**: trình duyệt phải phân tích (parse) code dư thừa
 
 ---
 
@@ -94,10 +95,10 @@ console.log(helper()); // → 只有helper在bundle中
 
 | Lợi ích | Giải thích |
 |---------|------------|
-| 📦 **减小体积** | 移除未使用的代码 |
-| ⚡ **加快加载** | Bundle更小，下载更快 |
-| 💾 **节省带宽** | 减少数据传输量 |
-| 🎯 **按需打包** | 只包含实际用到的代码 |
+| 📦 **Giảm dung lượng** | Gỡ bỏ code không được sử dụng |
+| ⚡ **Tải nhanh hơn** | Bundle nhỏ hơn, tải xuống nhanh hơn |
+| 💾 **Tiết kiệm băng thông** | Giảm lượng dữ liệu truyền tải |
+| 🎯 **Đóng gói theo nhu cầu** | Chỉ bao gồm code thực sự được dùng |
 
 ---
 
@@ -105,10 +106,10 @@ console.log(helper()); // → 只有helper在bundle中
 
 | Vấn đề | Cách tránh |
 |--------|------------|
-| **Side effects** | 明确标记哪些文件有副作用 |
-| **命名导入 vs 默认导入** | 使用命名导入效果更好 |
-| **CommonJS不支持** | 迁移到ES Modules |
-| **动态导入无法shake** | 静态分析需要明确的import |
+| **Tác dụng phụ (side effects)** | Đánh dấu rõ file nào có side effect |
+| **Named import với default import** | Dùng named import cho hiệu quả tốt hơn |
+| **CommonJS không hỗ trợ** | Chuyển sang ES Modules |
+| **Dynamic import không shake được** | Phân tích tĩnh (static analysis) cần import rõ ràng |
 
 ---
 
@@ -116,19 +117,19 @@ console.log(helper()); // → 只有helper在bundle中
 
 | Tình huống | Khuyến nghị |
 |------------|-------------|
-| 大型工具库 | ✅ 非常有效 |
-| 使用Vite/Webpack构建 | ✅ 自动支持 |
-| 大量未使用的依赖 | ✅ 显著减小体积 |
-| 所有ES Module项目 | ✅ 推荐启用 |
-| CommonJS旧项目 | ⚠️ 需要转换 |
+| Thư viện công cụ (utility) lớn | ✅ Rất hiệu quả |
+| Build bằng Vite/Webpack | ✅ Hỗ trợ tự động |
+| Nhiều dependency không dùng đến | ✅ Giảm dung lượng đáng kể |
+| Mọi dự án ES Module | ✅ Khuyến nghị bật |
+| Dự án cũ dùng CommonJS | ⚠️ Cần chuyển đổi |
 
 ---
 
 ## 🔗 Liên quan
 
-- **5.3.6 Code Splitting** — 进一步减小首屏加载
-- **5.3.2 Lazy Loading** — 配合使用效果更佳
-- **5.3.4 Debounce/Throttle** — 减少运行时开销
+- **5.3.6 Code Splitting** — Giảm tải lần đầu (first load) hơn nữa
+- **5.3.2 Lazy Loading** — Dùng kết hợp hiệu quả càng cao
+- **5.3.4 Debounce/Throttle** — Giảm chi phí khi chạy (runtime)
 
 ---
 

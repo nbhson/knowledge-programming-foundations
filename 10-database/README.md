@@ -16,6 +16,25 @@
 | [10.4 Migrations](10.4-migrations/README.md) | Quản lý schema version | Migration runner up/down, rollback |
 | [10.5 Indexes](10.5-indexes/README.md) | Tối ưu truy vấn | Full-scan vs index lookup (đếm bước) |
 | [10.6 Redis](10.6-redis/README.md) | Cache in-memory | SET/GET/EXPIRE, cache-aside, TTL |
+| [10.7 Normalization](10.7-normalization/README.md) | Chuẩn hóa 1NF–BCNF | Ví dụ tách bảng, loại update anomaly |
+| [10.8 ACID & Isolation](10.8-acid-isolation/README.md) | Giao dịch & cô lập | ACID + 4 isolation levels + 3 anomalies, mô phỏng |
+| [10.9 N+1 Query](10.9-n-plus-one/README.md) | Vấn đề & batching | Query counter: lazy vs batch vs DataLoader |
+| [10.10 Connection Pooling](10.10-connection-pooling/README.md) | Hồ kết nối | Pool sizing formula + mô phỏng pool queue |
+| [10.11 Replication](10.11-replication/README.md) | Nhân bản & lag | Sync/async, read-your-writes + mô phỏng lag |
+| [10.12 Vector DB](10.12-vector-db/README.md) | Embeddings & search ngữ nghĩa | Cosine similarity, HNSW khái niệm + code thuần |
+
+---
+
+## ▶️ Chạy ví dụ (bài 10.7–10.12)
+
+```bash
+cd 10-database/10.7-normalization && npx ts-node examples/index.ts
+cd 10-database/10.8-acid-isolation && npx ts-node examples/index.ts
+cd 10-database/10.9-n-plus-one && npx ts-node examples/index.ts
+cd 10-database/10.10-connection-pooling && npx ts-node examples/index.ts
+cd 10-database/10.11-replication && npx ts-node examples/index.ts
+cd 10-database/10.12-vector-db && npx ts-node examples/index.ts
+```
 
 ---
 

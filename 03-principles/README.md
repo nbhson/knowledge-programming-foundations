@@ -11,7 +11,7 @@
 
 | # | Nhóm | Mô tả | Principles |
 |---|------|-------|------------|
-| 3.1 | [Design Principles](#31-design-principles-nguyên-tắc-thiết-kế) | Nguyên tắc thiết kế chung | DRY, KISS, YAGNI, SoC, Law of Demeter, Composition over Inheritance |
+| 3.1 | [Design Principles](#31-design-principles-nguyên-tắc-thiết-kế) | Nguyên tắc thiết kế chung | DRY, KISS, YAGNI, SoC, Law of Demeter, Composition over Inheritance, GRASP, CUPID, Postel's Law, Convention over Configuration |
 | 3.2 | [SOLID Principles](#32-solid-principles) | 5 nguyên tắc OOP nền tảng | SRP, OCP, LSP, ISP, DIP |
 
 ---
@@ -56,7 +56,11 @@ BẠN ĐANG GẶP VẤN ĐỀ GÌ?
 │   ├─ Viết code cho tương lai không chắc xảy ra? → YAGNI
 │   ├─ 1 class làm quá nhiều việc? → SoC
 │   ├─ Gọi method xuyên qua nhiều object? → Law of Demeter
-│   └─ Kế thừa gây rắc rối? → Composition over Inheritance
+│   ├─ Kế thừa gây rắc rối? → Composition over Inheritance
+│   ├─ Không biết method mới đặt ở class nào? → GRASP
+│   ├─ Hàm to, side-effect ẩn, khó tái dùng? → CUPID
+│   ├─ API khắt khe vô lý / output thiếu nhất quán? → Postel's Law
+│   └─ Config thủ công mọi thứ, boilerplate nhiều? → Convention over Configuration
 │
 └─ VỀ OOP (SOLID)
     ├─ Class có nhiều lý do để thay đổi? → SRP
@@ -82,6 +86,10 @@ BẠN ĐANG GẶP VẤN ĐỀ GÌ?
 | 3.1.4 | **SoC** | Tách trách nhiệm, mỗi module 1 lĩnh vực | [→ Xem](3.1-design-principles/3.1.4-soc/README.md) |
 | 3.1.5 | **Law of Demeter** | Chỉ nói chuyện với object trực tiếp | [→ Xem](3.1-design-principles/3.1.5-law-of-demeter/README.md) |
 | 3.1.6 | **Composition over Inheritance** | Kết hợp thay vì kế thừa | [→ Xem](3.1-design-principles/3.1.6-composition-over-inheritance/README.md) |
+| 3.1.7 | **GRASP** | Gán đúng trách nhiệm cho object | [→ Xem](3.1-design-principles/3.1.7-grasp/README.md) |
+| 3.1.8 | **CUPID** | Code vui vẻ: ghép nối, 1 việc, đoán được | [→ Xem](3.1-design-principles/3.1.8-cupid/README.md) |
+| 3.1.9 | **Postel's Law** | Input rộng, output chặt | [→ Xem](3.1-design-principles/3.1.9-postel-law/README.md) |
+| 3.1.10 | **Convention over Configuration** | Quy ước default, chỉ config ngoại lệ | [→ Xem](3.1-design-principles/3.1.10-convention-over-configuration/README.md) |
 
 ### 3.2 SOLID Principles
 
@@ -124,7 +132,11 @@ BẠN ĐANG GẶP VẤN ĐỀ GÌ?
 │   ├── 3.1.3-yagni/
 │   ├── 3.1.4-soc/
 │   ├── 3.1.5-law-of-demeter/
-│   └── 3.1.6-composition-over-inheritance/
+│   ├── 3.1.6-composition-over-inheritance/
+│   ├── 3.1.7-grasp/
+│   ├── 3.1.8-cupid/
+│   ├── 3.1.9-postel-law/
+│   └── 3.1.10-convention-over-configuration/
 └── 3.2-solid-principles/
     ├── README.md                # Tổng quan nhóm SOLID
     ├── 3.2.1-srp/

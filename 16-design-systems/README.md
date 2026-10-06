@@ -8,11 +8,11 @@
 
 | # | Chủ Đề | Trọng Tâm |
 |---|--------|----------|
-| 16.1 | [Design Tokens](16.1-tokens/README.md) | Màu sắc, typography, spacing |
+| 16.1 | [Design Tokens](16.1-tokens/README.md) | Khái niệm + phân loại cơ bản: màu sắc, typography, spacing |
 | 16.2 | [Component Library](16.2-component-library/README.md) | Atomic Design, state management |
 | 16.3 | [Storybook](16.3-storybook/README.md) | Component documentation |
 | 16.4 | [Accessibility (A11y)](16.4-accessibility/README.md) | WCAG, screen readers |
-| 16.5 | [Design Tokens Deep Dive](16.5-design-tokens/README.md) | Token naming, structure |
+| 16.5 | [Design Tokens Deep Dive](16.5-design-tokens/README.md) | Nâng cao: chuẩn W3C DTCG, multi-brand theming, versioning/migration, Style Dictionary |
 | 16.6 | [Consistency Guidelines](16.6-consistency-guidelines/README.md) | Spacing, typography scale |
 
 ---
@@ -118,8 +118,14 @@ React Native: Button → color: tokens.color.primary, size: tokens.spacing.md
 - **16.2 Component Library** — Building reusable components
 - **16.3 Storybook** — Documentation and visual testing
 - **16.4 Accessibility** — Ensuring inclusive experiences
-- **16.5 Design Tokens Deep Dive** — Naming and structure
+- **16.5 Design Tokens Deep Dive** — Nâng cao: chuẩn W3C DTCG, multi-brand theming, versioning/migration, Style Dictionary
 - **16.6 Consistency Guidelines** — Spacing, typography scale
+
+> 💡 **Phân biệt 16.1 và 16.5:** **16.1** = khái niệm + phân loại tokens cơ bản
+> (token là gì, 3 tầng Foundation → Component → Theme, đặt tên semantic, dùng trong CSS/TS).
+> **16.5** = deep dive nâng cao vận hành ở quy mô production
+> (chuẩn file W3C DTCG, multi-brand theming, versioning/migration tokens, tooling Style Dictionary).
+> Chưa rõ token là gì → học 16.1 trước; cần scale nhiều brand/platform → đọc tiếp 16.5.
 
 ---
 

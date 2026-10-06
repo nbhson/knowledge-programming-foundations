@@ -16,6 +16,21 @@
 | 12.4 | **Web Workers** | Offload tính toán nặng, message-passing, worker pool | [→ 12.4](12.4-web-workers/README.md) |
 | 12.5 | **Race Conditions** | Đoán trước lỗi shared state, giải pháp lock/mutex/version | [→ 12.5](12.5-race-conditions/README.md) |
 | 12.6 | **Observables** | Luồng dữ liệu push-based, subscribe/unsubscribe, operators | [→ 12.6](12.6-observables/README.md) |
+| 12.7 | **Threads vs Processes** | Threads vs processes vs event-loop + worker phân chia | [→ 12.7](12.7-threads-processes/README.md) |
+| 12.8 | **Locks & Deadlock** | Mutex/semaphore, 4 điều kiện Coffman, lock ordering | [→ 12.8](12.8-locks-deadlock/README.md) |
+| 12.9 | **Thread Pools** | Sizing, queue policies + mô phỏng pool | [→ 12.9](12.9-thread-pools/README.md) |
+| 12.10 | **Backpressure** | Pull vs push, bounded queue + producer nhanh/consumer chậm | [→ 12.10](12.10-backpressure/README.md) |
+
+---
+
+## ▶️ Chạy ví dụ (bài 12.7–12.10)
+
+```bash
+cd 12-concurrency/12.7-threads-processes && npx ts-node examples/index.ts
+cd 12-concurrency/12.8-locks-deadlock && npx ts-node examples/index.ts
+cd 12-concurrency/12.9-thread-pools && npx ts-node examples/index.ts
+cd 12-concurrency/12.10-backpressure && npx ts-node examples/index.ts
+```
 
 ---
 

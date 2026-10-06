@@ -24,6 +24,9 @@
     "13-system-design/**/*.ts",
     "14-clean-code/**/*.ts",
     "15-version-control/**/*.ts",
-    "16-design-systems/**/*.ts"
+    "16-design-systems/**/*.ts",
+    "17-ai-llm-engineering/**/*.ts",
+    "18-cs-fundamentals/**/*.ts",
+    "19-frontend-performance/**/*.ts"
   ]
 }

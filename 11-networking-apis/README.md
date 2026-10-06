@@ -16,6 +16,23 @@
 | 11.4 | **WebSockets** | Kết nối full-duplex, broadcast event, SSE, real-time patterns | [→ 11.4](11.4-websockets/README.md) |
 | 11.5 | **REST Clients** | fetch/axios, interceptors, timeout, retry, error handling | [→ 11.5](11.5-rest-clients/README.md) |
 | 11.6 | **Rate Limiting** | Token bucket, sliding window, 429 + Retry-After | [→ 11.6](11.6-rate-limiting/README.md) |
+| 11.7 | **TCP vs UDP** | Handshake, reliability + mô phỏng sequence/ack | [→ 11.7](11.7-tcp-udp/README.md) |
+| 11.8 | **DNS** | Resolution chain, caching/TTL + mô phỏng resolver cache | [→ 11.8](11.8-dns/README.md) |
+| 11.9 | **TLS Handshake** | 1.2 vs 1.3, mTLS nhắc + mô phỏng cipher negotiation | [→ 11.9](11.9-tls-handshake/README.md) |
+| 11.10 | **HTTP/2, HTTP/3 & QUIC** | Multiplexing, HPACK/QPACK, 0-RTT + so sánh | [→ 11.10](11.10-http2-http3-quic/README.md) |
+| 11.11 | **Realtime Protocols** | WebSocket vs SSE vs MQTT vs WebRTC-DC + ma trận chọn | [→ 11.11](11.11-realtime-protocols/README.md) |
+
+---
+
+## ▶️ Chạy ví dụ (bài 11.7–11.11)
+
+```bash
+cd 11-networking-apis/11.7-tcp-udp && npx ts-node examples/index.ts
+cd 11-networking-apis/11.8-dns && npx ts-node examples/index.ts
+cd 11-networking-apis/11.9-tls-handshake && npx ts-node examples/index.ts
+cd 11-networking-apis/11.10-http2-http3-quic && npx ts-node examples/index.ts
+cd 11-networking-apis/11.11-realtime-protocols && npx ts-node examples/index.ts
+```
 
 ---
 

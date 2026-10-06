@@ -92,6 +92,42 @@ const finalPrice = pipe2(
 
 ---
 
+## ❌ BAD — thêm 1 case: pipeline dài không tên bước, lỗi không biết đứt ở đâu
+
+```typescript
+// ❌ BAD — 6 bước ẩn danh nối nhau: output sai thì console.log từng khâu?
+const result = pipe(trim, toLowerCase, removePunctuation, slugifyWord, addPrefix, validate)(input);
+
+// ✅ GOOD — đặt tên pipeline + tên bước, mỗi khâu test được riêng
+const normalizeTitle = pipe(trim, toLowerCase, removePunctuation, slugifyWord);
+const result = normalizeTitle(input); // test normalizeTitle riêng, không cần chạy cả app
+```
+
+> Pipeline tốt = **có tên** (kể được việc) + **mỗi bước có tên** (test được riêng). Chuỗi pipe ẩn danh 6 bước là "hàm dài" đội lốt FP.
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| Lẫn lộn pipe/compose chiều | `compose(f, g)` chạy g trước — ngược kỳ vọng là bug logic | Team thống nhất 1 hàm (khuyến nghị `pipe` đọc trái→phải) |
+| Bước giữa đổi kiểu không báo (`string` → `string[]` ngầm) | Bước sau nhận kiểu lạ, lỗi runtime | Annotate type input/output từng bước; TS generic pipe kiểm tra dần |
+| Bước impure lọt vào pipeline | Thứ tự/lặp lại cho kết quả khác nhau, memoize sai | Mọi bước pipe phải pure (5.12.2); IO để ngoài pipeline |
+| Pipeline quá dài (> 5 bước) không chia | Debug lần từng khâu, stack trace vô nghĩa | Tách pipeline con có tên + test riêng từng đoạn |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Pipeline và mỗi bước đều có tên nói được việc?
+- [ ] Chiều pipe/compose đúng (test 1 input mẫu chạy tay)?
+- [ ] Mọi bước đều pure (không IO/mutate giữa pipeline)?
+- [ ] Type input/output từng bước rõ ràng (không `any`)?
+- [ ] Pipeline dài đã tách thành pipeline con + test riêng?
+
+---
+
 ## 🔗 Liên quan
 
 - **5.12.4 Currying** — Partial application tạo bước pipe

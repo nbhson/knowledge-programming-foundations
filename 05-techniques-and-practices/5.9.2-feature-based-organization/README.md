@@ -56,6 +56,57 @@ class FbFeatureApp {
 
 ---
 
+## ❌ BAD — thêm 1 case: "feature" giả — mọi slice đều import chéo nhau
+
+```
+❌ BAD — feature chỉ là folder, phụ thuộc chằng chịt:
+   features/auth/      → import { calcShip } from "../products/service"
+   features/products/  → import { login } from "../auth/service"
+   → tách folder mà không tách phụ thuộc: đổi auth vỡ products (y như type-based)
+
+✅ GOOD — feature tự chứa, giao tiếp qua shared/ hoặc event:
+   features/auth/      → chỉ dùng shared/crypto + shared/types
+   features/products/  → chỉ dùng shared/money + shared/types
+   → xóa 1 feature không vỡ feature khác (test: xóa folder, app còn build?)
+```
+
+> Kiểm tra "feature thật": **xóa cả folder feature, các feature khác vẫn build/test xanh**. Không qua được test này thì mới chỉ đổi tên folder.
+
+---
+
+## ⚖️ Trade-off: feature-based vs layered (5.9.3)
+
+| Tình huống | Chọn | Vì sao |
+|------------|------|--------|
+| Team mỗi người 1 feature, deploy độc lập | ✅ Feature-based | Ít conflict, xóa/thêm feature an toàn |
+| Project nhỏ, team 1–3 người | ⚖️ Layered đủ | Feature-based thêm boilerplate folder |
+| Logic dùng chung nhiều (> 30% code) | ⚖️ Feature + `shared/` kỷ luật | Shared phình = feature rỗng ruột → review shared kỹ |
+| Muốn tách microservice/micro-frontend sau này | ✅ Feature-based | Mỗi slice là ứng viên tách sẵn |
+| Nhiều dự án lớn kết hợp | ✅ Feature ở ngoài, layer ở trong | `features/auth/{model,service,handler}` — best of both |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| Import chéo giữa features | Feature giả — đổi 1 vỡ 2 | Luật: feature chỉ import `shared/`; chéo nhau phải qua event/interface |
+| `shared/` thành bãi rác | Mọi thứ "dùng chung 1 lần" cũng vào shared | Shared chỉ chứa thứ ≥ 2 features dùng + có owner review |
+| Mỗi feature 1 cách đặt tên khác nhau | Tìm code khó hơn cả type-based | Template/schematic chung cho mọi slice mới |
+| Feature quá to (cả "admin" 1 slice) | Slice mới = monolith mini | Tách tiếp theo sub-feature khi folder > ~10 file |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Feature mới tự chứa (model + service + handler trong 1 slice)?
+- [ ] Không import chéo feature↔feature (chỉ qua `shared/`)?
+- [ ] Test "xóa folder": các feature khác vẫn xanh?
+- [ ] Code dùng chung đặt đúng `shared/`, không copy-paste mỗi slice?
+- [ ] Slice tuân thủ template đặt tên chung?
+
+---
+
 ## ▶️ Chạy ví dụ
 
 ```bash

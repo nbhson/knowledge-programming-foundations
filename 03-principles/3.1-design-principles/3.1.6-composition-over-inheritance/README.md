@@ -141,4 +141,4 @@ npx ts-node examples/index.ts
 
 ## ⏭️ Bài tiếp theo
 
-→ [3.2 SOLID Principles](../3.2-solid-principles/README.md)
+→ [3.1.7 GRASP](../3.1.7-grasp/README.md)

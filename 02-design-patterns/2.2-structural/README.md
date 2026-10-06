@@ -34,6 +34,7 @@ Structural patterns giúp **kết hợp object** mà không phá vỡ cấu trú
 | [2.2.4](2.2.4-proxy/README.md) | **Proxy** | Đại diện kiểm soát truy cập | Lazy load, access control, caching |
 | [2.2.5](2.2.5-composite/README.md) | **Composite** | Cấu trúc cây, xử lý đồng nhất | File system, UI tree, org chart |
 | [2.2.6](2.2.6-bridge/README.md) | **Bridge** | Tách abstraction khỏi implementation | Đa nền tảng, đa loại thiết bị |
+| [2.2.7](2.2.7-flyweight/README.md) | **Flyweight** | Chia sẻ state dùng chung, tiết kiệm RAM | Ngàn object trùng dữ liệu |
 
 ---
 
@@ -52,7 +53,9 @@ BẠN CẦN KẾT HỢP OBJECT NHƯ THẾ NÀO?
 │
 ├─ Cấu trúc cây, xử lý đồng nhất leaf & composite? → Composite
 │
-└─ Tách abstraction khỏi implementation (đa nền tảng)? → Bridge
+├─ Tách abstraction khỏi implementation (đa nền tảng)? → Bridge
+│
+└─ Nhiều object trùng dữ liệu, muốn tiết kiệm RAM? → Flyweight
 ```
 
 ---
@@ -89,7 +92,8 @@ BẠN CẦN KẾT HỢP OBJECT NHƯ THẾ NÀO?
 ├── 2.2.3-facade/
 ├── 2.2.4-proxy/
 ├── 2.2.5-composite/
-└── 2.2.6-bridge/
+├── 2.2.6-bridge/
+└── 2.2.7-flyweight/
 ```
 
 ---

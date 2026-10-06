@@ -16,6 +16,9 @@
 | 2.3.6 | [Iterator](2.3.6-iterator/README.md) | Duyệt collection không lộ cấu trúc | for-of, list traversal |
 | 2.3.7 | [Mediator](2.3.7-mediator/README.md) | Trung gian giảm coupling giữa các object | Chat room, form dialog |
 | 2.3.8 | [Chain of Responsibility](2.3.8-chain-of-responsibility/README.md) | Chuyền request qua chuỗi handler | Middleware, approval flow |
+| 2.3.9 | [Memento](2.3.9-memento/README.md) | Snapshot state để undo/khôi phục | Editor history, game checkpoint |
+| 2.3.10 | [Visitor](2.3.10-visitor/README.md) | Tách operation khỏi object structure | AST pass, export nhiều định dạng |
+| 2.3.11 | [Interpreter](2.3.11-interpreter/README.md) | Grammar + interpret ngôn ngữ mini | Expression evaluator, rule engine |
 
 ---
 
@@ -45,8 +48,17 @@ VẤN ĐỀ CỦA BẠN?
 ├─ Nhiều object giao tiếp chằng chịt?
 │   └─→ 2.3.7 Mediator
 │
-└─ Request đi qua chuỗi xử lý (middleware)?
-    └─→ 2.3.8 Chain of Responsibility
+├─ Request đi qua chuỗi xử lý (middleware)?
+│   └─→ 2.3.8 Chain of Responsibility
+│
+├─ Cần undo/khôi phục trạng thái cũ?
+│   └─→ 2.3.9 Memento
+│
+├─ Structure ổn định, muốn thêm operation không sửa class?
+│   └─→ 2.3.10 Visitor
+│
+└─ Cần diễn giải ngôn ngữ mini / biểu thức (rule, công thức)?
+    └─→ 2.3.11 Interpreter
 ```
 
 ---
@@ -163,6 +175,33 @@ Request ──▶ Handler A ──▶ Handler B ──▶ Handler C
 
 ✅ Tách người gửi/người nhận, thêm handler dễ | ❌ Request có thể rơi qua chuỗi không ai xử lý
 
+### 2.3.9 Memento
+
+```
+Editor ──save()──▶ Memento ──▶ History stack (push/undo)
+   sửa... ──restore──▶ quay lại snapshot cũ
+```
+
+✅ Undo đơn giản, giữ encapsulation | ❌ Snapshot state lớn tốn RAM
+
+### 2.3.10 Visitor
+
+```
+Element.accept(visitor) ──▶ visitor.visitX(element)
+Paragraph / Image          HtmlExport / MarkdownExport
+```
+
+✅ Thêm operation không sửa element | ❌ Thêm element mới phải sửa mọi visitor
+
+### 2.3.11 Interpreter
+
+```
+Cây Expression: Add(Var(a), Multiply(Var(b), Num(2)))
+  .interpret({a: 3, b: 4}) → 11
+```
+
+✅ Grammar thành class, an toàn hơn eval | ❌ Grammar lớn → bùng nổ class, nên dùng parser generator
+
 ---
 
 ## 📁 Cấu trúc thư mục
@@ -177,7 +216,16 @@ Request ──▶ Handler A ──▶ Handler B ──▶ Handler C
 │   ├── README.md
 │   └── examples/index.ts
 ├── ... (tương tự cho các pattern còn lại)
-└── 2.3.8-chain-of-responsibility/
+├── 2.3.8-chain-of-responsibility/
+│   ├── README.md
+│   └── examples/index.ts
+├── 2.3.9-memento/
+│   ├── README.md
+│   └── examples/index.ts
+├── 2.3.10-visitor/
+│   ├── README.md
+│   └── examples/index.ts
+└── 2.3.11-interpreter/
     ├── README.md
     └── examples/index.ts
 ```

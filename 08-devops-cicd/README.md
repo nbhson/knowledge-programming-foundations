@@ -16,6 +16,21 @@
 | 8.4 | Docker | Đóng gói ứng dụng + dependencies thành container | [8.4-docker](8.4-docker/README.md) |
 | 8.5 | Kubernetes | Orchestration container, deploy/scale tự động | [8.5-kubernetes](8.5-kubernetes/README.md) |
 | 8.6 | Terraform | Infrastructure as Code, quản lý hạ tầng bằng HCL | [8.6-terraform](8.6-terraform/README.md) |
+| 8.7 | GitOps ArgoCD | Desired vs actual state, reconciler tự sync | [8.7-gitops-argocd](8.7-gitops-argocd/README.md) |
+| 8.8 | Blue-Green & Canary | So sánh strategies + mô phỏng traffic shifting | [8.8-blue-green-canary](8.8-blue-green-canary/README.md) |
+| 8.9 | Observability | Metrics/logs/traces, RED/USE, trace context | [8.9-observability](8.9-observability/README.md) |
+| 8.10 | SRE & SLO | SLI/SLO/error budget + tính budget còn lại | [8.10-sre-slo](8.10-sre-slo/README.md) |
+
+---
+
+## ▶️ Chạy ví dụ (bài 8.7–8.10)
+
+```bash
+cd 08-devops-cicd/8.7-gitops-argocd && npx ts-node examples/index.ts
+cd 08-devops-cicd/8.8-blue-green-canary && npx ts-node examples/index.ts
+cd 08-devops-cicd/8.9-observability && npx ts-node examples/index.ts
+cd 08-devops-cicd/8.10-sre-slo && npx ts-node examples/index.ts
+```
 
 ---
 

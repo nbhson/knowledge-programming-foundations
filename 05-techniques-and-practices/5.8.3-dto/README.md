@@ -61,6 +61,58 @@ class UserResponseDto {
 
 ---
 
+## ❌ BAD — thêm 1 case: trả entity thẳng ra API
+
+```typescript
+// ❌ BAD — entity nội bộ đi thẳng ra response: lộ passwordHash + vỡ API khi thêm cột DB
+app.get("/users/:id", (req, res) => {
+  const user = userRepo.findById(req.params.id); // UserEntity có passwordHash!
+  res.json(user); // 💥 lộ hash + client phụ thuộc schema DB
+});
+
+// ✅ GOOD — qua Response DTO: cắt field nhạy cảm, API ổn định dù entity đổi
+app.get("/users/:id", (req, res) => {
+  const user = userRepo.findById(req.params.id);
+  res.json(UserResponseDto.fromEntity(user)); // chỉ id/name/email/createdAt
+});
+```
+
+> Quy tắc ngón tay cái: **object nào qua biên (HTTP/queue) đều phải là DTO**, không bao giờ là entity. Entity đổi schema DB là việc nội bộ.
+
+---
+
+## ⚖️ Trade-off: DTO vs các lựa chọn khác
+
+| Lựa chọn | Khi nào hơn DTO | Khi nào thua |
+|----------|-----------------|--------------|
+| **Trả entity trực tiếp** | Prototype nội bộ, chưa có client ngoài | Lộ field nhạy cảm; vỡ API khi đổi DB |
+| **Serialize thủ công** (`delete user.passwordHash`) | Fix nóng 1 chỗ | Quên 1 chỗ là lộ; không có type gác cổng |
+| **GraphQL selection** (5.10.2) | Client tự chọn field | Vẫn cần input validation + versioning ở mutation |
+| **DTO + validator** (zod/class-validator) | API public, cần validate + versioning | Thêm lớp mapping — overkill cho API nội bộ 1 client |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| DTO explosion (CreateX/UpdateX/PatchX/ResponseX...) | 20 class cho 1 entity, sửa 1 field đụng 10 file | Gộp khi giống nhau; chỉ tách khi validation/thể hiện khác thật |
+| Map bằng tay, quên field mới | Thêm cột DB mà response thiếu, client chờ dài cổ | Viết test snapshot DTO hoặc dùng mapper có check exhaustive |
+| Validate ở controller nhưng không validate ở worker/queue | Request lọt từ kênh khác không qua validation | Validate ở **ranh giới DTO → domain**, mọi kênh đều qua |
+| Input DTO tái dùng làm entity | Caller gán `isAdmin: true` từ request | Input DTO chỉ chứa field client được phép gửi; quyền do server tự quyết |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Response không chứa field nhạy cảm (hash, token, CMND, lương)?
+- [ ] Không có entity nào đi thẳng qua biên (HTTP/queue)?
+- [ ] Input DTO có validation trước khi chạm domain?
+- [ ] Thêm field mới có test/snapshot DTO cập nhật theo?
+- [ ] Số lượng DTO tương xứng (không 20 class cho 1 entity đơn giản)?
+
+---
+
 ## ▶️ Chạy ví dụ
 
 ```bash

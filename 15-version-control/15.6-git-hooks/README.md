@@ -311,4 +311,6 @@ npx ts-node examples/index.ts
 
 ---
 
-## ⏭️ Bạn đã hoàn thành Nhóm 15: Version Control! 🎉
+## ⏭️ Bài tiếp theo
+
+→ [15.7 Conventional Commits](../15.7-conventional-commits/README.md)

@@ -16,6 +16,21 @@
 | [9.4 XSS & CSRF](9.4-xss-csrf/README.md) | Tấn công client-side | Sanitize input, SameSite, CSRF token |
 | [9.5 Encryption](9.5-encryption/README.md) | Mã hóa & hashing | AES-256-GCM, SHA-256, salt |
 | [9.6 Helmet & Security Headers](9.6-helmet-headers/README.md) | HTTP security headers | CSP, HSTS, danh sách header bảo mật |
+| [9.7 SQL Injection](9.7-sql-injection/README.md) | Khai thác & phòng chống | Payloads phổ biến, vulnerable vs safe query builder |
+| [9.8 Password Hashing](9.8-password-hashing/README.md) | Băm mật khẩu | bcrypt/argon2 khái niệm, salt/pepper, scrypt với node:crypto |
+| [9.9 Secrets Management](9.9-secrets-management/README.md) | Quản lý bí mật | Vault/KMS khái niệm, rotation, env loader + redaction |
+| [9.10 mTLS & Zero Trust](9.10-mtls-zero-trust/README.md) | Không tin bất cứ ai | mTLS handshake, zero-trust principles + policy check |
+
+---
+
+## ▶️ Chạy ví dụ (bài 9.7–9.10)
+
+```bash
+cd 09-security/9.7-sql-injection && npx ts-node examples/index.ts
+cd 09-security/9.8-password-hashing && npx ts-node examples/index.ts
+cd 09-security/9.9-secrets-management && npx ts-node examples/index.ts
+cd 09-security/9.10-mtls-zero-trust && npx ts-node examples/index.ts
+```
 
 ---
 

@@ -17,6 +17,8 @@
 | 4.4 | **Procedural Programming** | Chia bài toán thành các procedure, chạy tuần tự từng bước | [→ 4.4](4.4-procedural/README.md) |
 | 4.5 | **Declarative vs Imperative** | Khai báo (WHAT) vs Thủ tục (HOW) — cùng bài toán, 2 cách viết | [→ 4.5](4.5-declarative-imperative/README.md) |
 | 4.6 | **Concurrent & Parallel Programming** | Promise.all vs tuần tự; concurrency single-thread của JS/Node | [→ 4.6](4.6-concurrent-parallel/README.md) |
+| 4.7 | **Logic Programming** | Facts/rules/unification; Prolog khái niệm + mini solver thuần TS | [→ 4.7](4.7-logic-programming/README.md) |
+| 4.8 | **Generic Programming** | Generics TS, constraints, variance + repository/stack generic | [→ 4.8](4.8-generic-programming/README.md) |
 
 ---
 
@@ -30,6 +32,8 @@
 | 4.4 | **Procedural Programming** | Tổ chức theo quy trình (procedures) |
 | 4.5 | **Declarative vs Imperative** | Khai báo vs Thủ tục |
 | 4.6 | **Concurrent & Parallel Programming** | Song song và bất đồng bộ |
+| 4.7 | **Logic Programming** | Khai báo facts/rules, query bằng suy luận |
+| 4.8 | **Generic Programming** | Viết một lần, dùng cho mọi kiểu |
 
 ---
 
@@ -498,6 +502,33 @@ async function concurrent() {
 
 ---
 
+## 4.7 Logic Programming
+
+**Triết lý:** Khai báo **tri thức (facts + rules)**, chạy chương trình = đặt **query** để engine suy luận bằng **unification** + **backtracking**.
+
+```prolog
+parent(tom, bob).  parent(bob, ann).  male(tom).
+grandfather(X, Z) :- parent(X, Y), parent(Y, Z).
+?- grandfather(Who, ann).   % Who = tom
+```
+
+Chi tiết: facts/rules/queries, unification, mini solver family + block-world → [→ 4.7](4.7-logic-programming/README.md)
+
+---
+
+## 4.8 Generic Programming
+
+**Triết lý:** Viết **một lần cho mọi kiểu** — `Stack<T>`, `Repository<T>` type-safe nhờ generics + constraints (`extends`, `keyof`); hiểu **variance** để tránh bug lén (array covariant).
+
+```typescript
+const users = new InMemoryRepository<User>();       // kho User
+const products = new InMemoryRepository<Product>(); // kho Product — 0 dòng logic mới
+```
+
+Chi tiết: constraints, variance, repository/stack generic → [→ 4.8](4.8-generic-programming/README.md)
+
+---
+
 ## Bảng So Sánh Các Paradigms
 
 | Paradigm | Cốt Lõi | Best For |
@@ -508,3 +539,5 @@ async function concurrent() {
 | **Procedural** | Step-by-step instructions | Simple scripts, utilities |
 | **Imperative** | HOW to do it | Low-level operations |
 | **Declarative** | WHAT to achieve | SQL, HTML, build configs |
+| **Logic** | Facts/rules, query suy luận | AI planning, luật nghiệp vụ, type checker |
+| **Generic** | Viết một lần, mọi kiểu | Container, repository, thuật toán tái dùng |

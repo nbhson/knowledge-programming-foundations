@@ -1,27 +1,28 @@
 # 🔬 5.3.4 Debounce & Throttle
 
-> **Debounce (防抖)** 和 **Throttle (节流)** 是控制函数执行频率的两种技术手段，在事件处理中防止过度触发。
+> **Debounce** (chống dội) và **Throttle** (tiết lưu) là hai kỹ thuật kiểm soát tần suất thực thi hàm, ngăn việc kích hoạt quá mức khi xử lý sự kiện (event handling).
 
 ```
-❌ VẤN ĐỀ: 事件过度触发
-搜索框: 每按一个键都发起API请求 → 服务器压力巨大
-滚动条: 每毫秒都触发计算 → 页面卡顿
-鼠标移动: 每秒触发数百次 → 浪费资源
+❌ VẤN ĐỀ: Sự kiện kích hoạt quá mức
+Ô tìm kiếm: mỗi lần nhấn một phím đều gọi API → server quá tải
+Thanh cuộn: mỗi mili-giây đều kích hoạt tính toán → trang bị giật lag
+Chuột di chuyển: mỗi giây kích hoạt hàng trăm lần → lãng phí tài nguyên
 
-✅ GIẢI PHÁP: 控制执行频率
-Debounce: 等待用户停止操作后执行一次
-Throttle: 限制单位时间内最多执行一次
+✅ GIẢI PHÁP: Kiểm soát tần suất thực thi
+Debounce: đợi người dùng dừng thao tác rồi thực thi một lần
+Throttle: giới hạn trong một đơn vị thời gian chỉ thực thi tối đa một lần
 ```
 
 ---
 
 ## 🎯 Vấn Đề
 
-不加控制的频繁事件触发：
-- **API请求泛滥**：搜索框每输入一个字就请求，服务器崩溃
-- **性能卡顿**：滚动、resize等高频事件导致页面卡死
-- **资源浪费**：大量无意义的计算和请求
-- **用户体验差**：响应延迟，操作不流畅
+Việc kích hoạt sự kiện tần suất cao mà không kiểm soát:
+
+- **API bị gọi tràn lan**: ô tìm kiếm mỗi lần nhập một ký tự lại gửi request, server sập
+- **Hiệu năng giật lag**: các sự kiện tần suất cao như cuộn trang (scroll), đổi kích thước cửa sổ (resize) làm trang đơ
+- **Lãng phí tài nguyên**: hàng loạt phép tính và request vô nghĩa
+- **Trải nghiệm người dùng kém**: phản hồi chậm, thao tác không mượt
 
 ---
 
@@ -102,10 +103,10 @@ window.addEventListener('scroll', throttle(() => {
 
 | Lợi ích | Giải thích |
 |---------|------------|
-| ⚡ **提升性能** | 减少不必要的函数调用 |
-| 💰 **节省资源** | 降低服务器压力和CPU消耗 |
-| 🎯 **精准触发** | Debounce确保只在关键时刻执行 |
-| 📊 **稳定输出** | Throttle提供均匀的执行频率 |
+| ⚡ **Nâng cao hiệu năng** | Giảm các lần gọi hàm không cần thiết |
+| 💰 **Tiết kiệm tài nguyên** | Giảm áp lực server và mức tiêu thụ CPU |
+| 🎯 **Kích hoạt chính xác** | Debounce đảm bảo chỉ thực thi vào thời điểm then chốt |
+| 📊 **Đầu ra ổn định** | Throttle mang lại tần suất thực thi đều đặn |
 
 ---
 
@@ -113,10 +114,10 @@ window.addEventListener('scroll', throttle(() => {
 
 | Vấn đề | Cách tránh |
 |--------|------------|
-| **Debounce延迟感** | 设置合理的delay时间 |
-| **Throttle漏掉关键帧** | 根据需求调整interval |
-| **无法取消的执行** | 提供cancel方法 |
-| **上下文丢失** | 使用箭头函数或bind |
+| **Debounce gây cảm giác trễ** | Đặt thời gian chờ (delay) hợp lý |
+| **Throttle bỏ sót khung hình quan trọng** | Điều chỉnh khoảng thời gian (interval) theo nhu cầu |
+| **Lần thực thi không thể hủy** | Cung cấp phương thức cancel |
+| **Mất ngữ cảnh (context)** | Dùng arrow function hoặc bind |
 
 ---
 
@@ -124,20 +125,20 @@ window.addEventListener('scroll', throttle(() => {
 
 | Tình huống | Khuyến nghị |
 |------------|-------------|
-| 搜索框输入 | ✅ Debounce |
-| 表单实时验证 | ✅ Debounce |
-| 滚动事件监听 | ✅ Throttle |
-| 窗口resize | ✅ Debounce |
-| 鼠标移动追踪 | ✅ Throttle |
-| 按钮防重复点击 | ✅ Debounce |
+| Nhập liệu ô tìm kiếm | ✅ Debounce |
+| Validate form theo thời gian thực | ✅ Debounce |
+| Lắng nghe sự kiện cuộn trang | ✅ Throttle |
+| Resize cửa sổ | ✅ Debounce |
+| Theo dõi di chuyển chuột | ✅ Throttle |
+| Chống nhấn nút trùng lặp | ✅ Debounce |
 
 ---
 
 ## 🔗 Liên quan
 
-- **5.3.3 Memoization** — 缓存计算结果
-- **5.3.2 Lazy Loading** — 按需加载资源
-- **5.3.5 Tree Shaking** — 优化打包体积
+- **5.3.3 Memoization** — Bộ nhớ đệm (cache) kết quả tính toán
+- **5.3.2 Lazy Loading** — Tải tài nguyên khi cần (theo nhu cầu)
+- **5.3.5 Tree Shaking** — Tối ưu kích thước gói build (bundle)
 
 ---
 

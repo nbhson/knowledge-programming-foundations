@@ -80,6 +80,70 @@ class MiniK8sController {
 
 ---
 
+## ❌ BAD — thêm 1 case: Deployment không probe + resource trần
+
+```yaml
+# ❌ BAD — pod treo vẫn nhận traffic (không probe), 1 pod ngốn hết node (không limit)
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: myapp }
+spec:
+  replicas: 4
+  template:
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:1.4.2
+        ports: [{ containerPort: 3000 }]
+        # không liveness/readiness → treo vẫn ăn request → 500 hàng loạt khi rolling update
+
+# ✅ GOOD — probe + requests/limits (trích phần containers)
+      # containers:
+      # - name: myapp
+      #   image: myapp:1.4.2
+      #   readinessProbe: { httpGet: { path: /health, port: 3000 }, periodSeconds: 5 }
+      #   livenessProbe: { httpGet: { path: /health, port: 3000 }, periodSeconds: 10 }
+      #   resources:
+      #     requests: { cpu: "100m", memory: "128Mi" }
+      #     limits: { cpu: "500m", memory: "512Mi" }
+```
+
+> Không probe = K8s mù (không biết pod nào sống/chết). Không limit = 1 pod lỗi có thể đè chết cả node. Cả 2 đều bắt buộc ở prod.
+
+---
+
+## ⚖️ Trade-off: Kubernetes vs Docker Compose vs Serverless (5.11.3)
+
+| Tình huống | Chọn | Vì sao |
+|------------|------|--------|
+| Chục service, cần autoscale/self-heal/rolling | ✅ Kubernetes | Sinh ra đúng cho việc này |
+| 2–3 container 1 máy, team nhỏ | ⚖️ Docker Compose | 1 file YAML chạy được, không học K8s |
+| Traffic thất thường, rảnh = 0 | ⚖️ Serverless | Không nuôi cluster lúc không ai dùng |
+| Chưa có người vận hành | 🚫 Khoan K8s | K8s không người chăm = cluster treo lúc 2h sáng |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| Thiếu readinessProbe | Rolling update đánh traffic vào pod chưa sẵn sàng → 502 | readinessProbe là bắt buộc, không phải optional |
+| `image: latest` trong manifest | Không biết pod đang chạy bản nào, rollback mù | Tag version + `imagePullPolicy: IfNotPresent` |
+| Config/secret trong image | Đổi config phải build lại; secret lộ | ConfigMap/Secret mount lúc deploy, theo môi trường |
+| 1 namespace cho cả staging + prod | Test nhầm xóa pod prod | Namespace (hoặc cluster) riêng + RBAC + resource quota |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Có cả readinessProbe và livenessProbe?
+- [ ] Có `requests` + `limits` CPU/memory?
+- [ ] Image tag version cụ thể (không `latest`)?
+- [ ] Config/secret qua ConfigMap/Secret (không bake vào image)?
+- [ ] Namespace/RBAC tách môi trường (staging ≠ prod)?
+
+---
+
 ## 🔗 Liên quan
 
 - **5.11.1 Docker** — Container là đơn vị pod chạy

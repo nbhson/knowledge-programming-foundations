@@ -15,6 +15,11 @@
 | 13.4 | [Sharding](13.4-sharding/README.md) | Chia nhỏ database | Khi DB single-node chạm ceiling write/read/QPS |
 | 13.5 | [CAP Theorem](13.5-cap-theorem/README.md) | Consistency vs Availability | Khi thiết kế distributed system, chọn trade-off rõ ràng |
 | 13.6 | [Scalable Architecture](13.6-scalable-arch/README.md) | Scale-up vs Scale-out | Tổng quan pattern để build hệ thống chịu load tăng |
+| 13.7 | [Consistent Hashing](13.7-consistent-hashing/README.md) | Hash ring, virtual nodes | Khi thêm/bớt node mà không muốn remap gần hết keys |
+| 13.8 | [Message Queues](13.8-message-queues/README.md) | Queue vs pub/sub, DLQ, delivery semantics | Khi cần async, buffering spike, fan-out event |
+| 13.9 | [API Gateway & Discovery](13.9-api-gateway-discovery/README.md) | Gateway routing, service registry | Khi ≥3 microservices, cần auth/rate-limit tập trung |
+| 13.10 | [Consensus & Raft](13.10-consensus-raft/README.md) | Election, quorum, log replication | Khi cần một sự thật duy nhất (leader, config, metadata) |
+| 13.11 | [Case Studies](13.11-case-studies/README.md) | URL shortener, chat 1-1, Twitter feed | Khi luyện phỏng vấn system design end-to-end |
 
 ---
 
@@ -111,6 +116,11 @@ Asynchronous (Message Queue):
 - **13.4 Sharding** — Write throughput tăng N lần theo số shard
 - **13.5 CAP Theorem** — Trade-off bắt buộc khi partition xảy ra
 - **13.6 Scalable Architecture** — Tổng hợp các pattern trên
+- **13.7 Consistent Hashing** — Thêm/bớt node chỉ di chuyển ~K/N keys
+- **13.8 Message Queues** — Async, buffering spike, retry + DLQ, fan-out
+- **13.9 API Gateway & Discovery** — Cửa ngõ duy nhất + danh bạ service sống
+- **13.10 Consensus & Raft** — Đồng thuận majority, chịu lỗi minority
+- **13.11 Case Studies** — Ráp mọi pattern thành hệ thống hoàn chỉnh
 
 ---
 

@@ -1,28 +1,29 @@
 # 🔬 5.3.6 Code Splitting
 
-> **Code Splitting** 是将大型JavaScript bundle拆分成多个小文件，按需加载的技术，显著减少首屏加载时间。
+> **Code Splitting** (chia nhỏ code) là kỹ thuật tách gói JavaScript bundle lớn thành nhiều file nhỏ, tải khi cần (theo nhu cầu), giúp giảm đáng kể thời gian tải lần đầu (first load).
 
 ```
-❌ VẤN ĐỀ: 单一大bundle
-app.js → 500KB (所有代码一起加载)
-→ 首屏慢，用户等待时间长
+❌ VẤN ĐỀ: Một bundle khổng lồ duy nhất
+app.js → 500KB (mọi code tải cùng lúc)
+→ Lần đầu chậm, người dùng phải chờ lâu
 
-✅ GIẢI PHÁP: 拆分bundle
-app.js     → 150KB (核心代码)
-admin.js   → 200KB (管理后台)
-charts.js  → 150KB (图表功能)
-→ 按需加载，首屏更快
+✅ GIẢI PHÁP: Chia nhỏ bundle
+app.js     → 150KB (code cốt lõi)
+admin.js   → 200KB (trang quản trị)
+charts.js  → 150KB (chức năng biểu đồ)
+→ Tải theo nhu cầu, lần đầu nhanh hơn
 ```
 
 ---
 
 ## 🎯 Vấn Đề
 
-单一大bundle的问题：
-- **首屏加载慢**：所有代码一起下载
-- **浪费带宽**：用户不使用的功能也加载了
-- **缓存效率低**：任何改动都需要重新下载全部
-- **性能瓶颈**：解析和执行大量无用代码
+Vấn đề của một bundle khổng lồ duy nhất:
+
+- **Tải lần đầu chậm**: mọi code đều tải xuống cùng lúc
+- **Lãng phí băng thông**: tính năng người dùng không dùng cũng bị tải
+- **Hiệu quả cache thấp**: bất kỳ thay đổi nào cũng phải tải lại toàn bộ
+- **Nút thắt hiệu năng**: phân tích (parse) và thực thi nhiều code vô ích
 
 ---
 
@@ -108,10 +109,10 @@ const Dashboard = lazy(() =>
 
 | Lợi ích | Giải thích |
 |---------|------------|
-| ⚡ **首屏更快** | 只加载必要代码 |
-| 📦 **按需加载** | 用户访问时才下载 |
-| 💾 **缓存优化** | 小文件更容易缓存 |
-| 🔄 **增量更新** | 修改部分代码只需更新相关chunk |
+| ⚡ **Lần đầu nhanh hơn** | Chỉ tải code cần thiết |
+| 📦 **Tải theo nhu cầu** | Người dùng truy cập tới đâu mới tải tới đó |
+| 💾 **Tối ưu cache** | File nhỏ dễ được cache hơn |
+| 🔄 **Cập nhật tăng dần** | Sửa một phần code chỉ cần cập nhật chunk liên quan |
 
 ---
 
@@ -119,10 +120,10 @@ const Dashboard = lazy(() =>
 
 | Vấn đề | Cách tránh |
 |--------|------------|
-| **路由切换闪烁** | 使用Suspense + fallback |
-| **预加载策略** | 合理设置prefetch/preload |
-| **过度拆分** | 不要为小模块拆分 |
-| **并行请求** | 注意控制并发加载数量 |
+| **Chuyển route bị chớp nháy** | Dùng Suspense + fallback |
+| **Chiến lược tải trước (preload)** | Đặt prefetch/preload hợp lý |
+| **Chia nhỏ quá mức** | Đừng chia nhỏ các module bé |
+| **Request song song** | Chú ý kiểm soát số lượng tải đồng thời |
 
 ---
 
@@ -130,19 +131,19 @@ const Dashboard = lazy(() =>
 
 | Tình huống | Khuyến nghị |
 |------------|-------------|
-| 大型单页应用 | ✅ 非常有效 |
-| 路由较多 | ✅ 路由级拆分 |
-| 首屏性能要求高 | ✅ 核心代码拆分 |
-| 小项目(< 50KB) | ❌ 无需拆分 |
-| SEO重要页面 | ⚠️ SSR替代方案 |
+| Ứng dụng một trang (SPA) lớn | ✅ Rất hiệu quả |
+| Nhiều route | ✅ Chia theo cấp route |
+| Yêu cầu hiệu năng lần đầu cao | ✅ Tách code cốt lõi |
+| Dự án nhỏ (< 50KB) | ❌ Không cần chia |
+| Trang quan trọng SEO | ⚠️ Dùng giải pháp SSR thay thế |
 
 ---
 
 ## 🔗 Liên quan
 
-- **5.3.5 Tree Shaking** — 配合使用效果更佳
-- **5.3.2 Lazy Loading** — 配合React.lazy使用
-- **5.3.3 Memoization** — 优化加载后的计算
+- **5.3.5 Tree Shaking** — Dùng kết hợp hiệu quả càng cao
+- **5.3.2 Lazy Loading** — Dùng cùng React.lazy
+- **5.3.3 Memoization** — Tối ưu phép tính sau khi tải
 
 ---
 

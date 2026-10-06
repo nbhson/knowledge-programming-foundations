@@ -32,6 +32,9 @@
 | 14 | [✨ Clean Code](14-clean-code/) | Viết code sạch, dễ bảo trì (Naming, Comments, Error Handling...) | [→ Xem chi tiết](14-clean-code/README.md) |
 | 15 | [🌿 Version Control](15-version-control/) | Quản lý phiên bản (Git, Branching, Merging, Rebase, Hooks...) | [→ Xem chi tiết](15-version-control/README.md) |
 | 16 | [🎨 Design Systems](16-design-systems/) | Hệ thống thiết kế UI (Tokens, Component Library, Storybook, A11y...) | [→ Xem chi tiết](16-design-systems/README.md) |
+| 17 | [🤖 AI & LLM Engineering](17-ai-llm-engineering/) | Kỹ thuật LLM (Prompt, Embeddings, RAG, Vector DB, Agents, Eval/Safety...) | [→ Xem chi tiết](17-ai-llm-engineering/README.md) |
+| 18 | [🖥️ CS Fundamentals](18-cs-fundamentals/) | Nền tảng khoa học máy tính (OS, Memory, Encoding, Numbers, Compilers...) | [→ Xem chi tiết](18-cs-fundamentals/README.md) |
+| 19 | [⚡ Frontend Performance](19-frontend-performance/) | Hiệu năng frontend (Rendering, Web Vitals, Bundling, Image/Font...) | [→ Xem chi tiết](19-frontend-performance/README.md) |
 
 ---
 
@@ -77,8 +80,9 @@ Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
 ```
 
 > **📁 Cấu trúc thư mục thực tế:** Ngoài 6 lớp cốt lõi, repository được mở rộng thêm
-> **10 lớp kiến thức thực hành** (`07` → `16`): Testing, DevOps/CI/CD, Security, Database,
-> Networking/APIs, Concurrency, System Design, Clean Code, Version Control, Design Systems.
+> **13 lớp kiến thức thực hành** (`07` → `19`): Testing, DevOps/CI/CD, Security, Database,
+> Networking/APIs, Concurrency, System Design, Clean Code, Version Control, Design Systems,
+> AI & LLM Engineering, CS Fundamentals, Frontend Performance.
 > Mỗi lớp có đầy đủ README hướng dẫn và ví dụ chạy được. Xem [📋 Mục Lục](#-mục-lục) ở trên.
 
 ---

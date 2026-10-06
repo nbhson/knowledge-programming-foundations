@@ -239,4 +239,4 @@ npx ts-node examples/index.ts
 
 ## ⏭️ Bài Tiếp Theo
 
-→ [6.1 Time Complexity](../../06-data-structures-and-algorithms/6.1-time-complexity/README.md)
+→ [4.7 Logic Programming](../4.7-logic-programming/README.md)

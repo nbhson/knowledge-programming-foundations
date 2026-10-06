@@ -79,6 +79,64 @@ class MiniGrpcChannel {
 
 ---
 
+## ❌ BAD — thêm 1 case: đổi .proto breaking mà không version service
+
+```protobuf
+// ❌ BAD — sửa field đang dùng, client cũ chết lặng lẽ
+message Book {
+  int32 id = 1;
+  // string title = 2;        // xóa field đang dùng!
+  string name = 2;             // đổi tên = đổi field mới với client cũ (không tương thích)
+}
+
+// ✅ GOOD — chỉ thêm field mới (optional), không tái dùng số field đã xóa
+service BookService {
+  rpc GetBook (GetBookRequest) returns (Book);   // giữ nguyên
+  rpc GetBookV2 (GetBookRequest) returns (BookV2); // API mới = service/method mới
+}
+message Book {
+  int32 id = 1;
+  string title = 2;            // giữ, đánh deprecated nếu cần
+  string subtitle = 3;         // thêm mới luôn an toàn (client cũ bỏ qua)
+}
+```
+
+> Luật vàng protobuf: **không đổi số field, không đổi kiểu, không tái dùng số đã xóa**. Muốn breaking → version service mới, giữ service cũ chạy song song.
+
+---
+
+## ⚖️ Trade-off: gRPC vs REST (5.10.1) vs GraphQL (5.10.2)
+
+| Tình huống | Chọn | Vì sao |
+|------------|------|--------|
+| Microservices nội bộ gọi nhau dày | ✅ gRPC | Nhanh, contract cứng, streaming |
+| API public cho browser/bên thứ 3 | ⚖️ REST/GraphQL | gRPC cần grpc-web proxy, khó debug binary |
+| Cần cache HTTP/CDN | ⚖️ REST | gRPC POST binary không cache được |
+| Team đa ngôn ngữ (Go/Python/Java/TS) | ✅ gRPC | Sinh client/server từ 1 `.proto` |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| Tái dùng số field đã xóa | Client cũ đọc nhầm dữ liệu mới vào field cũ | Giữ số field là `reserved`: `reserved 2;` |
+| Không deadline/timeout | 1 service treo kéo cả chuỗi treo theo | Mọi call đều có deadline + retry có budget |
+| Lỗi trả về string chung chung | Caller không phân biệt retry được/không | Dùng status code chuẩn (NOT_FOUND, UNAVAILABLE, INVALID_ARGUMENT...) |
+| Payload quá to trong 1 unary call | OOM, timeout | Chia trang/streaming; giới hạn `maxReceiveMessageSize` |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] `.proto` chỉ thêm field mới (không đổi số/kiểu, có `reserved` khi xóa)?
+- [ ] Breaking change đi kèm version service mới?
+- [ ] Mọi call có deadline + retry policy?
+- [ ] Error dùng status code chuẩn (không string tự chế)?
+- [ ] Payload lớn đã chia trang/streaming?
+
+---
+
 ## 🔗 Liên quan
 
 - **5.10.1 REST API** — API chung cho client ngoài

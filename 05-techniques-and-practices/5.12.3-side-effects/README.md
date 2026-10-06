@@ -77,6 +77,58 @@ Demo đầy đủ: [`examples/index.ts`](examples/index.ts)
 
 ---
 
+## ❌ BAD — thêm 1 case: side effect ẩn trong core tính toán
+
+```typescript
+// ❌ BAD — hàm "tính tổng" lén ghi log + trừ kho trong cùng 1 chỗ
+function checkoutTotalBad(cart: Cart): number {
+  const total = cart.items.reduce((s, i) => s + i.price * i.qty, 0);
+  console.log(`[audit] total=${total}`); // IO ẩn
+  stockDb.decrement(cart.items);           // ghi DB ẩn — gọi 2 lần trừ kho 2 lần!
+  return total;
+}
+
+// ✅ GOOD — core chỉ tính (pure), mọi effect ra biên qua abstraction
+function checkoutTotalPure(cart: Cart): number {
+  return cart.items.reduce((s, i) => s + i.price * i.qty, 0);
+}
+// caller (boundary): const total = checkoutTotalPure(cart); repo.save(...); logger.info(...);
+```
+
+> Luật ngửi mùi: hàm tên "tính/cộng/kiểm tra" mà **import DB/logger/clock** → effect đang trốn trong core. Core chỉ được nhận effect qua tham số inject.
+
+---
+
+## ⚖️ Trade-off: cô lập effect vs để lẫn (mở rộng bảng Core + Boundary)
+
+| Cách | Khi nào chọn | Giá phải trả |
+|------|--------------|--------------|
+| Core pure + boundary mỏng | ✅ Mặc định cho business logic | Thêm lớp inject/fake lúc đầu |
+| Effect lẫn trong logic | ⚖️ Script 1 lần, prototype vứt đi | Không test được, không tái dùng |
+| Mọi thứ qua abstraction nặng | 🚫 Overkill | 1–2 port là đủ, đừng 6 interface cho 1 hàm |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| Quên effect trong code path phụ (nhánh catch cũng ghi DB) | Test fake không cover nhánh đó → prod mới lộ | Fake phải assert cả nhánh lỗi |
+| Random/clock không seed được | Test flaky, debug không tái hiện | Inject RNG/clock có seed cố định trong test |
+| Boundary dày lên thành business thứ 2 | Logic rò sang shell, core rỗng | Boundary chỉ dịch IO (parse/format/gọi), quyết định nằm ở core |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Liệt kê được mọi side effect của hàm (IO/clock/random/global)?
+- [ ] Core không import trực tiếp DB/network/console/clock?
+- [ ] Test dùng fake inject (không mock module toàn cục nếu tránh được)?
+- [ ] Fake cover cả nhánh lỗi (throw/timeout) chứ không chỉ đường vui?
+- [ ] Random/clock trong test là deterministic (seed/fixed)?
+
+---
+
 ## 🔗 Liên quan
 
 - **5.12.2 Pure Functions** — Khái niệm đối lập

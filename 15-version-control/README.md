@@ -14,6 +14,10 @@
 | 15.4 | [Git Rebase](15.4-git-rebase/README.md) | Replay commit, linear history |
 | 15.5 | [Git Cherry-Pick](15.5-git-cherry-pick/README.md) | Chọn commit cụ thể, copy patch |
 | 15.6 | [Git Hooks](15.6-git-hooks/README.md) | pre-commit, commit-msg, pre-push |
+| 15.7 | [Conventional Commits](15.7-conventional-commits/README.md) | spec, semantic-release, parse commit → bump version |
+| 15.8 | [Trunk-Based Development](15.8-trunk-based/README.md) | so với GitFlow, feature flags, mô phỏng trunk |
+| 15.9 | [Monorepo](15.9-monorepo/README.md) | so polyrepo, tooling, mô phỏng task graph |
+| 15.10 | [Bisect & Blame](15.10-bisect-blame/README.md) | debug workflow, mô phỏng binary search commits |
 
 ---
 
@@ -528,6 +532,10 @@ diff, blame        PR workflow         worktrees, reflog
 - **15.4 Git Rebase** — linear history, interactive rebase
 - **15.5 Git Cherry-Pick** — selective commit application
 - **15.6 Git Hooks** — automation, conventional commits
+- **15.7 Conventional Commits** — spec, semantic-release, parse commit → bump version
+- **15.8 Trunk-Based Development** — trunk vs GitFlow, feature flags
+- **15.9 Monorepo** — monorepo vs polyrepo, task graph
+- **15.10 Bisect & Blame** — debug workflow, binary search commits
 
 ---
 

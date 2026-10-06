@@ -68,6 +68,63 @@ class MiniLambdaRuntime {
 
 ---
 
+## ❌ BAD — thêm 1 case: handler nặng + giữ state trong memory
+
+```typescript
+// ❌ BAD — load model 500MB mỗi invoke + đếm bằng biến global (container tái dùng/scale
+// làm mất hoặc nhân đôi số đếm)
+let totalOrders = 0; // 💥 state trong memory: scale ra 10 container = 10 số đếm khác nhau
+export async function handlerBad(event: ServerlessEvent): Promise<ServerlessResponse> {
+  const model = loadHeavyModel(); // 💥 cold start +500ms mỗi lần scale-out
+  totalOrders++;
+  return { statusCode: 200, body: JSON.stringify({ totalOrders }) };
+}
+
+// ✅ GOOD — handler gầy, state ra ngoài (DB/Redis), tài nguyên nặng cache ngoài handler
+import { getCachedModel } from "./model";   // load 1 lần/container, tái dùng lúc warm
+import { incrCounter } from "./store";       // counter trong Redis/DynamoDB
+export async function handlerGood(event: ServerlessEvent): Promise<ServerlessResponse> {
+  const total = await incrCounter("orders");
+  return { statusCode: 200, body: JSON.stringify({ totalOrders: total }) };
+}
+```
+
+> 2 luật serverless: **handler stateless** (state ra DB/cache) và **khởi tạo nặng để ngoài handler** (tận dụng warm container).
+
+---
+
+## ⚖️ Trade-off: Serverless vs Container (5.11.1) vs K8s (5.11.2)
+
+| Tình huống | Chọn | Vì sao |
+|------------|------|--------|
+| Webhook/cron/xử lý event lẻ tẻ | ✅ Serverless | Rảnh = 0 đồng, scale tự động |
+| API latency < 100ms ổn định, traffic đều | ⚖️ Container/K8s | Không cold start, không giới hạn timeout |
+| Long-running (websocket, video encode 30 phút) | 🚫 Không serverless | Timeout/memory trần cứng |
+| Vendor lock-in là rủi ro chính | ⚖️ Container | Handler serverless dính API từng nền tảng — bọc lớp adapter |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| Cold start ở đường latency nhạy | P99 tăng vọt lúc scale-out | Provisioned concurrency / giữ warm cho API chính; runtime nhẹ |
+| Quên giới hạn concurrency | 1 event storm (S3/retry) × 1000 invoke = hóa đơn sốc | Reserved concurrency + DLQ + alarm billing |
+| Timeout mặc định quá ngắn/dài | Ngắn: job chết giữa chừng; dài: treo tốn tiền | Timeout theo job + client cũng timeout tương ứng |
+| Lỗi retry vô hạn (queue → fail → queue) | Poison message đốt tiền vòng lặp | Max retries + dead-letter queue (xem 5.6.4) |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Handler stateless (không biến global giữ state nghiệp vụ)?
+- [ ] Tài nguyên nặng khởi tạo ngoài handler (tái dùng lúc warm)?
+- [ ] Có timeout + memory phù hợp từng hàm?
+- [ ] Có giới hạn concurrency + DLQ cho trigger queue?
+- [ ] Đã ước tính chi phí ở traffic đỉnh (không chỉ traffic trung bình)?
+
+---
+
 ## 🔗 Liên quan
 
 - **5.11.1 Docker** — Container bạn tự quản lý

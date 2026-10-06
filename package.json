@@ -1,4 +1,10 @@
 {
+  "name": "knowledge-programming-foundations",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "example": "ts-node"
+  },
   "devDependencies": {
     "ts-node": "^10.9.2",
     "typescript": "5.4"

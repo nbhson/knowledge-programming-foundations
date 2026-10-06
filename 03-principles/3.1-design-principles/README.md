@@ -38,6 +38,10 @@ Tất cả 6 nguyên tắc này là **lời khuyên thực dụng**, không ph�
 | [3.1.4](3.1.4-soc/README.md) | **SoC** | Tách trách nhiệm theo lĩnh vực | 1 class/module làm nhiều việc | Nguyên tắc cha của tất cả pattern khác. Architecture, design patterns đều là special case của SoC. |
 | [3.1.5](3.1.5-law-of-demeter/README.md) | **Law of Demeter** | Chỉ nói chuyện với object trực tiếp | Chuỗi method gọi xuyên object | Gọi `a.getB().getC().doStuff()` = vi phạm. Hiểu: "talk to friends, not to friends of friends". |
 | [3.1.6](3.1.6-composition-over-inheritance/README.md) | **Composition over Inheritance** | Kết hợp thay vì kế thừa | Kế thừa gây ràng buộc, override vụng về | Composition = runtime flexibility; inheritance = compile-time rigidity. |
+| [3.1.7](3.1.7-grasp/README.md) | **GRASP** | Gán đúng trách nhiệm cho object | Không biết method mới đặt ở class nào | Information Expert (ai có dữ liệu thì làm) + Controller gầy (chỉ điều phối). |
+| [3.1.8](3.1.8-cupid/README.md) | **CUPID** | Code vui vẻ: ghép nối, 1 việc, đoán được | Hàm to, side-effect ẩn, tên khó hiểu | Composable + Unix philosophy + Predictable + Idiomatic + Domain-based. |
+| [3.1.9](3.1.9-postel-law/README.md) | **Postel's Law** | Input rộng, output chặt | API khắt khe vô lý / output thiếu nhất quán | Tolerant Reader: chấp nhận format rộng, luôn trả 1 schema duy nhất. |
+| [3.1.10](3.1.10-convention-over-configuration/README.md) | **Convention over Configuration** | Quy ước default, chỉ config ngoại lệ | Config thủ công mọi thứ, boilerplate nhiều | Next.js routing / Prisma model: phổ biến theo convention, đặc biệt mới config. |
 
 ---
 
@@ -56,7 +60,15 @@ BẠN ĐANG GẶP VẤN ĐỀ GÌ?
 │
 ├─ Gọi method xuyên qua nhiều object? → Law of Demeter
 │
-└─ Kế thừa gây rắc rối, override vụng về? → Composition over Inheritance
+├─ Kế thừa gây rắc rối, override vụng về? → Composition over Inheritance
+│
+├─ Không biết method mới đặt ở class nào? → GRASP (Information Expert)
+│
+├─ Hàm to, side-effect ẩn, khó tái dùng? → CUPID
+│
+├─ API khắt khe vô lý / output thiếu nhất quán? → Postel's Law
+│
+└─ Config thủ công mọi thứ, boilerplate nhiều? → Convention over Configuration
 ```
 
 ---

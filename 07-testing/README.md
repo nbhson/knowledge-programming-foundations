@@ -16,6 +16,21 @@
 | 7.5 | BDD | Mô tả hành vi bằng Gherkin (Given/When/Then) | [7.5-bdd](7.5-bdd/README.md) |
 | 7.6 | Performance Testing | Đo latency, load, stress của hệ thống | [7.6-performance-testing](7.6-performance-testing/README.md) |
 | 7.7 | Mocking & Stubbing | Giả lập dependency để test cô lập | [7.7-mocking-stubbing](7.7-mocking-stubbing/README.md) |
+| 7.8 | Contract Testing | Consumer-driven (Pact), verify API giữa services | [7.8-contract-testing](7.8-contract-testing/README.md) |
+| 7.9 | Snapshot Testing | Khi nào snapshot tốt/xấu + serializer | [7.9-snapshot-testing](7.9-snapshot-testing/README.md) |
+| 7.10 | Fuzz Testing | Random input + fuzzer tìm crash parser | [7.10-fuzz-testing](7.10-fuzz-testing/README.md) |
+| 7.11 | Chaos Testing | Fault injection (latency/error) kiểm chứng resilience | [7.11-chaos-testing](7.11-chaos-testing/README.md) |
+
+---
+
+## ▶️ Chạy ví dụ (bài 7.8–7.11)
+
+```bash
+cd 07-testing/7.8-contract-testing && npx ts-node examples/index.ts
+cd 07-testing/7.9-snapshot-testing && npx ts-node examples/index.ts
+cd 07-testing/7.10-fuzz-testing && npx ts-node examples/index.ts
+cd 07-testing/7.11-chaos-testing && npx ts-node examples/index.ts
+```
 
 ---
 

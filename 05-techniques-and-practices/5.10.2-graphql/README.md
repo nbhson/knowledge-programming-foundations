@@ -71,6 +71,61 @@ class MiniGqlEngine {
 
 ---
 
+## ❌ BAD — thêm 1 case: N+1 queries trong resolver lồng nhau
+
+```typescript
+// ❌ BAD — mỗi book 1 query author: 100 books = 101 queries vào DB
+const resolvers = {
+  Book: {
+    author: (book: Book) => db.authors.findById(book.authorId), // chạy N lần!
+  },
+};
+
+// ✅ GOOD — batch bằng DataLoader: gom authorId → 1 query IN (...)
+const resolvers = {
+  Book: {
+    author: (book: Book, _: unknown, ctx: Ctx) => ctx.authorLoader.load(book.authorId),
+  },
+};
+// authorLoader = new DataLoader(async (ids) => db.authors.findByIds(ids)); // 100 books = 2 queries
+```
+
+> Luật vàng resolver: **không query DB trong resolver lồng nhau mà không batch**. Symptom: 1 field thêm vào query làm latency tăng tuyến tính.
+
+---
+
+## ⚖️ Trade-off: GraphQL vs REST (5.10.1) vs gRPC (5.10.3)
+
+| Tình huống | Chọn | Vì sao |
+|------------|------|--------|
+| Client đa dạng (web/mobile/IoT) cần field khác nhau | ✅ GraphQL | Mỗi client lấy đúng phần mình cần |
+| Cần HTTP cache/CDN mạnh | ⚖️ REST | GraphQL POST 1 endpoint khó cache |
+| Upload file lớn / streaming realtime | ⚖️ REST/gRPC | GraphQL không sinh ra cho 2 việc này |
+| Team chưa quen schema-first | ⚖️ REST | GraphQL đòi kỷ luật schema + resolver + dataloader |
+
+---
+
+## ⚠️ Pitfalls thường gặp
+
+| Pitfall | Hậu quả | Cách tránh |
+|---------|---------|------------|
+| N+1 queries | Latency tăng theo số bản ghi | DataLoader batch mọi resolver lồng nhau |
+| Query sâu vô hạn (`friends { friends { ... } }`) | 1 request đánh sập server | Giới hạn depth + complexity score, timeout |
+| Lộ field nhạy cảm trong schema | Client query được `passwordHash` | Review schema như review API public; directive auth từng field |
+| Mutation không idempotent, client retry | Tạo trùng đơn hàng | Idempotency key cho mutation tạo mới (như REST) |
+
+---
+
+## ✅ Checklist khi review
+
+- [ ] Mọi resolver lồng nhau đều qua DataLoader/batch (không N+1)?
+- [ ] Có giới hạn query depth/complexity?
+- [ ] Schema không lộ field nhạy cảm (auth từng field)?
+- [ ] Mutation tạo mới có idempotency?
+- [ ] Error của resolver không lộ stack trace nội bộ?
+
+---
+
 ## 🔗 Liên quan
 
 - **5.10.1 REST API** — Tiền đề để so sánh
