@@ -511,6 +511,47 @@ Demo bao gồm: CRUD operations, nested relations (user → posts → comments),
 
 ---
 
+## ⚠️ Cập nhật cho Prisma 7/8 (Breaking Changes — 11/2025+)
+
+> **Lưu ý (2026):** Prisma 8 đã là bản `prisma@latest`. Prisma 7 vẫn được hỗ trợ đầy đủ (`prisma@prev`). Các breaking change dưới đây áp dụng từ Prisma 7 và giữ nguyên ở Prisma 8. ⚠️ **MongoDB không được hỗ trợ trong Prisma 7** — project MongoDB cần ở lại v6 hoặc kiểm tra [upgrade guide riêng cho MongoDB](https://www.prisma.io/docs/guides/upgrade-prisma-orm/mongodb).
+
+> 📌 **Cập nhật 28/10/2026:** Prisma 8 GA đã sẵn sàng — `prisma@latest` = `8.0.0-rc.27` (23/10/2026), **GA dự kiến trong tháng 10/2026**. Timeline hỗ trợ:
+> - **Prisma 6**: chỉ nhận security patches, kết thúc **19/11/2026**
+> - **Prisma 7**: được hỗ trợ 18 tháng kể từ ngày Prisma 8 GA chính thức
+> - Breaking changes riêng của v8 (SQL ORM client): collection method `apply` → `with`, `scope` → `fragment` (`db.orm.fragment(...)`, types `Scope` → `Fragment`)
+
+### 1. Generator thay đổi
+
+```prisma
+// Prisma 7+
+generator client {
+  provider = "prisma-client"           // thay vì "prisma-client-js"
+  output   = "../src/generated/client" // output path bắt buộc
+}
+```
+
+### 2. Import path thay đổi
+
+```typescript
+// Prisma 7+ — import từ output path
+import { PrismaClient } from '../src/generated/client'
+// KHÔNG còn: import from '@prisma/client'
+```
+
+### 3. prisma.config.ts (Prisma 7+)
+
+Schema path, migrations config chuyển vào file config TypeScript thay vì package.json. Prisma 7 cũng chuyển sang **ESM-first** (có thể chọn `moduleFormat = "cjs"`), dùng **driver adapters** và **load .env thủ công** (cần `dotenv`/`tsx`) thay vì tự load như v6.
+
+### Khi nào nâng cấp?
+
+- Project mới: dùng Prisma 7+ ngay
+- Project cũ: đọc migration guide trước: https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7
+- Lưu ý thêm cho Prisma 8: `.take(n)` / `.skip(n)` đổi thành `.limit(n)` / `.offset(n)`
+
+Ref: https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7
+
+---
+
 ## ⏭️ Bài tiếp theo
 
 → [10.4 Migrations](../10.4-migrations/README.md)

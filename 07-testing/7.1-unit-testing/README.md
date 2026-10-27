@@ -416,4 +416,48 @@ npx ts-node examples/index.ts
 
 ---
 
+## 🧪 Vitest — Chuẩn testing 2025-2026
+
+Vitest đã vượt Jest về DX (được Vite, Remix, Nuxt, Solid, Astro — và từ cuối 2025 là Angular — dùng mặc định):
+
+```bash
+npm i -D vitest        # cài đặt
+npx vitest             # chạy test watch mode
+npx vitest run         # chạy 1 lần (CI)
+npx vitest --coverage  # coverage
+```
+
+Ưu điểm so với Jest:
+- Native ESM + TypeScript (không cần babel/ts-jest config)
+- Tốc độ nhanh hơn đáng kể (Vite-based, HMR watch mode) — benchmark 2025-2026 cho thấy cold start nhanh hơn nhiều lần
+- API tương thích Jest (vi.fn, vi.mock thay jest.fn) — migrate từ Jest thường là drop-in
+- Hỗ trợ in-source testing
+- Browser Mode stable từ Vitest 4.0 (test component trong browser thật)
+
+> 📌 Khi nào vẫn chọn Jest? Project legacy đã có sẵn config Jest + plugin ecosystem lớn (Enzyme, snapshot cũ), hoặc Node-only monorepo không cần Vite pipeline.
+
+### 📌 Cập nhật 28/10/2026 — Vitest 5.0 đã phát hành (3/9/2026)
+
+Lịch sử phiên bản gần đây:
+
+| Version | Ngày | Thay đổi chính |
+|---------|------|-----------------|
+| v3.0 | 1/2026 | Browser mode `instances`, filter test theo line number, redesign reporter API |
+| v3.2 | 4/2026 | Annotation API, scoped fixtures, `sequence.groupOrder` |
+| v4.0 | 6/2026 | **`workspace` → `projects`**, browser mode provider architecture, v8 coverage pipeline, xóa deprecated APIs |
+| v4.1 | 3/2026 | `mockThrow` API, VS Code extension hỗ trợ Deno, "Run Related Tests" |
+| **v5.0** | **3/9/2026** | Benchmarking API rewrite (`bench` là test-context fixture, không còn top-level import), `--repeats` CLI flag (hunt flaky tests), `injectCjsGlobals`, coverage tracking cho `node:child_process`/`worker_threads`, conditional mocking (`thenReturnOnce`, `toHaveBeenExhausted`) |
+
+Breaking changes cần lưu ý khi upgrade:
+- v4.0: `workspace` config → `projects`; v8 coverage pipeline mới; xóa `--segfault-retry`
+- v5.0: benchmark API rewrite; `toHaveTextContent` strict equality (RegExp chuyển sang `toMatchTextContent`); worker/pool IDs bắt đầu từ `1` thay vì `0` (`VITEST_POOL_ID`, `VITEST_WORKER_ID`)
+
+Ref: https://vitest.dev/blog/vitest-5.html | https://vitest.dev/guide/migration
+
+> 📌 Khi nào vẫn chọn Jest? Project legacy đã có sẵn config Jest + plugin ecosystem lớn (Enzyme, snapshot cũ), hoặc Node-only monorepo không cần Vite pipeline.
+
+Ref: https://vitest.dev/
+
+---
+
 ## ⏭️ Bài tiếp theo → [7.2 Integration Testing](../7.2-integration-testing/README.md)
