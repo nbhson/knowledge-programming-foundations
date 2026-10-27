@@ -22,7 +22,7 @@ Nhưng pool sai: quá ít → queue dài, latency cao; queue vô hạn → OOM t
 Mô phỏng pool: workers cố định, queue bounded, 3 chính sách khi đầy (abort/caller-runs/discard-oldest).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 type RejectPolicy = "abort" | "caller-runs" | "discard-oldest";
 
@@ -124,7 +124,7 @@ while (true) {
 
 ```bash
 cd 12-concurrency/12.9-thread-pools
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: pool 2 + 5 tasks → queue đầy trigger 3 policies → công thức sizing CPU vs I/O.

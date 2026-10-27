@@ -26,10 +26,10 @@
 ## ▶️ Chạy ví dụ (bài 7.8–7.11)
 
 ```bash
-cd 07-testing/7.8-contract-testing && npx ts-node examples/index.ts
-cd 07-testing/7.9-snapshot-testing && npx ts-node examples/index.ts
-cd 07-testing/7.10-fuzz-testing && npx ts-node examples/index.ts
-cd 07-testing/7.11-chaos-testing && npx ts-node examples/index.ts
+cd 07-testing/7.8-contract-testing && npx tsx examples/index.ts
+cd 07-testing/7.9-snapshot-testing && npx tsx examples/index.ts
+cd 07-testing/7.10-fuzz-testing && npx tsx examples/index.ts
+cd 07-testing/7.11-chaos-testing && npx tsx examples/index.ts
 ```
 
 ---

@@ -145,7 +145,7 @@ Inspect & Adapt → root-cause + action cải tiến cho PI sau
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.6-safe
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

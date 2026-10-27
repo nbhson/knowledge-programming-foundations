@@ -389,7 +389,7 @@ app.get('/api/users/:id', (req, res) => {
 
 ```bash
 cd 11-networking-apis/11.1-http-basics
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo minh họa: HTTP methods, status code handling, header manipulation, body serialization, và caching headers. Chú ý cách fetch API xử lý các trường hợp 401, 404, 429 khác nhau.

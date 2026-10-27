@@ -282,7 +282,7 @@ Chạy demo mini spec runner (Feature/Scenario/Given/When/Then), không cần Cu
 
 ```bash
 cd 07-testing/7.5-bdd
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

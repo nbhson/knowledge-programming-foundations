@@ -65,7 +65,7 @@ function hasDeadlock(waitFor: Map<string, string[]>): boolean {
 ```
 
 > Mô phỏng đầy đủ (FCFS vs Round-Robin vs SJF + phát hiện deadlock + ví dụ starvation)
-> trong `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`.
+> trong `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

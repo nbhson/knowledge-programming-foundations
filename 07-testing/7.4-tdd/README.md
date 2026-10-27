@@ -254,7 +254,7 @@ Chạy demo vòng lặp Red → Green → Refactor:
 
 ```bash
 cd 07-testing/7.4-tdd
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

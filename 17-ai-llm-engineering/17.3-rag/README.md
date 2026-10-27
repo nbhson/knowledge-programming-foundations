@@ -56,7 +56,7 @@ function generateAnswer(query: string, ranked: Array<Chunk & { score: number }>)
 ```
 
 > Pipeline đầy đủ (chunk → retrieve → rerank → generate + eval faithfulness khái niệm) trong
-> `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`.
+> `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

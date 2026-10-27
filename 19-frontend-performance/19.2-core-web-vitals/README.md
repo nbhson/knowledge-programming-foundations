@@ -49,7 +49,7 @@ function computeCls(shifts: LayoutShift[]): number {
 ```
 
 > Mô phỏng đo đầy đủ (LCP/INP/CLS + rating + checklist tối ưu theo từng chỉ số) trong
-> `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`.
+> `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

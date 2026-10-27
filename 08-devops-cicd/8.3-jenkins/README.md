@@ -538,7 +538,7 @@ Chạy demo Jenkinsfile + mô phỏng pipeline:
 
 ```bash
 cd 08-devops-cicd/8.3-jenkins
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

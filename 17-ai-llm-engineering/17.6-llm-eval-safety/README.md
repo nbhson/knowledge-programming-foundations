@@ -53,7 +53,7 @@ function guardrail(text: string): { safe: boolean; reason: string } {
 ```
 
 > Scorer đầy đủ + demo hallucination + input/output guardrail trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`.
+> chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

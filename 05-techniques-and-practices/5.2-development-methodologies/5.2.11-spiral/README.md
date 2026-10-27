@@ -146,7 +146,7 @@ Vòng 3: Bản đầy đủ 100 thiết bị + cảnh báo + dashboard
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.11-spiral
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

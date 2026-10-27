@@ -195,7 +195,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 14-clean-code/14.5-dry-principle
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

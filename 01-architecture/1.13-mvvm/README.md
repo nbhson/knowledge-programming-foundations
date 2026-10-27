@@ -184,7 +184,7 @@ assertEqual(vm.count.value, 1);
 1.13-mvvm/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Counter demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Counter demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout với React Hooks (hiện đại nhất):
@@ -204,7 +204,7 @@ src/features/orders/
 
 ```bash
 cd 01-architecture/1.13-mvvm
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Lưu ý: ViewModel `CounterViewModel` không có dependency nào với View. Đưa nó sang framework khác (React/Vue/SwiftUI) là replace `subscribe` thành `bind` — logic giữ nguyên.

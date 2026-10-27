@@ -130,7 +130,7 @@ withRetry(flaky).then(console.log); // → ✅ API thành công
 5.6.2-retry-pattern/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -139,7 +139,7 @@ withRetry(flaky).then(console.log); // → ✅ API thành công
 
 ```bash
 cd 05-techniques-and-practices/5.6-error-handling-techniques/5.6.2-retry-pattern
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

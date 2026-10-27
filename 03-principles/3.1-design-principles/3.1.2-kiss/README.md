@@ -110,7 +110,7 @@ function processInput(input: string): string {
 3.1.2-kiss/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -119,7 +119,7 @@ function processInput(input: string): string {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.2-kiss
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

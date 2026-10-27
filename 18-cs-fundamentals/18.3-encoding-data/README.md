@@ -50,7 +50,7 @@ function endianDemo(): { be: number; le: number } {
 ```
 
 > Encode/decode đầy đủ (UTF-8, base64, hex, endianness, mojibake demo) trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`. Không dùng Buffer (thuần ES2020).
+> chạy bằng `npx tsx examples/index.ts`. Không dùng Buffer (thuần ES2020).
 
 ---
 

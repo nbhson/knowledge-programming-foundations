@@ -376,7 +376,7 @@ it('should set security headers', async () => {
 
 ```bash
 cd 09-security/9.6-helmet-headers
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

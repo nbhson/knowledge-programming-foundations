@@ -551,7 +551,7 @@ function addLinks(data: any, baseUrl: string, actions: string[] = []): any {
 
 ```bash
 cd 11-networking-apis/11.2-rest-api
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: CRUD operations với đầy đủ validation, error handling, pagination, và HATEOAS links. Chú ý cách mỗi HTTP method được dùng đúng semantics và status code phản ánh đúng kết quả.

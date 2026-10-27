@@ -493,7 +493,7 @@ Chạy demo Dockerfile/Compose + mô phỏng vòng đời build/deploy:
 
 ```bash
 cd 08-devops-cicd/8.4-docker
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

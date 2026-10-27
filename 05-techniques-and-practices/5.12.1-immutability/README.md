@@ -112,7 +112,7 @@ const fixed = { ...order, customer: { ...order.customer, vip: true } };
 
 ```bash
 cd 05-techniques-and-practices/5.12.1-immutability
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

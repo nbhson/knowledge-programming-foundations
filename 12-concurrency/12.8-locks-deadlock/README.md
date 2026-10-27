@@ -20,7 +20,7 @@ Thread B: lock(Y) ……. chờ lock(X) ⏳  → cả hai ngủ vĩnh viễn �
 Mô phỏng mutex, lock ordering (luôn lock theo id tăng dần) và phát hiện chu trình chờ.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 class Mutex {
   private locked = false;
@@ -144,7 +144,7 @@ async function tryAcquire(lock: Mutex, ms: number): Promise<boolean> {
 
 ```bash
 cd 12-concurrency/12.8-locks-deadlock
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: mutex bảo vệ counter → deadlock ngược thứ tự → fix bằng lock ordering → semaphore 2 slots.

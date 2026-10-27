@@ -144,7 +144,7 @@ function resolveGood(filePaths: string[], path: string): string {
 3.1.10-convention-over-configuration/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -153,7 +153,7 @@ function resolveGood(filePaths: string[], path: string): string {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.10-convention-over-configuration
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---
@@ -168,4 +168,4 @@ npx ts-node examples/index.ts
 
 ## ⏭️ Bài tiếp theo
 
-→ [3.2 SOLID Principles](../3.2-solid-principles/README.md)
+→ [3.2 SOLID Principles](../../3.2-solid-principles/README.md)

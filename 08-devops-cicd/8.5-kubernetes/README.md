@@ -456,7 +456,7 @@ Chạy demo manifest YAML + mô phỏng reconcile loop:
 
 ```bash
 cd 08-devops-cicd/8.5-kubernetes
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

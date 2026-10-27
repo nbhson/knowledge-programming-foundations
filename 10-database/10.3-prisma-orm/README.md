@@ -504,7 +504,7 @@ console.log(`${affected} rows updated`);
 
 ```bash
 cd 10-database/10.3-prisma-orm
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: CRUD operations, nested relations (user → posts → comments), transaction with rollback, and migration workflow. Chú ý cách TypeScript type inference làm việc với PrismaClient — autocomplete và compile-time checks.

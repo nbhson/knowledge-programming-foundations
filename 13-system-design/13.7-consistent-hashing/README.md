@@ -151,7 +151,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 13-system-design/13.7-consistent-hashing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

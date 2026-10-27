@@ -192,7 +192,7 @@ new OrderService(process.env.DB === 'pg' ? new PostgresOrderRepository() : new I
 1.5-hexagonal-architecture/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Order Processing demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Order Processing demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout theo feature (điển hình nhất cho hexagonal):
@@ -215,7 +215,7 @@ src/features/orders/
 
 ```bash
 cd 01-architecture/1.5-hexagonal-architecture
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Đổi adapter sang một implement khác ngay trong demo → output không đổi → đó là bằng chứng của "swap adapter không đụng core".

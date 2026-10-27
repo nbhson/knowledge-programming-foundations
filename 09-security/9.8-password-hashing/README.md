@@ -22,7 +22,7 @@ Hàm hash password phải **chậm** (100ms/hash) để attacker nản mà user 
 Mô phỏng hash-verify bằng `node:crypto` scrypt (built-in, không deps): salt ngẫu nhiên + work factor + timing-safe compare.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 import { scrypt, randomBytes, timingSafeEqual } from "node:crypto";
 
 // Hash: salt ngẫu nhiên 16 bytes + scrypt(N=16384, r=8, p=1, 64 bytes)
@@ -117,7 +117,7 @@ function verify(password: string, stored: string): boolean {
 
 ```bash
 cd 09-security/9.8-password-hashing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: hash cùng password 2 lần (khác nhau nhờ salt) → verify đúng/sai → demo MD5 bị crack tức thì để so sánh.

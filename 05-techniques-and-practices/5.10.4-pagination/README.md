@@ -124,7 +124,7 @@ async function listGood(afterId: number | null, limit: number): Promise<Book[]> 
 
 ```bash
 cd 05-techniques-and-practices/5.10.4-pagination
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

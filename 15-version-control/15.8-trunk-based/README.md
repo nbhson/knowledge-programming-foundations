@@ -120,7 +120,7 @@ class TrunkSim {
 
 ```bash
 cd 15-version-control/15.8-trunk-based
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

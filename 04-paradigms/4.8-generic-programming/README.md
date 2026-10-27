@@ -155,7 +155,7 @@ let handleCat: (c: Cat) => void = (a: Animal) => console.log(a.name); // âœ… nhá
 
 ```bash
 cd 04-paradigms/4.8-generic-programming
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

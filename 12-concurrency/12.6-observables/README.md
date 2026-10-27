@@ -303,7 +303,7 @@ const shared$ = someExpensiveOp().pipe(shareReplay(1));
 
 ```bash
 cd 12-concurrency/12.6-observables
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

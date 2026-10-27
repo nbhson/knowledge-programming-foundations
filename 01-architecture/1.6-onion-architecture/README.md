@@ -174,7 +174,7 @@ Nếu bạn thấy 3 diagram này và nghĩ "có gì khác đâu" → **đúng**
 1.6-onion-architecture/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Order Management demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Order Management demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout chuẩn Onion (mỗi vòng một project/folder):
@@ -195,7 +195,7 @@ Số prefix `1./2./3.` là thủ thuật để thứ tự đọc khớp thứ t�
 
 ```bash
 cd 01-architecture/1.6-onion-architecture
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Thử đổi `InMemoryOrderRepo` sang một repository khác trong demo → bạn chỉ sửa **composition root**, không sửa `OrderService`: đó là dependency inversion bằng chứng.

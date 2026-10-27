@@ -249,7 +249,7 @@ main/trunk ──●──●──●──●──●──● (commit trực
 
 ```bash
 cd 15-version-control/15.2-git-branching
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

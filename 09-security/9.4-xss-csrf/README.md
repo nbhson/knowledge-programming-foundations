@@ -363,7 +363,7 @@ app.use(
 
 ```bash
 cd 09-security/9.4-xss-csrf
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

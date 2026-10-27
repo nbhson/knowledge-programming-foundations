@@ -116,7 +116,7 @@ function applyVip(total: number, isVip: boolean): number { /* chiết khấu VIP
 
 ```bash
 cd 05-techniques-and-practices/5.7.1-extract-method
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

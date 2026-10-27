@@ -201,7 +201,7 @@ class StripeAdapter implements PaymentGateway {
 2.2.1-adapter/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -210,7 +210,7 @@ class StripeAdapter implements PaymentGateway {
 
 ```bash
 cd 02-design-patterns/2.2-structural/2.2.1-adapter
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

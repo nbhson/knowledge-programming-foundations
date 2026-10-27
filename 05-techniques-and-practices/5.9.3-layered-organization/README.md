@@ -122,7 +122,7 @@ class LyOrderController {
 
 ```bash
 cd 05-techniques-and-practices/5.9.3-layered-organization
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

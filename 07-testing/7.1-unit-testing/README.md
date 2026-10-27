@@ -399,7 +399,7 @@ Chạy demo mini test runner tự viết (không cần cài vitest/jest):
 
 ```bash
 cd 07-testing/7.1-unit-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

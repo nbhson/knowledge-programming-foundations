@@ -21,7 +21,7 @@ Nếu chưa từng test, bạn không biết timeout/retry/circuit-breaker có h
 Mô phỏng fault injection: latency injection + error injection quanh service call, đo success rate và phát hiện thiếu timeout.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface FaultConfig { latencyMs: number; errorRate: number }
 
@@ -121,7 +121,7 @@ async function experiment(name: string, timeoutMs: number | null): Promise<void>
 
 ```bash
 cd 07-testing/7.11-chaos-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: baseline ổn định → bơm latency+error (không timeout: treo hàng loạt) → thêm timeout+fallback (hồi phục) → tổng kết resilience.

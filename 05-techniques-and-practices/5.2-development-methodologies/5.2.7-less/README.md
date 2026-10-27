@@ -158,7 +158,7 @@ Retrospective CHUNG  → cải tiến toàn hệ, không tách team
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.7-less
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

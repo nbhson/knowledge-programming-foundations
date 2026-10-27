@@ -1,13 +1,13 @@
 # 🎓 Lập Trình Viên Toàn Tập — Bảng Cẩm Nang Kiến Thức Lập Trình
 
 > **Tổng hợp toàn bộ kiến thức nền tảng & nâng cao trong thế giới lập trình,**
-> **được phân loại thành 6 lớp từ lớn đến nhỏ.**
+> **được tổ chức thành 30 lớp: 6 lớp cốt lõi + 24 lớp thực hành chuyên sâu.**
 
 ---
 
 ## 📋 Mục Lục
 
-### 🎓 6 Lớp Kiến Thức Cốt Lõi
+### 🎓 6 Lớp Kiến Thức Cốt Lõi (01–06)
 
 | # | Lớp | Mô Tả | Chi Tiết |
 |---|-----|-------|----------|
@@ -49,7 +49,7 @@
 
 ---
 
-## 🗺️ Tổng Quan 6 Lớp Kiến Thức
+## 🗺️ Tổng Quan: 6 Lớp Cốt Lõi + 24 Lớp Thực Hành
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -90,7 +90,7 @@ Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
                     └── DSA  ← Nền tảng toán học
 ```
 
-> **📁 Cấu trúc thư mục thực tế:** Ngoài 6 lớp cốt lõi, repository được mở rộng thêm
+> **📁 Cấu trúc thư mục thực tế:** Ngoài 6 lớp cốt lõi (01–06), repository được mở rộng thêm
 > **24 lớp kiến thức thực hành** (`07` → `30`): Testing, DevOps/CI/CD, Security, Database,
 > Networking/APIs, Concurrency, System Design, Clean Code, Version Control, Design Systems,
 > AI & LLM Engineering, CS Fundamentals, Frontend Performance, Advanced CS Fundamentals,
@@ -101,7 +101,7 @@ Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
 
 ---
 
-## 🔗 Bảng Tổng Hợp: 20 Kỹ Thuật → 6 Lớp
+## 🔗 Bảng Tổng Hợp: 20 Kỹ Thuật → Lớp Liên Quan
 
 | # | Kỹ Thuật | Lớp Chính | Ví Dụ Cụ Thể |
 |---|---------|-----------|---------------|
@@ -130,8 +130,8 @@ Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
 
 ## 🎯 Kết Luận
 
-> **Thế giới lập trình rất rộng lớn.** 6 lớp kiến thức không tách biệt hoàn toàn
-> mà **giao thoa và bổ trợ nhau**. Một lập trình viên giỏi cần hiểu biết ở **tất cả 6 lớp**,
+> **Thế giới lập trình rất rộng lớn.** 30 lớp kiến thức không tách biệt hoàn toàn
+> mà **giao thoa và bổ trợ nhau**. Một lập trình viên giỏi cần hiểu biết ở **tất cả các lớp liên quan**,
 > nhưng **không cần thuộc lòng tất cả** — chỉ cần biết **khi nào cần dùng cái gì**.
 >
 > **Con đường học tập gợi ý:**

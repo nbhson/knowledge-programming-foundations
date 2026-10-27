@@ -182,7 +182,7 @@ Function strategy đơn giản hơn class strategy cho trường hợp không c�
 2.3.1-strategy/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -191,7 +191,7 @@ Function strategy đơn giản hơn class strategy cho trường hợp không c�
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.1-strategy
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

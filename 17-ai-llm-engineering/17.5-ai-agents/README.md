@@ -69,7 +69,7 @@ function reactLoop(question: string, tools: Tool[], docs: Record<string, string>
 ```
 
 > Vòng ReAct đầy đủ (tools lookup/calc + planning + giới hạn vòng + log Thought/Action/Observation)
-> trong `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`.
+> trong `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

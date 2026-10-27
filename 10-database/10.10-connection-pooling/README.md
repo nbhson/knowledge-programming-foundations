@@ -21,7 +21,7 @@ Pool quá nhỏ: request xếp hàng chờ. Pool quá lớn: DB context-switch c
 Mô phỏng pool: mượn/trả, queue khi hết, timeout khi chờ quá lâu.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 class Pool {
   private free: Conn[]; private queue: ((c: Conn) => void)[] = [];
@@ -163,7 +163,7 @@ min_pool_size = 5
 
 ```bash
 cd 10-database/10.10-connection-pooling
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: pool 3 + 6 jobs (3 chạy, 3 xếp hàng) → release đánh thức queue → timeout khi DB treo.

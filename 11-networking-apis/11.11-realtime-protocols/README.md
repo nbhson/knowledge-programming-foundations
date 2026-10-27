@@ -20,7 +20,7 @@ SSE:       1 connection/user, server push khi có mới ✅ (1 chiều đủ th�
 Ma trận chọn protocol + mô phỏng định tuyến use-case → protocol đúng.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 type Protocol = "WebSocket" | "SSE" | "MQTT" | "WebRTC-DC" | "Polling";
 
@@ -121,7 +121,7 @@ Resume: gửi Last-Event-ID (SSE) / seq number (WS) → server replay phần b�
 
 ```bash
 cd 11-networking-apis/11.11-realtime-protocols
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: 6 use-case (chat, notification, sensor, game P2P, dashboard, upload) → protocol được chọn + lý do.

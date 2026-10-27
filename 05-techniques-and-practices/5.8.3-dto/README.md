@@ -117,7 +117,7 @@ app.get("/users/:id", (req, res) => {
 
 ```bash
 cd 05-techniques-and-practices/5.8.3-dto
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

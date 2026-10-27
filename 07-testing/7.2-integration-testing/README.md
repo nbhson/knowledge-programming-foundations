@@ -345,7 +345,7 @@ Chạy demo mô phỏng Service + DB in-memory (không cần Docker/testcontaine
 
 ```bash
 cd 07-testing/7.2-integration-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

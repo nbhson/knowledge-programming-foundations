@@ -27,11 +27,11 @@
 ## ▶️ Chạy ví dụ (bài 11.7–11.11)
 
 ```bash
-cd 11-networking-apis/11.7-tcp-udp && npx ts-node examples/index.ts
-cd 11-networking-apis/11.8-dns && npx ts-node examples/index.ts
-cd 11-networking-apis/11.9-tls-handshake && npx ts-node examples/index.ts
-cd 11-networking-apis/11.10-http2-http3-quic && npx ts-node examples/index.ts
-cd 11-networking-apis/11.11-realtime-protocols && npx ts-node examples/index.ts
+cd 11-networking-apis/11.7-tcp-udp && npx tsx examples/index.ts
+cd 11-networking-apis/11.8-dns && npx tsx examples/index.ts
+cd 11-networking-apis/11.9-tls-handshake && npx tsx examples/index.ts
+cd 11-networking-apis/11.10-http2-http3-quic && npx tsx examples/index.ts
+cd 11-networking-apis/11.11-realtime-protocols && npx tsx examples/index.ts
 ```
 
 ---

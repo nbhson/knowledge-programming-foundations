@@ -23,7 +23,7 @@ GitOps giải quyết: mọi thay đổi qua PR vào Git, ArgoCD tự sync.
 Mô phỏng reconciler: so desired (Git) vs actual (cluster), sinh plan và sync.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface Workload { image: string; replicas: number }
 
@@ -116,7 +116,7 @@ function reconcile(desired: Workload, actual: Workload): Workload {
 
 ```bash
 cd 08-devops-cicd/8.7-gitops-argocd
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: InSync → dev đổi Git (auto-sync) → ai đó sửa tay (drift) → reconciler tự phục hồi → rollback bằng revert.

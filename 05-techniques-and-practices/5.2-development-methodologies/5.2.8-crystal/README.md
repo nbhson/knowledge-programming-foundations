@@ -150,7 +150,7 @@ Crystal Red   — y tế điều khiển (60 người, Life)        → Red
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.8-crystal
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -167,7 +167,7 @@ Ví dụ `examples/index.ts` mô tả **Mini Shop (3 services)**:
 1.2-microservices/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Mini Shop demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mini Shop demo (chạy: npx tsx examples/index.ts)
 ```
 
 Trong thực tế, mỗi service là một repo độc lập:
@@ -185,7 +185,7 @@ github.com/company/
 
 ```bash
 cd 01-architecture/1.2-microservices
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy để ý điểm khác biệt với demo 1.1: `reserveStock` giờ là **network call** (có thể fail độc lập), và email trigger qua **event** (tách rời khỏi luồng chính) — đó chính là 2 "mùi" của distributed systems.

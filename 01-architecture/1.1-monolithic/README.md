@@ -155,7 +155,7 @@ ConsoleUI.placeOrder()
 1.1-monolithic/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Mini Shop demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mini Shop demo (chạy: npx tsx examples/index.ts)
 ```
 
 Trong dự án thật, một monolith thường có cấu trúc chia theo layer hoặc theo feature:
@@ -177,7 +177,7 @@ my-shop/                          # 1 repo, 1 build
 
 ```bash
 cd 01-architecture/1.1-monolithic
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy để ý output: toàn bộ luồng đặt hàng chạy tuần tự trong **một tiến trình**, không có dấu vết network/serialization nào — đó chính là "mùi" đặc trưng của monolith.

@@ -229,7 +229,7 @@ class MysqlFactory implements IDbFactory {
 2.1.3-abstract-factory/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -238,7 +238,7 @@ class MysqlFactory implements IDbFactory {
 
 ```bash
 cd 02-design-patterns/2.1-creational/2.1.3-abstract-factory
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

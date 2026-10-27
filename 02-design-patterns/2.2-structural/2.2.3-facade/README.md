@@ -189,7 +189,7 @@ app.get('/orders', (req, res) => {
 2.2.3-facade/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -198,7 +198,7 @@ app.get('/orders', (req, res) => {
 
 ```bash
 cd 02-design-patterns/2.2-structural/2.2.3-facade
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

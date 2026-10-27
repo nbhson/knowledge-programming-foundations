@@ -192,7 +192,7 @@ Nếu 3/4 trả lời YES → ES là lựa chọn đúng. Nếu 0–1 → bắt 
 1.9-event-sourcing/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Wallet demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Wallet demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout kết hợp CQRS:
@@ -213,7 +213,7 @@ src/wallet/
 
 ```bash
 cd 01-architecture/1.9-event-sourcing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy để ý output: sau khi replay 3 events, `balance = 50`. Nếu bạn comment 1 dòng trong demo (event thứ 3), balance sẽ là 100 → event thứ 3 đã gây ra thay đổi -50. Đó chính là "event = source of truth".

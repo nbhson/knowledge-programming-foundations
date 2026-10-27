@@ -176,7 +176,7 @@ class TrackingId {
 1.7-domain-driven-design/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Shipping Domain demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Shipping Domain demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout DDD kinh điển (kết hợp Onion):
@@ -200,7 +200,7 @@ src/
 
 ```bash
 cd 01-architecture/1.7-domain-driven-design
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy để ý trong demo: `Shipment` không có setter `address` — chỉ có method `moveToLocation(loc: Location)` qua aggregate root. Đó là aggregate pattern đang làm việc: không cách nào vi phạm invariant mà vẫn compile được.

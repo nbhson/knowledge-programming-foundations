@@ -155,7 +155,7 @@ function isPalindrome(s: string): boolean {
 
 ```bash
 cd 06-data-structures-and-algorithms/6.7-string-algorithms
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: đếm số so sánh naive vs KMP-tư-tưởng, rolling hash Rabin-Karp, longest unique substring, palindrome.

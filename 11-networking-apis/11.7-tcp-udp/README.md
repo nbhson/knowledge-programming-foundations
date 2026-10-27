@@ -20,7 +20,7 @@ UDP:  bắn datagram, không ACK, không thứ tự ⚡ nhanh, mất thì thôi
 Mô phỏng sequence/ACK: TCP retransmit packet mất, UDP bỏ qua.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface Packet { seq: number; data: string }
 
@@ -122,7 +122,7 @@ TCP tự điều chỉnh tốc độ gửi theo mạng (không flood link) — �
 
 ```bash
 cd 11-networking-apis/11.7-tcp-udp
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: mất packet 2/5 → TCP đủ 5/5 (1 retransmit) vs UDP còn 4/5 + sai thứ tự có thể.

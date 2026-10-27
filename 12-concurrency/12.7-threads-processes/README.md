@@ -20,7 +20,7 @@ event loop + CPU nặng → loop block, mọi request chờ 💥
 Mô phỏng worker phân chia: đo event loop bị block vs chia việc cho workers.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 // CPU-bound giả lập: tính toán nặng chặn thread hiện tại
 function heavy(n: number): number {
@@ -105,7 +105,7 @@ function splitWork<T>(items: T[], workers: number): T[][] {
 
 ```bash
 cd 12-concurrency/12.7-threads-processes
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: task I/O trên loop (nhanh) vs task CPU chặn loop (đơ) vs chia chunks cho workers.

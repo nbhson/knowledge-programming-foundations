@@ -140,7 +140,7 @@ function getActiveNames(users: readonly User[]): string[] {
 3.1.8-cupid/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -149,7 +149,7 @@ function getActiveNames(users: readonly User[]): string[] {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.8-cupid
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -484,7 +484,7 @@ Chạy demo in sơ đồ Git Flow + script lệnh git (chỉ minh họa, không 
 
 ```bash
 cd 08-devops-cicd/8.1-gitflow
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

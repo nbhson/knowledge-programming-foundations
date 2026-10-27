@@ -250,7 +250,7 @@ public class Pizza {
 2.1.4-builder/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -259,7 +259,7 @@ public class Pizza {
 
 ```bash
 cd 02-design-patterns/2.1-creational/2.1.4-builder
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

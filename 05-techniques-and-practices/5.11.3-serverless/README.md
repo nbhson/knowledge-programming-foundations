@@ -144,7 +144,7 @@ export async function handlerGood(event: ServerlessEvent): Promise<ServerlessRes
 
 ```bash
 cd 05-techniques-and-practices/5.11.3-serverless
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

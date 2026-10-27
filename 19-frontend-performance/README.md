@@ -61,11 +61,11 @@ Thứ tự gợi ý: `19.1 → 19.2 → 19.3 → 19.4`.
 ```bash
 # Mô phỏng chọn rendering + build routing
 cd 19-frontend-performance/19.1-rendering-strategies
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # Mô phỏng đo Web Vitals
 cd ../19.2-core-web-vitals
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Mọi ví dụ thuần TypeScript, strict ES2020, mô phỏng bằng số liệu, không cần trình duyệt.

@@ -247,7 +247,7 @@ git reset --hard <before-rebase-commit>
 
 ```bash
 cd 15-version-control/15.4-git-rebase
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

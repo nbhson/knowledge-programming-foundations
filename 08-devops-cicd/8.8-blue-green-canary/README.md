@@ -21,7 +21,7 @@ Rolling đỡ hơn nhưng rollback vẫn phải rolling ngược. Blue-green/can
 Mô phỏng traffic shifting + so sánh error rate để auto promote/rollback.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 type Strategy = "blue-green" | "canary";
 
@@ -111,7 +111,7 @@ function blueGreenSwitch(): { before: string; after: string } {
 
 ```bash
 cd 08-devops-cicd/8.8-blue-green-canary
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: so sánh 4 strategies → canary tăng dần và auto-rollback khi error vượt ngưỡng → blue-green switch tức thì.

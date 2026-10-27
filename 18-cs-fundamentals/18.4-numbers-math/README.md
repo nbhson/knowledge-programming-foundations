@@ -49,7 +49,7 @@ function isSafeInteger(n: number): boolean {
 ```
 
 > Demo đầy đủ (0.1+0.2, epsilon, cents, BigInt, overflow, NaN) trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`.
+> chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

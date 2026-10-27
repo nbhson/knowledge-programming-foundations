@@ -22,7 +22,7 @@ Async nhanh nhưng eventual; sync chắc nhưng write chậm.
 Mô phỏng primary + replica lag + router read-your-writes.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 class Primary { data = new Map<string, string>(); version = 0; }
 class Replica {
@@ -134,7 +134,7 @@ function route(key: string, justWrote: boolean): "primary" | "replica" {
 
 ```bash
 cd 10-database/10.11-replication
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: sync vs async (latency/mất data) → đọc dính stale → fix bằng read-your-writes.

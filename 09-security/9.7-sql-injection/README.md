@@ -24,7 +24,7 @@ OWASP A03: injection vẫn top 3 sau 20 năm vì quá dễ mắc.
 Mô phỏng query builder vulnerable vs safe (parameterized).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 // ❌ Nối chuỗi: input điều khiển được cấu trúc SQL
 function vulnerable(id: string): string {
@@ -135,7 +135,7 @@ repo.query("... WHERE name = $1", [name]);       // ✅
 
 ```bash
 cd 09-security/9.7-sql-injection
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: 4 payloads kinh điển qua builder vulnerable (đều đổi cấu trúc SQL) vs safe builder (đều thành data vô hại).

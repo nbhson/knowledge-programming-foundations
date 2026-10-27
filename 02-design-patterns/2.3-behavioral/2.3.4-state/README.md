@@ -168,7 +168,7 @@ class Order {
 2.3.4-state/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -177,7 +177,7 @@ class Order {
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.4-state
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

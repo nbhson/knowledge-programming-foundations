@@ -67,7 +67,7 @@ function parseJsonOutput<T>(raw: string, requiredKeys: Array<keyof T>): T {
 ```
 
 > Xem demo đầy đủ (zero/few-shot, CoT, structured output + eval đơn giản) trong `examples/index.ts`
-> — chạy bằng `npx ts-node examples/index.ts`. Mô phỏng hoàn toàn local, không gọi API thật.
+> — chạy bằng `npx tsx examples/index.ts`. Mô phỏng hoàn toàn local, không gọi API thật.
 
 ---
 

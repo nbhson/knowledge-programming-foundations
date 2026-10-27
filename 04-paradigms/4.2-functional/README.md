@@ -287,7 +287,7 @@ function memoize<T extends (...args: any[]) => any>(fn: T): T {
 
 ```bash
 cd 04-paradigms/4.2-functional
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -134,7 +134,7 @@ function readUser(payload: unknown): { name: string } {
 3.1.9-postel-law/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -143,7 +143,7 @@ function readUser(payload: unknown): { name: string } {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.9-postel-law
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

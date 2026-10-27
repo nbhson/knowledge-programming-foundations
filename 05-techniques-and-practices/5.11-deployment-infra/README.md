@@ -653,7 +653,7 @@ Phase 3:  0% old + 100% new  → rollback nếu phát hiện issue
 
 ```bash
 cd 05-techniques-and-practices/5.11-deployment-infra
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

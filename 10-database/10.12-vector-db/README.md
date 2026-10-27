@@ -20,7 +20,7 @@ semantic: embedding(câu 1) · embedding(câu 2) ≈ 0.9 → match ✅
 Cosine similarity thuần + top-k search (không deps).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 function cosine(a: number[], b: number[]): number {
   let dot = 0, na = 0, nb = 0;
@@ -129,7 +129,7 @@ Vector 1536 dims float32 = ~6KB/vector → 10M vectors = 60GB. Quantization nén
 
 ```bash
 cd 10-database/10.12-vector-db
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: cosine giữa các vector mẫu → top-k semantic search → giải thích HNSW trực quan.

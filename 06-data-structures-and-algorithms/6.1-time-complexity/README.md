@@ -289,7 +289,7 @@ function process(arr: number[]): void {
 
 ```bash
 cd 06-data-structures-and-algorithms/6.1-time-complexity
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

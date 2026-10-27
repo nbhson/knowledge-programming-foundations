@@ -356,7 +356,7 @@ app.use('/api/', async (req, res, next) => {
 
 ```bash
 cd 11-networking-apis/11.6-rate-limiting
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: token bucket middleware, Redis sliding window, per-endpoint limits, và 429 response handling. Chú ý cách Redis được dùng làm shared state cho distributed rate limiting.

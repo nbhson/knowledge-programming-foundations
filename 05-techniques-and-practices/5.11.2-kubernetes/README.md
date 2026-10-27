@@ -163,7 +163,7 @@ spec:
 
 ```bash
 cd 05-techniques-and-practices/5.11.2-kubernetes
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

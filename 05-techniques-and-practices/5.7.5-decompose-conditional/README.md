@@ -116,7 +116,7 @@ function isHolidayLocal(joinedOnHoliday: boolean, isExpat: boolean): boolean {
 
 ```bash
 cd 05-techniques-and-practices/5.7.5-decompose-conditional
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

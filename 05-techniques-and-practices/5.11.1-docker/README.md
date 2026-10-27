@@ -159,7 +159,7 @@ CMD ["node", "dist/main.js"]
 
 ```bash
 cd 05-techniques-and-practices/5.11.1-docker
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -22,7 +22,7 @@ Observability biến "đoán" thành "truy vấn": traceId nối mọi log/span 
 Mô phỏng structured log + trace context lan truyền qua services, tính RED metrics.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface Span { traceId: string; service: string; operation: string; durationMs: number; error?: string }
 
@@ -108,7 +108,7 @@ function red(spans: Span[]): { rate: number; errorRate: number; p99: number } {
 
 ```bash
 cd 08-devops-cicd/8.9-observability
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: request đi qua 3 services với traceId → structured logs → tính RED → phát hiện span DB chậm.

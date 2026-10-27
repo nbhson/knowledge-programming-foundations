@@ -229,7 +229,7 @@ Factory function không phải "không phải design pattern" — trong TypeScri
 2.1.2-factory-method/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -238,7 +238,7 @@ Factory function không phải "không phải design pattern" — trong TypeScri
 
 ```bash
 cd 02-design-patterns/2.1-creational/2.1.2-factory-method
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

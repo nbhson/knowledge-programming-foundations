@@ -323,7 +323,7 @@ Sử dụng checklist này để audit design system định kỳ:
 
 ```bash
 cd 16-design-systems/16.6-consistency-guidelines
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

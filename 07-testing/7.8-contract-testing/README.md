@@ -23,7 +23,7 @@ E2E test cả hệ thống thì chậm, flaky. Unit test riêng lẻ thì không
 Mô phỏng Pact consumer-driven: consumer định nghĩa pact, provider verify bằng matching rules.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface PactInteraction {
   description: string;
@@ -117,7 +117,7 @@ function verify(actual: unknown, expected: Record<string, unknown>): string[] {
 
 ```bash
 cd 07-testing/7.8-contract-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: consumer định nghĩa pact → provider pass → provider đổi field (vỡ contract) → sửa bằng matching rule linh hoạt.

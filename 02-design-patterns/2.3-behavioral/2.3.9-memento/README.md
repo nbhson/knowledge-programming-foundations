@@ -186,7 +186,7 @@ class CheckpointManager {
 2.3.9-memento/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -195,7 +195,7 @@ class CheckpointManager {
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.9-memento
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

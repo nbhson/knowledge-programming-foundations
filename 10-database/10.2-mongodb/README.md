@@ -451,7 +451,7 @@ db.collection.aggregate([
 
 ```bash
 cd 10-database/10.2-mongodb
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: CRUD operations, aggregation pipeline execution, và index creation. Để ý cách TypeScript typing được áp dụng với MongoDB driver — interface `User` map thẳng sang document shape.

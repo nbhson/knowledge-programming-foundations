@@ -119,7 +119,7 @@ function payroll(hours: number, rate: number): number {
 
 ```bash
 cd 05-techniques-and-practices/5.7.3-inline-method
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

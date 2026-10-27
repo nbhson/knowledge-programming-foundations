@@ -211,7 +211,7 @@ Nếu chỉ pick B mà không pick A:
 
 ```bash
 cd 15-version-control/15.5-git-cherry-pick
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

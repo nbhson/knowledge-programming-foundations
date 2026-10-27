@@ -83,7 +83,7 @@ function evaluate(input: string): number {
 ```
 
 > Lexer/parser/evaluator đầy đủ + AST in đẹp + test cases trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`.
+> chạy bằng `npx tsx examples/index.ts`.
 
 ---
 
@@ -116,7 +116,7 @@ function evaluate(input: string): number {
 
 ## 🔗 Liên Quan
 
-- [17.5 AI Agents](../17-ai-llm-engineering/17.5-ai-agents/README.md) — calculator tool an toàn cho agent.
+- [17.5 AI Agents](../../17-ai-llm-engineering/17.5-ai-agents/README.md) — calculator tool an toàn cho agent.
 - [04-paradigms](../../04-paradigms/README.md) — interpreter pattern và declarative DSL.
 - [18.3 Encoding Data](../18.3-encoding-data/README.md) — source text cũng là byte/charset trước khi lex.
 

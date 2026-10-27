@@ -190,7 +190,7 @@ class OrderService {
 1.4-layered-architecture/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Order Processing demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Order Processing demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout "theo layer" điển hình (so với "theo feature" — xem 5.9.2):
@@ -213,7 +213,7 @@ Layout này có nhược điểm: một tính năng "đặt hàng" bị rải ra
 
 ```bash
 cd 01-architecture/1.4-layered-architecture
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Quan sát luồng: Service **import trực tiếp** Repository class (không qua interface). Đó chính là "phụ thuộc xuôi chiều" — và là thứ Clean Architecture sẽ sửa.

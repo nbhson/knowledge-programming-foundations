@@ -22,7 +22,7 @@ Xóa sau cũng vô ích — Git nhớ tất cả, attacker scan GitHub realtime.
 Mô phỏng env loader an toàn: required secrets, redaction khi log, phân biệt secret/config.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 // Loader: thiếu secret bắt buộc → fail-fast lúc boot, không chạy nửa chừng
 function requireSecret(name: string): string {
@@ -145,7 +145,7 @@ GitHub Actions ──JWT (repo, branch, workflow)──▶ AWS STS AssumeRoleWit
 
 ```bash
 cd 09-security/9.9-secrets-management
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: loader fail-fast khi thiếu secret → redact log → mô phỏng rotation (đổi key không đụng code).

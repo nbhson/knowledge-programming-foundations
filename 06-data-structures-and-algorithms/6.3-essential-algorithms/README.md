@@ -514,7 +514,7 @@ function bfsShortestPath(graph: Map<string, string[]>, start: string, end: strin
 
 ```bash
 cd 06-data-structures-and-algorithms/6.3-essential-algorithms
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

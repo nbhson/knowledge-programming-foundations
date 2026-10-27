@@ -22,7 +22,7 @@ Vấn đề: developer bấm `-u` (update) mù quáng → snapshot sai cũng th�
 Mô phỏng serializer + so sánh snapshot, kèm ví dụ snapshot tốt/xấu.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 // Serializer: object → chuỗi ổn định (sort keys để diff deterministic)
 function serialize(value: unknown): string {
@@ -105,7 +105,7 @@ function matchSnapshot(stored: string, received: unknown): { pass: boolean; diff
 
 ```bash
 cd 07-testing/7.9-snapshot-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: snapshot pass → thay đổi có chủ đích (fail + diff) → snapshot xấu chứa timestamp (flaky) → cách fix bằng serializer.

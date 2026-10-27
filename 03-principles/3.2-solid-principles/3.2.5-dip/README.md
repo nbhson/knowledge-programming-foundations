@@ -267,7 +267,7 @@ class InMemoryOrderRepo implements OrderRepository { /* ... */ }
 3.2.5-dip/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -276,7 +276,7 @@ class InMemoryOrderRepo implements OrderRepository { /* ... */ }
 
 ```bash
 cd 03-principles/3.2-solid-principles/3.2.5-dip
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---
@@ -292,4 +292,4 @@ npx ts-node examples/index.ts
 
 ## ⏭️ Bài tiếp theo
 
-→ [04-paradigms](../../04-paradigms/README.md)
+→ [04-paradigms](../../../04-paradigms/README.md)

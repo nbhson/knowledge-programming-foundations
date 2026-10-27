@@ -130,7 +130,7 @@ class ReportService {
 3.1.4-soc/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -139,7 +139,7 @@ class ReportService {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.4-soc
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

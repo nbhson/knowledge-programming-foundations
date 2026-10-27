@@ -168,7 +168,7 @@ app.get('/api/profile', authMiddleware, (req, res) => {
 
 ```bash
 cd 05-techniques-and-practices/5.4.1-jwt-authentication
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

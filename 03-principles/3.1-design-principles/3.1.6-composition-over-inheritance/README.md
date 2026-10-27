@@ -119,7 +119,7 @@ class Penguin {
 3.1.6-composition-over-inheritance/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -128,7 +128,7 @@ class Penguin {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.6-composition-over-inheritance
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

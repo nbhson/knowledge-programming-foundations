@@ -254,7 +254,7 @@ class Store {
 
 ```bash
 cd 04-paradigms/4.3-reactive
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

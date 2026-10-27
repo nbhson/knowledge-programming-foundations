@@ -56,7 +56,7 @@ function search(query: number[], docs: Doc[], k: number): Array<Doc & { score: n
 ```
 
 > Demo đầy đủ (hash-embedding giả lập + cosine + search trên corpus tiếng Việt) trong
-> `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`. Không gọi API embedding thật.
+> `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`. Không gọi API embedding thật.
 
 ---
 

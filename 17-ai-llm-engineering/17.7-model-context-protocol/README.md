@@ -52,7 +52,7 @@ host.listAllCapabilities();                              // liệt kê mọi too
 host.invoke("company-tools", "lookup_order", { id: "A2" }); // gọi tool → nhận result
 ```
 
-> Xem đầy đủ trong `examples/index.ts` — chạy: `npx ts-node examples/index.ts`
+> Xem đầy đủ trong `examples/index.ts` — chạy: `npx tsx examples/index.ts`
 
 **So sánh cách nối AI ↔ tools:**
 
@@ -113,7 +113,7 @@ host.invoke("company-tools", "lookup_order", { id: "A2" }); // gọi tool → nh
 
 ```bash
 cd 17-ai-llm-engineering/17.7-model-context-protocol
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

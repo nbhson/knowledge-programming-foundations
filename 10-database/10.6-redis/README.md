@@ -519,7 +519,7 @@ auto-aof-rewrite-min-size 64mb    # Minimum AOF size before trigger
 
 ```bash
 cd 10-database/10.6-redis
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: cache-aside pattern, rate limiting, leaderboard (sorted set), pub/sub messaging, và distributed lock. Chú ý cách mỗi pattern sử dụng data structure phù hợp — String cho cache, Sorted Set cho leaderboard, List cho queue.
@@ -528,4 +528,4 @@ Demo bao gồm: cache-aside pattern, rate limiting, leaderboard (sorted set), pu
 
 ## ⏭️ Bạn đã hoàn thành nhóm Database! 🎉
 
-Tiếp theo: [11. Networking & APIs](../11-networking-apis/README.md) — tìm hiểu cách các hệ thống giao tiếp qua network.
+Tiếp theo: [11. Networking & APIs](../../11-networking-apis/README.md) — tìm hiểu cách các hệ thống giao tiếp qua network.

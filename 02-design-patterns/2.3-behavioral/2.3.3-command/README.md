@@ -191,7 +191,7 @@ tickets.forEach(t => t.execute());
 2.3.3-command/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -200,7 +200,7 @@ tickets.forEach(t => t.execute());
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.3-command
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

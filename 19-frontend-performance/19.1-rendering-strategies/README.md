@@ -52,7 +52,7 @@ function simulateBuild(routes: RouteSpec[]): string[] {
 ```
 
 > Demo đầy đủ (ma trận chọn + simulate build + hydration checklist) trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`.
+> chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

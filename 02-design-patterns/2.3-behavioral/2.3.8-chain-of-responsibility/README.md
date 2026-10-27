@@ -188,7 +188,7 @@ app.use((req, res) => {
 2.3.8-chain-of-responsibility/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -197,7 +197,7 @@ app.use((req, res) => {
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.8-chain-of-responsibility
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---
@@ -211,4 +211,4 @@ npx ts-node examples/index.ts
 
 ## 📚 Tổng kết Behavioral
 
-→ Tiếp theo: [03 Principles](../../03-principles/README.md)
+→ Tiếp theo: [03 Principles](../../../03-principles/README.md)

@@ -11,8 +11,8 @@
 
 | # | Chủ đề | Giải thích | Link |
 |---|--------|-----------|------|
-| 6.1 | Time Complexity (Độ Phức Tạp Thời Gian) | Big O Notation — đo hiệu suất thuật toán khi input tăng | [6.1-time-complexity](6.1-time-complexity/README.md) |
-| 6.2 | Core Data Structures (Cấu Trúc Dữ Liệu Cốt Lõi) | Array, Stack, Queue, Linked List, Tree, BST, Graph, HashMap | [6.2-core-data-structures](6.2-core-data-structures/README.md) |
+| 6.1 | Time Complexity (Độ Phức Tạp Thời Gian) | Big O Notation — đo hiệu suất thuật toán khi input tăng | [6.1-time-complexity](../6.1-time-complexity/README.md) |
+| 6.2 | Core Data Structures (Cấu Trúc Dữ Liệu Cốt Lõi) | Array, Stack, Queue, Linked List, Tree, BST, Graph, HashMap | [6.2-core-data-structures](README.md) |
 | 6.3 | Essential Algorithms (Thuật Toán Cốt Lõi) | Sorting, Searching, DP, Greedy, Backtracking, Graph algorithms | [6.3-essential-algorithms](../6.3-essential-algorithms/README.md) |
 
 ---
@@ -1049,7 +1049,7 @@ Right(i)  = 2i + 2
 
 ```bash
 cd 06-data-structures-and-algorithms/6.2-core-data-structures
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

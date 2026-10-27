@@ -133,7 +133,7 @@ class CircuitBreaker {
 5.6.1-circuit-breaker/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -142,7 +142,7 @@ class CircuitBreaker {
 
 ```bash
 cd 05-techniques-and-practices/5.6-error-handling-techniques/5.6.1-circuit-breaker
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

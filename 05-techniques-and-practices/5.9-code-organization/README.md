@@ -272,7 +272,7 @@ Cách này tận dụng lợi ích của cả hai: business logic đóng gói th
 
 ```bash
 cd 05-techniques-and-practices/5.9-code-organization
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

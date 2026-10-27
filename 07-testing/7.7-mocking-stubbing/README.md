@@ -377,7 +377,7 @@ Chạy demo Stub/Mock/Spy/Fake viết tay (không cần vi.fn/vi.spyOn):
 
 ```bash
 cd 07-testing/7.7-mocking-stubbing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

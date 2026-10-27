@@ -469,7 +469,7 @@ extractUserName('not-json');          // { ok: false, error: SyntaxError }
 
 ```bash
 cd 05-techniques-and-practices/5.12-functional-concepts
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -62,11 +62,11 @@ Thứ tự gợi ý: `18.1 → 18.2 → 18.3 → 18.4 → 18.5`.
 ```bash
 # Ví dụ mô phỏng Round-Robin scheduler
 cd 18-cs-fundamentals/18.1-operating-systems
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # Ví dụ mini expression evaluator
 cd ../18.5-compilers-interpreters
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Mọi ví dụ thuần TypeScript, strict ES2020, không dependencies ngoài.

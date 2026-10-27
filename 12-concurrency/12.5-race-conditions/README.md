@@ -280,7 +280,7 @@ await db.query(
 
 ```bash
 cd 12-concurrency/12.5-race-conditions
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

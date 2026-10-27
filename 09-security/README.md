@@ -26,10 +26,10 @@
 ## ▶️ Chạy ví dụ (bài 9.7–9.10)
 
 ```bash
-cd 09-security/9.7-sql-injection && npx ts-node examples/index.ts
-cd 09-security/9.8-password-hashing && npx ts-node examples/index.ts
-cd 09-security/9.9-secrets-management && npx ts-node examples/index.ts
-cd 09-security/9.10-mtls-zero-trust && npx ts-node examples/index.ts
+cd 09-security/9.7-sql-injection && npx tsx examples/index.ts
+cd 09-security/9.8-password-hashing && npx tsx examples/index.ts
+cd 09-security/9.9-secrets-management && npx tsx examples/index.ts
+cd 09-security/9.10-mtls-zero-trust && npx tsx examples/index.ts
 ```
 
 ---

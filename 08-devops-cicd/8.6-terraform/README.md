@@ -555,7 +555,7 @@ Chạy demo HCL + mô phỏng `terraform plan`/`apply` (idempotent):
 
 ```bash
 cd 08-devops-cicd/8.6-terraform
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

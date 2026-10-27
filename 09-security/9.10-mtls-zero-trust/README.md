@@ -21,7 +21,7 @@ Zero Trust: mỗi service có identity (certificate ngắn hạn), mỗi call ve
 Mô phỏng mTLS handshake (đổi cert 2 chiều) + policy check (zero-trust authorize từng request).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface Cert { cn: string; expiresAt: number; revoked: boolean }
 
@@ -125,7 +125,7 @@ Sai lầm phổ biến: "có VPN + VPC private subnet là zero trust". **Không 
 
 ```bash
 cd 09-security/9.10-mtls-zero-trust
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: handshake thành công → cert hết hạn/revoke bị từ chối → handshake ok nhưng policy deny (zero-trust không tin mù).

@@ -164,7 +164,7 @@ class NotificationService { sendConfirmation(order: Order): void { /* ... */ } }
 ├── README.md           # File này
 ├── violations.md        # Các vi phạm SRP phổ biến
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -173,7 +173,7 @@ class NotificationService { sendConfirmation(order: Order): void { /* ... */ } }
 
 ```bash
 cd 03-principles/3.2-solid-principles/3.2.1-srp
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

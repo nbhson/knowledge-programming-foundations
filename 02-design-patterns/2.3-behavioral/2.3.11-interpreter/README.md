@@ -194,7 +194,7 @@ class And implements Rule {
 2.3.11-interpreter/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -203,7 +203,7 @@ class And implements Rule {
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.11-interpreter
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

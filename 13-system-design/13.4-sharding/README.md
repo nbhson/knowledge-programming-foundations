@@ -230,7 +230,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 13-system-design/13.4-sharding
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

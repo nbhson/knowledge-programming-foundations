@@ -279,7 +279,7 @@ const color = tokens.colors.primary; // '#3B82F6'
 
 ```bash
 cd 16-design-systems/16.1-tokens
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -74,16 +74,16 @@
 ```bash
 # Chạy từng leaf (ví dụ)
 cd 17-ai-llm-engineering/17.1-prompt-engineering
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 cd ../17.2-embeddings
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 cd ../17.3-rag
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
-Mỗi leaf đều có `examples/index.ts` chạy độc lập, không dependencies ngoài `typescript` + `ts-node`.
+Mỗi leaf đều có `examples/index.ts` chạy độc lập, không dependencies ngoài `typescript` + `tsx`.
 
 ---
 

@@ -613,7 +613,7 @@ const { data: user, error, isLoading, mutate } = useSWR(
 
 ```bash
 cd 11-networking-apis/11.5-rest-clients
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: typed API service, retry with exponential backoff, error handling patterns, request cancellation, và interceptor usage.

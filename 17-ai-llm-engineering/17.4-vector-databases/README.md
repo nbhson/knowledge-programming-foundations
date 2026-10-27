@@ -61,7 +61,7 @@ function annSearch(
 ```
 
 > Mô phỏng đầy đủ (brute-force vs IVF-partition + metadata filter + đo recall) trong
-> `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`.
+> `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

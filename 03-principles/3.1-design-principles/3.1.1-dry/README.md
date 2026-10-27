@@ -153,7 +153,7 @@ DRY quá mức cũng gây hại:
 3.1.1-dry/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -162,7 +162,7 @@ DRY quá mức cũng gây hại:
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.1-dry
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

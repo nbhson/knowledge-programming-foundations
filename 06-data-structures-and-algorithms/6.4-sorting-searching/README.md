@@ -185,7 +185,7 @@ function binarySearch(arr: number[], target: number): number {
 
 ```bash
 cd 06-data-structures-and-algorithms/6.4-sorting-searching
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: đếm số phép so sánh của 4 thuật toán sort trên cùng input + so sánh số bước linear vs binary search.

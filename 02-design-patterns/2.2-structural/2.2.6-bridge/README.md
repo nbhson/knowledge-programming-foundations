@@ -180,7 +180,7 @@ class Button implements Widget {
 2.2.6-bridge/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -189,7 +189,7 @@ class Button implements Widget {
 
 ```bash
 cd 02-design-patterns/2.2-structural/2.2.6-bridge
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

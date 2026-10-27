@@ -320,7 +320,7 @@ ID Token payload example:
 
 ```bash
 cd 09-security/9.3-oauth2
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -142,7 +142,7 @@ Ví dụ [`examples/index.ts`](examples/index.ts) mô phỏng **4 pha + vòng l�
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.12-rad
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

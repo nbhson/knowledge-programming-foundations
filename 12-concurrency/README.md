@@ -26,10 +26,10 @@
 ## ▶️ Chạy ví dụ (bài 12.7–12.10)
 
 ```bash
-cd 12-concurrency/12.7-threads-processes && npx ts-node examples/index.ts
-cd 12-concurrency/12.8-locks-deadlock && npx ts-node examples/index.ts
-cd 12-concurrency/12.9-thread-pools && npx ts-node examples/index.ts
-cd 12-concurrency/12.10-backpressure && npx ts-node examples/index.ts
+cd 12-concurrency/12.7-threads-processes && npx tsx examples/index.ts
+cd 12-concurrency/12.8-locks-deadlock && npx tsx examples/index.ts
+cd 12-concurrency/12.9-thread-pools && npx tsx examples/index.ts
+cd 12-concurrency/12.10-backpressure && npx tsx examples/index.ts
 ```
 
 ---

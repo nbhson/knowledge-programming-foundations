@@ -280,7 +280,7 @@ Chạy demo micro-benchmark so sánh thuật toán (không cần k6/Artillery):
 
 ```bash
 cd 07-testing/7.6-performance-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -23,7 +23,7 @@ Local 1ms/query không thấy; production 20ms × 101 = 2 giây + cạn pool.
 Mô phỏng query counter: lazy (N+1) vs batch (`WHERE IN`) vs DataLoader (gom + cache).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 let queryCount = 0;
 // Lazy: mỗi user 1 query
@@ -112,7 +112,7 @@ async function ordersOfMany(ids: number[]): Promise<Map<number, Order[]>> {
 
 ```bash
 cd 10-database/10.9-n-plus-one
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: đếm query lazy (101) vs batch (2) vs DataLoader (2 + cache hit lần 2).

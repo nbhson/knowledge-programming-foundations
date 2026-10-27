@@ -144,7 +144,7 @@ Ví dụ `examples/index.ts` mô phỏng **Kanban board với WIP limit**:
 5.2.2-kanban/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Mô phỏng Kanban board + WIP limit (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mô phỏng Kanban board + WIP limit (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -153,7 +153,7 @@ Ví dụ `examples/index.ts` mô phỏng **Kanban board với WIP limit**:
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.2-kanban
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

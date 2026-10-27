@@ -199,7 +199,7 @@ Khi tách Inventory → microservice, code trong `OrderService` **giữ nguyên*
 1.14-modular-monolith/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Mini Shop demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mini Shop demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout module-per-feature (preferred):
@@ -228,7 +228,7 @@ src/
 
 ```bash
 cd 01-architecture/1.14-modular-monolith
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Nhấn mạnh: trong demo, `OrdersModule` không biết `InventoryModule` là class nào — chỉ biết `IInventoryPort`. Đây là boundary đang làm việc.

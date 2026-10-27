@@ -50,7 +50,7 @@ function translateAddress(virtualAddr: number, pageSize: number, pageTable: Map<
 ```
 
 > Demo đầy đủ (stack/heap, đo locality, dịch địa chỉ ảo, mô phỏng leak) trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`.
+> chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

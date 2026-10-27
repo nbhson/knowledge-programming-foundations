@@ -168,7 +168,7 @@ model.onChange(() => view.render(model.value));
 1.11-mvc/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Counter demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Counter demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout điển hình web MVC (Express/Laravel-style):
@@ -189,7 +189,7 @@ src/
 
 ```bash
 cd 01-architecture/1.11-mvc
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Quan sát demo: `CounterModel` phát thông báo → View mới render. Thử tưởng tượng thêm một View thứ hai (log ra file) subscribe cùng Model — cả hai cập nhật mà Controller không đổi gì. Đó chính là sức mạnh của observer + separation.

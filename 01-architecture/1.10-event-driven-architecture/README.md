@@ -190,7 +190,7 @@ Bạn có thể có EDA mà không cần Event Sourcing (publish notification t�
 1.10-event-driven-architecture/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Order Processing demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Order Processing demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout trong dự án thật (theo event ownership):
@@ -216,7 +216,7 @@ src/
 
 ```bash
 cd 01-architecture/1.10-event-driven-architecture
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy để ý thứ tự log: `OrderService` publish rồi **trả về ngay**, consumers chạy sau. Thêm một dòng `bus.subscribe('OrderCreated', analyticsService)` — producer không đổi gì. Đó là Open/Closed principle ở tầng kiến trúc.

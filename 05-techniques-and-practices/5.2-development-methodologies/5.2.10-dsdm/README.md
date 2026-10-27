@@ -146,7 +146,7 @@ Timebox "Release 1 — 2 tuần" (năng lực 10 effort)
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.10-dsdm
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

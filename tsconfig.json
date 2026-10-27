@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
+"include": [
     "01-architecture/**/*.ts",
     "02-design-patterns/**/*.ts",
     "03-principles/**/*.ts",
@@ -28,6 +28,17 @@
     "16-design-systems/**/*.ts",
     "17-ai-llm-engineering/**/*.ts",
     "18-cs-fundamentals/**/*.ts",
-    "19-frontend-performance/**/*.ts"
+    "19-frontend-performance/**/*.ts",
+    "20-advanced-cs-fundamentals/**/*.ts",
+    "21-build-compile-package-management/**/*.ts",
+    "22-debugging-logging-profiling/**/*.ts",
+    "23-text-parsing-ast/**/*.ts",
+    "24-file-systems-io/**/*.ts",
+    "25-ipc-interprocess-communication/**/*.ts",
+    "26-cryptography-advanced/**/*.ts",
+    "27-dependency-injection/**/*.ts",
+    "28-documentation-adr/**/*.ts",
+    "29-i18n-l10n/**/*.ts",
+    "30-code-review-best-practices/**/*.ts"
   ]
 }

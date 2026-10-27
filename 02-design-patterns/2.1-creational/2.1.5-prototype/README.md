@@ -203,7 +203,7 @@ class Point {
 2.1.5-prototype/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -212,7 +212,7 @@ class Point {
 
 ```bash
 cd 02-design-patterns/2.1-creational/2.1.5-prototype
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

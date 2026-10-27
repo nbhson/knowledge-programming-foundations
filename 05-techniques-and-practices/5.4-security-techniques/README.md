@@ -435,7 +435,7 @@ res.setHeader('X-Frame-Options', 'DENY');  // prevent iframe embedding
 
 ```bash
 cd 05-techniques-and-practices/5.4-security-techniques
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

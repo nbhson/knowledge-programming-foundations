@@ -172,7 +172,7 @@ document.body.appendChild(div);  // recursive rendering
 2.2.5-composite/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -181,7 +181,7 @@ document.body.appendChild(div);  // recursive rendering
 
 ```bash
 cd 02-design-patterns/2.2-structural/2.2.5-composite
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

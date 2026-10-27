@@ -160,7 +160,7 @@ class OrderController {
 3.1.7-grasp/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -169,7 +169,7 @@ class OrderController {
 
 ```bash
 cd 03-principles/3.1-design-principles/3.1.7-grasp
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

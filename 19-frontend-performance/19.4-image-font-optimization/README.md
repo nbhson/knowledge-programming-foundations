@@ -50,7 +50,7 @@ function fontFace(family: string, url: string): string {
 ```
 
 > Checklist + demo chọn ảnh + sinh snippet trong `examples/index.ts` —
-> chạy bằng `npx ts-node examples/index.ts`.
+> chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

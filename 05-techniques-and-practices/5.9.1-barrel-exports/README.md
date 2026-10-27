@@ -111,7 +111,7 @@ import { UserRepository, UserService, makeUser } from "./domain";
 
 ```bash
 cd 05-techniques-and-practices/5.9.1-barrel-exports
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

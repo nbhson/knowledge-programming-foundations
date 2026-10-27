@@ -176,7 +176,7 @@ for (const song of playlist) console.log(song); // A, B
 2.3.6-iterator/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -185,7 +185,7 @@ for (const song of playlist) console.log(song); // A, B
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.6-iterator
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

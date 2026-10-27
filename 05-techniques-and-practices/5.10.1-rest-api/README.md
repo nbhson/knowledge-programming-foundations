@@ -142,7 +142,7 @@ router.register("DELETE", "/api/books/:id", deleteBook);       // 204 | 404
 
 ```bash
 cd 05-techniques-and-practices/5.10.1-rest-api
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

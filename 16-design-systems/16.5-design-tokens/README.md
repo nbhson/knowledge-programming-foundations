@@ -273,7 +273,7 @@ tokens/*.json (DTCG)
 
 ```bash
 cd 16-design-systems/16.5-design-tokens
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 > Ví dụ minh họa cơ chế **alias resolve + sinh CSS variables đa theme** —

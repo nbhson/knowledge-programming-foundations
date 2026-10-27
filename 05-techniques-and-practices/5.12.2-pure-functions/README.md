@@ -142,7 +142,7 @@ function priceWithTaxPure(price: number, taxRate: number): number {
 
 ```bash
 cd 05-techniques-and-practices/5.12.2-pure-functions
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

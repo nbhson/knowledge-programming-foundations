@@ -201,7 +201,7 @@ assert(view.count === 1);
 1.12-mvp/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Counter demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Counter demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout thực tế:
@@ -221,7 +221,7 @@ src/features/userProfile/
 
 ```bash
 cd 01-architecture/1.12-mvp
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy thử đọc và chạy **bản test**: tạo `FakeCounterView` thay thế cho `ConsoleCounterView`, chạy Presenter với fake → kết quả giống hệt. Đó là sức mạnh testability.

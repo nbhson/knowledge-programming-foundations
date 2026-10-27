@@ -338,7 +338,7 @@ ANALYZE verbose users;               -- detailed output
 
 ```bash
 cd 10-database/10.5-indexes
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo minh họa: tạo các loại index, chạy EXPLAIN ANALYZE trước/sau khi thêm index, và so sánh execution time.

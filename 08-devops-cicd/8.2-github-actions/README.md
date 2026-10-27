@@ -743,7 +743,7 @@ Chạy demo workflow YAML + mô phỏng pipeline:
 
 ```bash
 cd 08-devops-cicd/8.2-github-actions
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -629,7 +629,7 @@ class DistributedChatServer {
 
 ```bash
 cd 11-networking-apis/11.4-websockets
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: WebSocket server (chat), client với auto-reconnect, SSE stream, và broadcast patterns. Để ý cách handshake hoạt động qua HTTP và transition sang WebSocket protocol.

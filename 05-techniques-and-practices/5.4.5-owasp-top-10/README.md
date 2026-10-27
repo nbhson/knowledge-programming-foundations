@@ -191,7 +191,7 @@ app.use((err, req, res, next) => {
 
 ```bash
 cd 05-techniques-and-practices/5.4.5-owasp-top-10
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

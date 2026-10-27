@@ -132,7 +132,7 @@ Demo in từng bước thu hẹp `good..bad`, so sánh với duyệt tuyến tí
 
 ```bash
 cd 15-version-control/15.10-bisect-blame
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

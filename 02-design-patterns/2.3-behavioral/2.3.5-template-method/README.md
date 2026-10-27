@@ -184,7 +184,7 @@ abstract class Pipeline {
 2.3.5-template-method/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -193,7 +193,7 @@ abstract class Pipeline {
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.5-template-method
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

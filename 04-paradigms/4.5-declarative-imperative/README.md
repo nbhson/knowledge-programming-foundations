@@ -166,7 +166,7 @@ function processUsers(users: User[]): Report {
 
 ```bash
 cd 04-paradigms/4.5-declarative-imperative
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

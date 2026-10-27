@@ -162,7 +162,7 @@ aapl.setPrice(145); // cả 2 nhận
 2.3.2-observer/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -171,7 +171,7 @@ aapl.setPrice(145); // cả 2 nhận
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.2-observer
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

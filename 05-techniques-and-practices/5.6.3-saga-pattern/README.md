@@ -126,7 +126,7 @@ runSaga([
 5.6.3-saga-pattern/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -135,7 +135,7 @@ runSaga([
 
 ```bash
 cd 05-techniques-and-practices/5.6-error-handling-techniques/5.6.3-saga-pattern
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -170,7 +170,7 @@ class DynamicArray {
 
 ```bash
 cd 06-data-structures-and-algorithms/6.8-recursion-complexity
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: so sánh depth/stack của đệ quy vs lặp, minh họa amortized push, đo space của merge vs quick, liệt kê bài P vs NP-complete.

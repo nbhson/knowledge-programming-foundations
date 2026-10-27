@@ -118,7 +118,7 @@ uow.commit(); // all-or-nothing
 
 ```bash
 cd 05-techniques-and-practices/5.8.2-unit-of-work
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -19,7 +19,7 @@ TLS 1.0 + RC4 → attacker giải mã được 💥 | cert hết hạn → brows
 Mô phỏng cipher negotiation: client/server chọn suite mạnh nhất cùng hỗ trợ + quyết định TLS version.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 const STRENGTH: Record<string, number> = {
   "TLS_AES_128_GCM_SHA256": 3,      // 1.3, mạnh
@@ -121,7 +121,7 @@ Handshake tốn kém (CPU crypto + 1 RTT) — client quay lại nhanh hơn bằn
 
 ```bash
 cd 11-networking-apis/11.9-tls-handshake
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: 1.2 (2-RTT) vs 1.3 (1-RTT) → negotiate cipher mạnh nhất chung → từ chối cipher yếu → nhắc mTLS.

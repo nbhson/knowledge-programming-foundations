@@ -111,7 +111,7 @@ class FbFeatureApp {
 
 ```bash
 cd 05-techniques-and-practices/5.9.2-feature-based-organization
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

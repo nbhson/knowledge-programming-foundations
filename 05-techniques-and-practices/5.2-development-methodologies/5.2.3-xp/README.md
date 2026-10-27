@@ -159,7 +159,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng lặp TDD**:
 5.2.3-xp/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Mô phỏng TDD cycle (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mô phỏng TDD cycle (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -168,7 +168,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng lặp TDD**:
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.3-xp
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

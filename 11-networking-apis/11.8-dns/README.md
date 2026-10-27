@@ -20,7 +20,7 @@ TTL 5:     mỗi request 1 query DNS → +50ms + tốn tiền 💥
 Mô phỏng resolver có cache + TTL: hit/miss, expire, và so sánh TTL thấp/cao.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface Record { ip: string; expiresAt: number }
 
@@ -129,7 +129,7 @@ class Resolver {
 
 ```bash
 cd 11-networking-apis/11.8-dns
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: resolution chain → cache hit/miss theo TTL → đổi IP với TTL cao (kẹt) vs hạ TTL trước (mượt).

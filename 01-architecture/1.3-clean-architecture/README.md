@@ -205,7 +205,7 @@ Clean Architecture **không cạnh tranh** với DDD — nó quy định **hình
 1.3-clean-architecture/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Order Processing demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Order Processing demo (chạy: npx tsx examples/index.ts)
 ```
 
 Cấu trúc thường gặp trong dự án thật (theo feature × layer):
@@ -232,7 +232,7 @@ src/
 
 ```bash
 cd 01-architecture/1.3-clean-architecture
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Khi chạy, để ý: `Order` và `CreateOrderUseCase` không hề nhắc tới Express/DB. Thêm một "database" mới chỉ cần thêm adapter — đó là bằng chứng trực quan của Dependency Rule.

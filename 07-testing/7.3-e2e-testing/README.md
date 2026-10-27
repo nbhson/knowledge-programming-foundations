@@ -381,7 +381,7 @@ Chạy demo mô phỏng user flow (không cần Playwright/browser):
 
 ```bash
 cd 07-testing/7.3-e2e-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

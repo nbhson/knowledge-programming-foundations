@@ -148,7 +148,7 @@ function checkoutTotalPure(cart: Cart): number {
 
 ```bash
 cd 05-techniques-and-practices/5.12.3-side-effects
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

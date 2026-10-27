@@ -318,7 +318,7 @@ res.json({ accessToken });
 
 ```bash
 cd 09-security/9.2-jwt-authentication
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

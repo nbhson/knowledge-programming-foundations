@@ -202,7 +202,7 @@ import { db } from './db';  // luôn là cùng instance
 2.1.1-singleton/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -211,7 +211,7 @@ import { db } from './db';  // luôn là cùng instance
 
 ```bash
 cd 02-design-patterns/2.1-creational/2.1.1-singleton
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

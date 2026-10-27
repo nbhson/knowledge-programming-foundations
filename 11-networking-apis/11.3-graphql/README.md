@@ -891,7 +891,7 @@ useEffect(() => {
 
 ```bash
 cd 11-networking-apis/11.3-graphql
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo bao gồm: schema definition, query/mutation execution, nested resolvers, và subscription setup. Chú ý cách TypeScript typing được áp dụng cho resolvers và how Apollo cache auto-optimizes repeated queries.

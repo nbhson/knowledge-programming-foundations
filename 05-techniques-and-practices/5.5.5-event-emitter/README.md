@@ -149,7 +149,7 @@ emitter.emit('user:login', { id: '1', name: 'John' });
 
 ```bash
 cd 05-techniques-and-practices/5.5.5-event-emitter
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

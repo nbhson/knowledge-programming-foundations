@@ -22,7 +22,7 @@ SLO + error budget biến tranh cãi thành chính sách số học.
 Tính error budget còn lại và quyết định release/hold.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface SloWindow { goodEvents: number; totalEvents: number; slo: number }
 
@@ -115,7 +115,7 @@ errorBudget({ goodEvents: 999_500, totalEvents: 1_000_000, slo: 0.999 });
 
 ```bash
 cd 08-devops-cicd/8.10-sre-slo
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: tính budget SLO 99.9% → còn budget (release) → cháy budget (freeze + alert) → so sánh burn nhanh/chậm.

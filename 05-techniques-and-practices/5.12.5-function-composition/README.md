@@ -148,7 +148,7 @@ const result = normalizeTitle(input); // test normalizeTitle riêng, không cầ
 
 ```bash
 cd 05-techniques-and-practices/5.12.5-function-composition
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

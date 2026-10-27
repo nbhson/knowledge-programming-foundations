@@ -265,7 +265,7 @@ flyway undo -baselineVersion=1 -target=3
 
 ```bash
 cd 10-database/10.4-migrations
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo minh họa: tạo migration, apply migration, rollback migration, và kiểm tra migration status.

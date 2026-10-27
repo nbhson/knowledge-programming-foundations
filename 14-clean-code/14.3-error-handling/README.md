@@ -267,7 +267,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 14-clean-code/14.3-error-handling
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

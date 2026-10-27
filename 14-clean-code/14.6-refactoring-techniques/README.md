@@ -196,7 +196,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 14-clean-code/14.6-refactoring-techniques
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

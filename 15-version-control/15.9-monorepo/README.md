@@ -112,7 +112,7 @@ Demo chạy 3 kịch bản: full graph 4 tầng → đổi `mobile` chỉ build 
 
 ```bash
 cd 15-version-control/15.9-monorepo
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

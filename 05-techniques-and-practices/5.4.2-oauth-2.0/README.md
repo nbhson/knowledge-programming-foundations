@@ -200,7 +200,7 @@ async function getGoogleProfile(accessToken: string): Promise<GoogleProfile> {
 
 ```bash
 cd 05-techniques-and-practices/5.4.2-oauth-2.0
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -143,7 +143,7 @@ Demo chạy 4 đợt release: patch (chỉ fix) → minor (có feat) → major (
 
 ```bash
 cd 15-version-control/15.7-conventional-commits
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

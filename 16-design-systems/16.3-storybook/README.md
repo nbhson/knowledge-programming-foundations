@@ -390,7 +390,7 @@ npx storybook build -o docs
 
 ```bash
 cd 16-design-systems/16.3-storybook
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

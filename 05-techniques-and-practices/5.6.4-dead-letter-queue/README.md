@@ -136,7 +136,7 @@ console.log("DLQ:", DLQ.map((m) => m.id));      // [2]
 5.6.4-dead-letter-queue/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -145,7 +145,7 @@ console.log("DLQ:", DLQ.map((m) => m.id));      // [2]
 
 ```bash
 cd 05-techniques-and-practices/5.6-error-handling-techniques/5.6.4-dead-letter-queue
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

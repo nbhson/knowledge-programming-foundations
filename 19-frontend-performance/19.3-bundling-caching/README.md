@@ -54,7 +54,7 @@ function cacheHeader(fileName: string): string {
 ```
 
 > Mô phỏng đầy đủ (chunking + manifest + so sánh deploy cũ/mới + cache headers) trong
-> `examples/index.ts` — chạy bằng `npx ts-node examples/index.ts`.
+> `examples/index.ts` — chạy bằng `npx tsx examples/index.ts`.
 
 ---
 

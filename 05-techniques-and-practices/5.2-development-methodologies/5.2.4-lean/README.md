@@ -155,7 +155,7 @@ Hiệu quả giá trị: thấp            Hiệu quả giá trị: cao (100%)
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.4-lean
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

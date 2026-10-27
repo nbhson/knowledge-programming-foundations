@@ -666,7 +666,7 @@ Ref: https://owasp.org/Top10/2025/ — [A10:2025 đầy đủ](https://owasp.org
 
 ```bash
 cd 09-security/9.1-owasp-top10
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

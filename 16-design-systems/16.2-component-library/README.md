@@ -402,7 +402,7 @@ my-component-lib/
 
 ```bash
 cd 16-design-systems/16.2-component-library
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

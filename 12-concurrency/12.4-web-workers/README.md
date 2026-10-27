@@ -271,7 +271,7 @@ class Pool<T extends Worker, R> {
 
 ```bash
 cd 12-concurrency/12.4-web-workers
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

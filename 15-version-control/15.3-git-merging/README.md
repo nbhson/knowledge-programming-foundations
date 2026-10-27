@@ -245,7 +245,7 @@ git merge -s ours feature/legacy
 
 ```bash
 cd 15-version-control/15.3-git-merging
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

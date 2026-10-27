@@ -116,7 +116,7 @@ interface UserRepository {
 
 ```bash
 cd 05-techniques-and-practices/5.8.1-repository-pattern
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

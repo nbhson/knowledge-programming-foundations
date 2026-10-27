@@ -23,7 +23,7 @@ Chọn level sai: hoặc mất tiền (banking dirty read) hoặc chậm không 
 Mô phỏng interleaving 2 transaction ở từng level, xem anomaly nào lọt qua.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 type Level = "READ_UNCOMMITTED" | "READ_COMMITTED" | "REPEATABLE_READ" | "SERIALIZABLE";
 
@@ -87,7 +87,7 @@ const MATRIX: Record<Level, { dirty: boolean; nonRepeatable: boolean; phantom: b
 
 ```bash
 cd 10-database/10.8-acid-isolation
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: chạy cùng interleaving ở 4 levels → bảng anomaly lọt/chặn → demo retry khi serialization failure.

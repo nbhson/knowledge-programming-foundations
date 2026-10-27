@@ -336,7 +336,7 @@ Ref: https://eslint.org/docs/latest/use/configure/configuration-files
 
 ```bash
 cd 15-version-control/15.6-git-hooks
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

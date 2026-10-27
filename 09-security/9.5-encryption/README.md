@@ -388,7 +388,7 @@ async function encryptWithDataKey(plaintext: string, kmsKeyId: string): Promise<
 
 ```bash
 cd 09-security/9.5-encryption
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

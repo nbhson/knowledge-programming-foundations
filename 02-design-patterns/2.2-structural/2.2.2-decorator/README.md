@@ -207,7 +207,7 @@ const logger: Middleware = async (ctx, next) => {
 2.2.2-decorator/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -216,7 +216,7 @@ const logger: Middleware = async (ctx, next) => {
 
 ```bash
 cd 02-design-patterns/2.2-structural/2.2.2-decorator
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -390,7 +390,7 @@ export default defineConfig({
 
 ```bash
 cd 05-techniques-and-practices/5.3-performance-optimization
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

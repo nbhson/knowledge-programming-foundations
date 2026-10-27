@@ -268,7 +268,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 13-system-design/13.5-cap-theorem
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

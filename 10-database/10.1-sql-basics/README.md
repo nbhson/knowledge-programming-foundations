@@ -427,7 +427,7 @@ process.on('SIGINT', async () => {
 
 ```bash
 cd 10-database/10.1-sql-basics
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Khi chạy demo, để ý:

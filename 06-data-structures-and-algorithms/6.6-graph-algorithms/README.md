@@ -200,7 +200,7 @@ class UnionFind {
 
 ```bash
 cd 06-data-structures-and-algorithms/6.6-graph-algorithms
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: BFS vs DFS thứ tự duyệt, Dijkstra đường ngắn nhất, topo sort lịch học, Union-Find gom nhóm.

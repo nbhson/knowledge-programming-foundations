@@ -369,7 +369,7 @@ Phụ thuộc dữ liệu?
 
 ```bash
 cd 12-concurrency/12.1-async-await
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

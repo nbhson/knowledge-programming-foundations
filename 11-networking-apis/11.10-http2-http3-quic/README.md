@@ -22,7 +22,7 @@ HTTP/3/QUIC: mất packet chỉ chặn 1 stream ✅
 So sánh thời gian tải N assets ở 3 phiên bản + minh họa nén header kiểu HPACK/QPACK (bảng tra cứu).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 function loadTime(version: "1.1" | "2" | "3", assets: number): string {
   if (version === "1.1") return `${assets} tuần tự / 6 conn + full headers mỗi req`;
@@ -86,7 +86,7 @@ function hpack(headers: Record<string, string>, table: Map<string, number>): str
 
 ```bash
 cd 11-networking-apis/11.10-http2-http3-quic
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: bảng so sánh 3 versions → HPACK nén headers → packet loss ảnh hưởng H2 (all streams) vs H3 (1 stream).

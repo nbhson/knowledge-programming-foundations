@@ -188,7 +188,7 @@ interface AstVisitor<T> {
 2.3.10-visitor/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -197,7 +197,7 @@ interface AstVisitor<T> {
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.10-visitor
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

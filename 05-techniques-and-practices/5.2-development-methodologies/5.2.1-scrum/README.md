@@ -228,7 +228,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng đời 1 Sprint** của team Sc
 5.2.1-scrum/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Mô phỏng vòng đời Sprint (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Mô phỏng vòng đời Sprint (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -237,7 +237,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng đời 1 Sprint** của team Sc
 
 ```bash
 cd 05-techniques-and-practices/5.2-development-methodologies/5.2.1-scrum
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

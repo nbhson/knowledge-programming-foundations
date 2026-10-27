@@ -185,35 +185,35 @@ Mỗi submodule có examples riêng:
 ```bash
 # 6.1 Time Complexity
 cd 06-data-structures-and-algorithms/6.1-time-complexity
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.2 Core Data Structures
 cd 06-data-structures-and-algorithms/6.2-core-data-structures
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.3 Essential Algorithms
 cd 06-data-structures-and-algorithms/6.3-essential-algorithms
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.4 Sorting & Searching
 cd 06-data-structures-and-algorithms/6.4-sorting-searching
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.5 Dynamic Programming
 cd 06-data-structures-and-algorithms/6.5-dynamic-programming
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.6 Graph Algorithms
 cd 06-data-structures-and-algorithms/6.6-graph-algorithms
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.7 String Algorithms
 cd 06-data-structures-and-algorithms/6.7-string-algorithms
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 
 # 6.8 Recursion & Complexity
 cd 06-data-structures-and-algorithms/6.8-recursion-complexity
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

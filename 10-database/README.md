@@ -28,12 +28,12 @@
 ## ▶️ Chạy ví dụ (bài 10.7–10.12)
 
 ```bash
-cd 10-database/10.7-normalization && npx ts-node examples/index.ts
-cd 10-database/10.8-acid-isolation && npx ts-node examples/index.ts
-cd 10-database/10.9-n-plus-one && npx ts-node examples/index.ts
-cd 10-database/10.10-connection-pooling && npx ts-node examples/index.ts
-cd 10-database/10.11-replication && npx ts-node examples/index.ts
-cd 10-database/10.12-vector-db && npx ts-node examples/index.ts
+cd 10-database/10.7-normalization && npx tsx examples/index.ts
+cd 10-database/10.8-acid-isolation && npx tsx examples/index.ts
+cd 10-database/10.9-n-plus-one && npx tsx examples/index.ts
+cd 10-database/10.10-connection-pooling && npx tsx examples/index.ts
+cd 10-database/10.11-replication && npx tsx examples/index.ts
+cd 10-database/10.12-vector-db && npx tsx examples/index.ts
 ```
 
 ---

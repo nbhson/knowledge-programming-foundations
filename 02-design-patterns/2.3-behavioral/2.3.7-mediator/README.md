@@ -160,7 +160,7 @@ alice.send("Chào mọi người!");
 2.3.7-mediator/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -169,7 +169,7 @@ alice.send("Chào mọi người!");
 
 ```bash
 cd 02-design-patterns/2.3-behavioral/2.3.7-mediator
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

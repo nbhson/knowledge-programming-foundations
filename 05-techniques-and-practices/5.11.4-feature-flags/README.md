@@ -129,7 +129,7 @@ function checkout(user: User): Cart {
 
 ```bash
 cd 05-techniques-and-practices/5.11.4-feature-flags
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

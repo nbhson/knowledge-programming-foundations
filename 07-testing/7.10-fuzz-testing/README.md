@@ -22,7 +22,7 @@ Fuzzer tự sinh input ngẫu nhiên + coverage-guided mutation (AFL, libFuzzer,
 Mô phỏng fuzzer: sinh input ngẫu nhiên, ném vào parser, ghi lại input gây crash + rút gọn (minimize).
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 interface FuzzResult { crashes: string[]; runs: number }
 
@@ -126,7 +126,7 @@ Hỗ trợ: C/C++/Go/Rust/Python/Java/Kotlin/Swift/... — miễn phí cho dự 
 
 ```bash
 cd 07-testing/7.10-fuzz-testing
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: fuzzer chạy 5000 vòng tìm crash parser → in input gây crash + minimize → biến crash thành regression seed.

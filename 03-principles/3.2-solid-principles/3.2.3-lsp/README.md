@@ -221,7 +221,7 @@ class PremiumVideoPlayer extends VideoPlayer {
 3.2.3-lsp/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Demo (chạy: npx tsx examples/index.ts)
 ```
 
 ---
@@ -230,7 +230,7 @@ class PremiumVideoPlayer extends VideoPlayer {
 
 ```bash
 cd 03-principles/3.2-solid-principles/3.2.3-lsp
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

@@ -163,7 +163,7 @@ function lcs(a: string, b: string): number {
 
 ```bash
 cd 06-data-structures-and-algorithms/6.5-dynamic-programming
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: đếm số calls fib naive vs memo vs tab, giải knapsack mẫu, tính LCS của 2 chuỗi.

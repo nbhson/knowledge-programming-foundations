@@ -21,7 +21,7 @@ orders(order_id, user_id, user_email, product_name, price)  ❌
 Minh họa tách bảng qua từng normal form + checker đơn giản.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 // ❌ 0NF: cell chứa nhiều giá trị + trùng lặp
 interface Denormalized {
@@ -123,7 +123,7 @@ interface OrderItem { orderId: number; productId: number; qty: number; priceAtBu
 
 ```bash
 cd 10-database/10.7-normalization
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: bảng 0NF đầy trùng lặp → tách 1NF/2NF/3NF từng bước → đếm anomaly trước/sau.

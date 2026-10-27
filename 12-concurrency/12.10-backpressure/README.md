@@ -21,7 +21,7 @@ Thiếu backpressure, hệ thống nhanh "ảo" lúc đầu rồi sập không b
 Mô phỏng producer nhanh/consumer chậm với queue bounded + 3 chiến lược overflow.
 
 ```typescript
-// Xem đầy đủ trong examples/index.ts — Chạy: npx ts-node examples/index.ts
+// Xem đầy đủ trong examples/index.ts — Chạy: npx tsx examples/index.ts
 
 type Overflow = "block" | "drop-newest" | "drop-oldest";
 
@@ -121,7 +121,7 @@ async function withSemaphore<T>(fn: () => Promise<T>): Promise<T> {
 
 ```bash
 cd 12-concurrency/12.10-backpressure
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Demo: producer 10x consumer với queue 5 → so sánh block / drop-newest / drop-oldest (drops + latency).

@@ -256,7 +256,7 @@ function chunkedWork(items: number[], chunkSize = 1000): void {
 
 ```bash
 cd 12-concurrency/12.3-event-loop
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

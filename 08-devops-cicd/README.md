@@ -26,10 +26,10 @@
 ## ▶️ Chạy ví dụ (bài 8.7–8.10)
 
 ```bash
-cd 08-devops-cicd/8.7-gitops-argocd && npx ts-node examples/index.ts
-cd 08-devops-cicd/8.8-blue-green-canary && npx ts-node examples/index.ts
-cd 08-devops-cicd/8.9-observability && npx ts-node examples/index.ts
-cd 08-devops-cicd/8.10-sre-slo && npx ts-node examples/index.ts
+cd 08-devops-cicd/8.7-gitops-argocd && npx tsx examples/index.ts
+cd 08-devops-cicd/8.8-blue-green-canary && npx tsx examples/index.ts
+cd 08-devops-cicd/8.9-observability && npx tsx examples/index.ts
+cd 08-devops-cicd/8.10-sre-slo && npx tsx examples/index.ts
 ```
 
 ---

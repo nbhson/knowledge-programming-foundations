@@ -183,7 +183,7 @@ type ProductListItem = {
 1.8-cqrs/
 ├── README.md           # File này
 └── examples/
-    └── index.ts        # Product Catalog demo (chạy: npx ts-node examples/index.ts)
+    └── index.ts        # Product Catalog demo (chạy: npx tsx examples/index.ts)
 ```
 
 Layout theo mức 3:
@@ -203,7 +203,7 @@ src/products/
 
 ```bash
 cd 01-architecture/1.8-cqrs
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 Hãy để ý: sau khi chạy `CreateProduct`, demo gọi `ListProducts` → output đến từ **read model khác** (denormalized), không phải từ entity vừa tạo. Đó chính là "segregation" đang hoạt động.

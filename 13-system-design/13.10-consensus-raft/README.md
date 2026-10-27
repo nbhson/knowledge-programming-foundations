@@ -129,7 +129,7 @@ Chạy file demo TypeScript của bài này:
 
 ```bash
 cd 13-system-design/13.10-consensus-raft
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

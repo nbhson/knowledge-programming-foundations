@@ -144,7 +144,7 @@ const resolvers = {
 
 ```bash
 cd 05-techniques-and-practices/5.10.2-graphql
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

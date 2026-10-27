@@ -273,7 +273,7 @@ git push --force-with-lease origin feature/my-work
 
 ```bash
 cd 15-version-control/15.1-git-basics
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

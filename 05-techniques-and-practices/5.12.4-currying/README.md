@@ -134,7 +134,7 @@ const hasMinLength = (min: number) => (value: string) => value.length >= min; //
 
 ```bash
 cd 05-techniques-and-practices/5.12.4-currying
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---

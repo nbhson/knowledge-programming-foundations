@@ -109,7 +109,7 @@ function monthlyPayment(loan: number): number {
 
 ```bash
 cd 05-techniques-and-practices/5.7.6-replace-magic-number
-npx ts-node examples/index.ts
+npx tsx examples/index.ts
 ```
 
 ---
