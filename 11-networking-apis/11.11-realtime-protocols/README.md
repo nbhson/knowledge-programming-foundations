@@ -53,6 +53,42 @@ function choose(useCase: { twoWay: boolean; iot: boolean; p2p: boolean; freq: st
 
 ---
 
+## 🆚 So sánh WebSocket vs SSE vs WebTransport vs Long-Polling (2026)
+
+| Tiêu chí | WebSocket | SSE | WebTransport | Long-Polling |
+|---|---|---|---|---|
+| **Chiều** | 2 chiều full-duplex | 1 chiều (server→client) | 2 chiều, unreliable + reliable streams | 1 chiều giả lập (request treo) |
+| **Nền tảng** | TCP (sau HTTP upgrade) | HTTP thuần | **HTTP/3 / QUIC (UDP)** | HTTP |
+| **Binary** | ✅ | ❌ (chỉ text) | ✅ (cả unreliable datagram) | ❌ |
+| **Proxy/LB trung gian** | Đôi khi chặn upgrade | Ít vấn đề (HTTP thường) | Cần H3 end-to-end (đang dần phổ biến) | Không vấn đề |
+| **Reconnect tự động** | ❌ tự code | ✅ browser tự reconnect + `Last-Event-ID` | Client tự xử lý | ✅ (mỗi lần request mới) |
+| **Trạng thái 2026** | Chuẩn gold cho 2 chiều | Ổn định, đơn giản nhất | **Chrome đã hỗ trợ**, đang mở rộng (Firefox/Safari theo sau) | Legacy fallback |
+| **Hợp nhất** | Chat, game, collab | Notification, feed, AI streaming | Game cloud, media trễ thấp, lossy datagram | Fallback khi không gì khác chạy được |
+
+## 💓 Reconnection + Heartbeat Pattern
+
+Connection chết "âm thầm" (NAT timeout, mạng chuyển 4G→WiFi) — không heartbeat thì app tưởng còn connected:
+
+```
+Server: ping mỗi 15–30s (WS frame ping hoặc SSE comment ": keepalive")
+Client: không nhận gì trong 45s → coi như chết → đóng + reconnect backoff
+Client reconnect: exponential backoff (1s → 2s → 4s → max 30s) + jitter — tránh thundering herd
+Resume: gửi Last-Event-ID (SSE) / seq number (WS) → server replay phần bỏ lỡ (từ Redis buffer)
+```
+
+- **Heartbeat 2 chiều bắt buộc** với WS: một số proxy đóng idle connection sau 60s không traffic — ping định kỳ giữ connection sống.
+- Reconnect phải **backoff + jitter**, không retry tức thì: server vừa hồi phục mà 10k client reconnect cùng lúc = sập lại.
+- State sau reconnect: re-subscribe topic, đồng bộ lại state (snapshot + diff) — đừng giả định connection mới = state cũ còn nguyên.
+
+## 🎯 Vì sao SSE thường là lựa chọn đúng
+
+- **Đơn giản**: HTTP thuần — không cần thư viện WS, không cần sticky session đặc biệt, mọi LB/proxy hiểu HTTP.
+- **Tự động**: browser tự reconnect + tự gửi `Last-Event-ID` — server chỉ cần phát event có id tăng dần.
+- Đủ dùng cho phần lớn use-case thực tế: notification, live feed, **AI token streaming** (ChatGPT-style dùng SSE!), progress bar, dashboard.
+- Chỉ cần 2 chiều thật sự (chat, game, collab editing) mới chuyển lên WebSocket — và trả giá bằng reconnect/heartbeat/scale tự lo.
+
+---
+
 ## 🎯 Khi nào dùng
 
 | Protocol | Dùng khi |

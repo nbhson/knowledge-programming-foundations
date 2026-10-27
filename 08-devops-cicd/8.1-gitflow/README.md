@@ -291,7 +291,7 @@ Bạn đang cần quyết định?
 
 **Lập luận chọn Git Flow:**
 - ✅ Dự án phải tuân thủ semver (npm package, SDK, library)
-- ✅ Cần simultaneous maintenance nhiều版本 (v1.x, v2.x)
+- ✅ Cần simultaneous maintenance nhiều phiên bản (v1.x, v2.x)
 - ✅ Release cycle dài (tháng/quý), cần thời gian polish
 - ✅ Production cần được bảo vệ — không cho phép commit trực tiếp
 
@@ -438,7 +438,7 @@ test: add unit tests for checkout flow        → test
 | Enterprise fintech, compliance | Git Flow + manual approval gates | Cần audit trail cho từng release |
 | Mobile app (iOS/Android store review) | Git Flow ✅ | Release cycle tự nhiên dài (tuần/tháng), cần polish phase |
 
-> 💡 **Misconception:** "Git Flow过时了" — Không đúng. Git Flow vẫn là lựa chọn tốt cho dự án có **release cadence chậm** và **semantic versioning**. Nó chỉ "overkill" khi bạn deploy nhiều lần mỗi ngày.
+> 💡 **Misconception:** "Git Flow đã lỗi thời" — Không đúng. Git Flow vẫn là lựa chọn tốt cho dự án có **release cadence chậm** và **semantic versioning**. Nó chỉ "overkill" khi bạn deploy nhiều lần mỗi ngày.
 
 ---
 

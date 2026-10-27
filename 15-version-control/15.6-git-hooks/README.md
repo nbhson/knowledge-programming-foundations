@@ -41,7 +41,7 @@
 └─────────────────────────────────────────────────┘
 ```
 
-**Khi nào dùng哪种:**
+**Khi nào dùng loại nào:**
 - `.git/hooks/` — personal hooks, quick tests, experiment
 - `.husky/` — team-wide enforcement, must-read by all members
 
@@ -251,7 +251,7 @@ npx tsc --noEmit
 ```
 
 ```bash
-# pre-commit:安全检查 — scan secrets
+# pre-commit: kiểm tra bảo mật — scan secrets
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 npx git-secrets --scan

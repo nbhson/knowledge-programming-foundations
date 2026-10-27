@@ -33,9 +33,9 @@ Xem đầy đủ: [`examples/index.ts`](examples/index.ts)
 
 ```typescript
 // ─────────────────────────────────────────────
-// ❌ BAD: 全部代码打包在一起
+// ❌ BAD: Toàn bộ code đóng gói chung một chỗ
 // ─────────────────────────────────────────────
-// 单一大bundle = 500KB+
+// Một bundle lớn duy nhất = 500KB+
 import { Dashboard } from './pages/Dashboard';
 import { Admin } from './pages/Admin';
 import { Settings } from './pages/Settings';
@@ -53,7 +53,7 @@ function App() {
 }
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: 路由级代码分割
+// ✅ GOOD: Code splitting theo cấp route
 // ─────────────────────────────────────────────
 import React, { lazy, Suspense } from 'react';
 
@@ -74,30 +74,30 @@ function App() {
     </Suspense>
   );
 }
-// → 每个路由对应独立chunk，按需加载
+// → Mỗi route tương ứng một chunk riêng, tải theo nhu cầu
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: 动态导入
+// ✅ GOOD: Dynamic import
 // ─────────────────────────────────────────────
 async function loadModule(name: string) {
   const module = await import(`./modules/${name}`);
   return module.default;
 }
 
-// 按钮点击时加载
+// Tải khi bấm nút
 <Button onClick={() => loadModule('Analytics')}>
-  加载分析模块
+  Tải module phân tích
 </Button>
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: Webpack魔法注释预加载
+// ✅ GOOD: Webpack magic comment để preload
 // ─────────────────────────────────────────────
-// 提示浏览器预加载（不影响当前渲染）
+// Báo browser preload trước (không ảnh hưởng render hiện tại)
 const AdminPage = lazy(() =>
   import(/* webpackPrefetch: true */ './pages/Admin')
 );
 
-// 预加载重要页面
+// Preload các trang quan trọng
 const Dashboard = lazy(() =>
   import(/* webpackPreload: true */ './pages/Dashboard')
 );

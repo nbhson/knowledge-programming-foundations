@@ -65,7 +65,7 @@ Clean Architecture tách **two kinds of things**: *business rules* (thứ tồn 
 | | Entity rule (④) | Use case rule (③) |
 |---|---|---|
 | Phạm vi | Đúng cho **mọi ứng dụng** của công ty | Đúng cho **một tính năng** của ứng dụng này |
-| Ví dụ | `Order.canCancel()` — order đã ship thì không cancel được | `CancelOrderUseCase` — kiểm tra权限, ghi audit, hoàn tiền, gửi email |
+| Ví dụ | `Order.canCancel()` — order đã ship thì không cancel được | `CancelOrderUseCase` — kiểm tra quyền hạn, ghi audit, hoàn tiền, gửi email |
 | Chứa gì | Trạng thái + hành vi trên chính nó | Điều phối, thứ tự bước, giao tiếp ngoài |
 
 **Mẹo đặt code:** tự hỏi "nếu công ty làm thêm app mobile, rule này có dùng lại không?" → Có = Entity/Domain. Không = Use Case.
@@ -154,7 +154,7 @@ expect(result.order.status).toBe('CONFIRMED');
 | 📝 **Nhiều boilerplate** | Nhiều lớp, interface, DTO chuyển đổi | Một tính năng "hello world" cần 5–8 file: entity, use case, interface repo, repo impl, controller, DTO in, DTO out. **Đặc biệt nặng với CRUD thuần** — nơi không có rule nghiệp vụ để bảo vệ. *Giảm thiểu:* chỉ tạo interface khi thực sự có 2 implementation hoặc cần test; dùng generic base controller; cho phép "thin layer" gộp file. |
 | 🧠 **Phức tạp, learning curve cao** | Khó hình dung lúc đầu | Dev mới (đặc biệt từ Express/Rails) thấy "vòng vo": tại sao không query DB ngay trong controller? Không nắm Dependency Inversion → làm sai, tạo interface cho **đúng chỗ sai**. *Giảm thiểu:* code walkthrough, ADR ghi lại vì sao, linter enforce boundary. |
 | 🏗️ **Overkill dự án nhỏ** | CRUD đơn giản không cần nhiều lớp | **Đây là nhược điểm thật, không phải lỗi người dùng.** Một nội bộ tool / prototype / app 3 màn hình: Clean Architecture làm chậm delivery mà không mua được gì (không ai đổi framework, không ai cần test domain). |
-| 🐢 **Hiệu năng giảm nhẹ** | (Nhược điểm ít được nói tới) | Mỗi bước qua adapter = thêm 1 lần map DTO (copy object). Với request lớn/高频, chi phí map có thể cộng lại thành microsecond–millisecond. Không đáng lo cho 95% case, nhưng nên biết. |
+| 🐢 **Hiệu năng giảm nhẹ** | (Nhược điểm ít được nói tới) | Mỗi bước qua adapter = thêm 1 lần map DTO (copy object). Với request lớn/tần suất cao, chi phí map có thể cộng lại thành microsecond–millisecond. Không đáng lo cho 95% case, nhưng nên biết. |
 | 🎭 **Trở thành Cargo Cult** | (Rủi ro văn hóa) | Team áp dụng **hình thức**: đặt tên folder `domain/use-cases/adapters` nhưng business logic vẫn nằm hết trong controller, repository trả về ORM entity đầy quan hệ → lớp "trong" phụ thuộc DB. **Có structure, không có rule.** Đây là failure mode phổ biến nhất và tệ hơn cả không dùng Clean. |
 | 🧨 **Model chuyển đổi nhiều lần** | Entity ↔ Domain ↔ DTO ↔ ORM entity ↔ JSON | Cùng một dữ liệu có 4 hình dạng → dễ lệch, bug mapping. *Giảm thiểu:* cho phép reuse DTO khi không có lý do tách, đừng map "vì Clean nói vậy". |
 

@@ -247,7 +247,7 @@ Client ──▶ WebSocket Server Cluster ──▶ Message Queue ──▶ Chat
 |-----------|----------|-------------------|
 | Scalable connections | WebSocket cluster + sticky sessions | 1 instance ~10k concurrent WS; 1M users → ~100 instances |
 | Message delivery | Persistent queue + ack pattern | Kafka replication factor 3; at-least-once delivery |
-| Presence tracking | Redis pub/sub với TTL | 100k presence update/s; Redis handles ~150k ops/s |
+| Presence tracking | Redis pub/sub với TTL | 100k presence update/s (ước tính cho mục đích minh họa); Redis single ~100k ops/s → gần bão hòa, cần cluster/shard khi vượt |
 | Geo-distribution | CDN edge + regional gateways | Latency <100ms intra-region; inter-region fallback |
 | Offline messages | Message store + poll/notify | TTL 7 days; push notification when client reconnects |
 
@@ -287,6 +287,20 @@ Client ──▶ WebSocket Server Cluster ──▶ Message Queue ──▶ Chat
 | **8. Multi-region** | Global latency, disaster recovery | Active-active hoặc active-passive DC |
 
 > 💡 **Mỗi stage có chi phí complexity tăng ~2–5×.** Đừng nhảy stage khi chưa có signal rõ ràng. Premature optimization là root của mọi architectural failure.
+
+### Serverless Containers — tầng scaling giữa VM và full K8s
+
+Giữa "VM tự quản" và "Kubernetes cluster" còn một tầng trung gian: **serverless containers** — bạn deploy container, nền tảng tự scale và quản lý node:
+
+| Dịch vụ | Nhà cung cấp | Đặc điểm |
+|---------|-------------|----------|
+| **AWS Fargate** | AWS | Chạy ECS/EKS task không cần quản lý node; pay per vCPU/GB-giây |
+| **Cloud Run** | GCP | Autoscale theo request, scale-to-zero, chạy container bất kỳ |
+| **Azure Container Apps** | Azure | KEDA-based scaling, K8s-compatible API, tích hợp Dapr |
+
+**Khi nào dùng:** team nhỏ không muốn vận hành control plane, workload spiky (scale-to-zero tiết kiệm chi phí). Tránh khi cần GPU node tùy chỉnh, kernel/network control sâu, hoặc cold start nhạy cảm.
+
+**Cell-based architecture / bulkhead isolation:** ở scale rất lớn, chia fleet thành các **cell** độc lập (mỗi cell tự có LB + app + DB) — một cell lỗi chỉ ảnh hưởng 1 phần user, blast radius bị khoanh vùng. Đây là bulkhead isolation ở tầng kiến trúc; chi phí là nhân bản hạ tầng và routing giữa các cell.
 
 ---
 

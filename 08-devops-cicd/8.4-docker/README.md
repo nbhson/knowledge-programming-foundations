@@ -33,7 +33,7 @@ Container là một **đơn vị đóng gói** chứa ứng dụng + dependencie
 | **Size** | GB (full OS image) | MB (app + runtime only) |
 | **Startup** | Phút (boot OS) | Giây (start process) |
 | **Isolation** | Full OS (hardware virtualization) | Process-level (namespaces + cgroups) |
-| **Resource** | Nặng (đổ đầy RAM cho OS) | Nhẹ (chỉ dùng内存 ứng dụng) |
+| **Resource** | Nặng (đổ đầy RAM cho OS) | Nhẹ (chỉ dùng RAM ứng dụng) |
 | **Density** | Ít per host (5-10 VMs) | Nhiều per host (50-100 containers) |
 | **Boot time** | 30-120 giây | 1-5 giây |
 | **Snapshot** | Toàn bộ VM state | Container image layer |
@@ -213,9 +213,7 @@ CMD ["nginx", "-g", "daemon off;"]
 ### docker-compose.yml hoàn chỉnh
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
-
+# docker-compose.yml — Compose v2 (trường `version` đã obsolete, bỏ đi)
 services:
   api:
     build:

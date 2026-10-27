@@ -392,7 +392,7 @@ async function batchSetUserProfiles(profiles: Array<{ id: string; data: any }>) 
 │                   │ • Redis dùng AOF để recover,            │
 │                     rồi rebuild RDB periodically            │
 ├───────────────────┼─────────────────────────────────────────┤
-│ Neither           │ Cache-only mode — không lưu持久          │
+│ Neither           │ Cache-only mode — không lưu trữ vĩnh viễn          │
 │                   │ • Nhanh nhất (no disk I/O)             │
 │                   │ • Mất hết data khi restart              │
 │                   │ • Dùng cho cache thuần túy              │
@@ -438,7 +438,7 @@ auto-aof-rewrite-min-size 64mb    # Minimum AOF size before trigger
 │  ✅ Pub/Sub                                                 │
 │     publish channel "news" "message"                       │
 │     subscribe "news" callback                              │
-│     →广播消息, multiple listeners, fire-and-forget         │
+│     → Gửi broadcast, multiple listeners, fire-and-forget         │
 │                                                             │
 │  ✅ Sorted Set for Leaderboard                              │
 │     ZADD leaderboard score member                           │
@@ -479,7 +479,7 @@ auto-aof-rewrite-min-size 64mb    # Minimum AOF size before trigger
 | Persistence | ✅ RDB + AOF | ❌ Không | Redis khi cần data survive restart |
 | Pub/Sub | ✅ Native | ❌ Không | Redis khi cần messaging |
 | Atomic operations | ✅ INCR, DECR, MULTI/EXEC, Lua | ⚠️ Giới hạn (INC only) | Redis khi cần atomic compound ops |
-| Complexity | Trung bình (nhiều tính năng) | Đơn giản (只做缓存) | Memcached khi chỉ cần simple cache |
+| Complexity | Trung bình (nhiều tính năng) | Đơn giản (chỉ làm cache) | Memcached khi chỉ cần simple cache |
 | Memory management | Eviction policies (allkeys-lru, volatile-ttl...) | LRU only | Cả 2 đều efficient, Redis flexible hơn |
 | Use case | Đa năng (cache, queue, lock, pub/sub) | Cache thuần túy | Memcached cho simple cache-only workloads |
 

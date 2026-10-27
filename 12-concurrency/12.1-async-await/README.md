@@ -330,7 +330,7 @@ Phụ thuộc dữ liệu?
 | A, B, C độc lập, tất cả phải có (trang checkout) | `Promise.all` | Thiếu bất kỳ dữ liệu nào thì màn hình vô nghĩa → fail-fast là đúng semantics. |
 | A, B, C độc lập, thiếu 1 vẫn hiển thị được (dashboard) | `Promise.allSettled` | Không để 1 API phụ làm sập cả trang; render phần có, placeholder phần mất. |
 | Gọi nhiều replica, lấy kết quả sớm nhất (timeout, CDN race) | `Promise.race` | Chỉ cần 1 winner; kẻ thua vẫn chạy nền → kèm `AbortSignal.timeout()` để giải phóng. |
-| N任务 độc lập lớn (1000 job), endpoint có rate limit | Bounded pool (limit K) | Parallel tối đa tài nguyên phía server cho phép — K=10 thường an toàn gấp ~5-10 lần sequential. |
+| Nhiều task độc lập lớn (1000 job), endpoint có rate limit | Bounded pool (limit K) | Parallel tối đa tài nguyên phía server cho phép — K=10 thường an toàn gấp ~5-10 lần sequential. |
 | Gửi request không cần chờ (analytics fire-and-forget) | Không await (floating) | Chấp nhận mất kết quả; ⚠️ nhớ `.catch()` để tránh unhandled rejection. |
 
 **Nguyên tắc vàng:** đếm số "chặng phụ thuộc" (critical path), không đếm số request. 10 request độc lập chạy parallel ≈ latency 1 request; 10 request phụ thuộc dây chuyền = 10 lần latency dù mỗi cái nhanh.

@@ -67,6 +67,44 @@ class ThreadPool {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Công thức sizing pool — điểm khởi đầu, đo để tune:**
+
+```
+CPU-bound:  N = cores + 1                # worker cho 1 task nặng, tránh context-switch thừa
+I/O-bound:  N = cores × 2  (hoặc × 3–4)  # CPU rảnh trong khi chờ I/O → bù thêm
+Mixed:      N = cores × (1 + W/C)         # W = thời gian chờ I/O, C = thời gian CPU
+
+Ví dụ: 4 cores, task chờ HTTP 80ms, CPU 20ms → W/C = 4 → N = 4 × 5 = 20 workers
+```
+
+- Đo metrics thực tế: `active count`, `queue size`, `reject count` — tăng workers khi queue > threshold liên tục, không phải khi request đến.
+
+**Work-stealing queue — pool Go/JS Worker threads dùng:**
+- Mỗi worker có queue riêng; queue trống → steal task từ worker khác.
+- Tránh 1 worker nghẽn (single bottleneck) khi tasks không đồng đều; cải thiện throughput 10–30% so với shared queue.
+
+**Rejection policy — đầy queue thì sao:**
+
+| Policy | Hành vi | Dùng khi |
+|---|---|---|
+| `Abort` | Ném exception cho caller | API endpoint — caller phải xử lý lỗi rõ ràng |
+| `CallerRuns` | Caller chạy task luôn (trong thread gọi) | Backpressure tự nhiên, caller đỡ tốc độ |
+| `DiscardOldest` | Bỏ task cũ nhất | Telemetry/analytics — mới nhất quan trọng hơn |
+| `Discard` | Bỏ task mới nhất | Cache refresh — miss lần này, lần sau retry |
+
+**Dead thread pool anti-pattern — unbounded queue OOM:**
+```
+while (true) {
+  queue.push(task); // không giới hạn
+  // Nếu producer nhanh hơn consumer mãi → queue grow → OOM → cả pool chết
+}
+```
+→ Luôn bounded + policy. Nếu cần retry: dùng message broker (Kafka/RabbitMQ) thay vì in-memory queue vô hạn — process restart không mất task nhờ persistence.
+
+---
+
 ## 🔗 Liên quan
 
 - **12.7 Threads vs Processes** — pool quản lý threads đã chọn.
@@ -77,7 +115,7 @@ class ThreadPool {
 
 ## 📚 Tài liệu
 
-- Java ExecutorService — https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html
+- Java ExecutorService (Java 21 LTS) — https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html
 - Node worker_threads — https://nodejs.org/api/worker_threads.html
 
 ---

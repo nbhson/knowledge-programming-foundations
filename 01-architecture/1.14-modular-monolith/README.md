@@ -61,7 +61,7 @@ Martin Fowler gọi là **"Monolith First"**: hãy bắt đầu monolith nhưng 
 |----------|-------|----------------|
 | **1 deployment unit** | Deploy toàn bộ 1 lần | Mọi module nằm trong 1 process, 1 artifact. Không có orchestration, không có service discovery. Deploy nhanh (minutes), rollback đơn giản. |
 | **Module độc lập** | Mỗi module có service, repo, schema riêng | Module là đơn vị đóng gói nhỏ nhất. `OrdersModule` chứa hết logic xử lý đơn hàng — không nhờ module khác "giúp" bằng cách đọc bảng của nó. |
-| **Giao tiếp qua interface** | Module A gọi Module B qua public interface, không đụng internal | Đây là **điểm then chốt**: module B export **ports** (interface); module A **inject** interface đó. Nếu module B đổi internal implementation → module A không đổi. *Tương lai tách microservices chỉ cần thay adapter HTTP — code业务 module không đổi.* |
+| **Giao tiếp qua interface** | Module A gọi Module B qua public interface, không đụng internal | Đây là **điểm then chốt**: module B export **ports** (interface); module A **inject** interface đó. Nếu module B đổi internal implementation → module A không đổi. *Tương lai tách microservices chỉ cần thay adapter HTTP — code nghiệp vụ module không đổi.* |
 | **1 DB, nhiều schema** | Schema tách theo module, không share bảng | Postgres `orders.*`, `payments.*`, `users.*` — mỗi schema là namespace của module. Không có bảng join trực tiếp giữa schema, truy xuất chéo qua port. *Lý do:* nếu share table → module vẫn phụ thuộc DB schema → tách module sẽ "dính" DB riêng. |
 | **Dễ migrate** | Tách module thành service riêng khi cần | Khi có wall of load/team → module B có thể trở thành microservice riêng. Việc chỉ là viết `HttpOrdersPortAdapter` bên ngoài. |
 

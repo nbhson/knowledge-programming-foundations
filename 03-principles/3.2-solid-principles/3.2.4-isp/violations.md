@@ -117,7 +117,7 @@ class ReportService implements Saveable, Findable { /* ... */ }
 **Vi phạm:**
 
 ```typescript
-// ❌ BAD: Printer interface bắt client phải cung cấp scan功能
+// ❌ BAD: Printer interface bắt client phải cung cấp chức năng scan
 interface IPrinter {
   print(document: string): void;
   scan(): string;        // Client chỉ cần print nhưng phải implement scan

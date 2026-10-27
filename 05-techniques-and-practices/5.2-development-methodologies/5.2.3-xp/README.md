@@ -54,7 +54,7 @@ XP do Kent Beck sáng lập tại Chrysler C3. Triết lý cốt lõi: **nếu v
 | 9 | **Continuous Integration** | Tích hợp code nhiều lần/ngày, build + test tự động chạy | Phát hiện integration issue trong phút, không phải ngày |
 | 10 | **40-hour Week** | Làm việc bền vững, không overtime kéo dài | Overtime ~2 tuần đầuboost output, nhưng sau đó productivity giảm ~50% và quality suffers |
 | 11 | **On-site Customer** | Khách hàng ngồi cùng team, trả lời question ngay, làm clear priority ngay | Giảm communication delay từ ngày → giây; requirement ambiguity giảm |
-| 12 | **Coding Standards** | Chuẩn code chung, ai cũng tuân theo → code đọc như viết bởi 1 người | Reduce cognitive load; onboard mới nhanh;集体 ownership khả thi |
+| 12 | **Coding Standards** | Chuẩn code chung, ai cũng tuân theo → code đọc như viết bởi 1 người | Reduce cognitive load; onboard mới nhanh; ownership tập thể khả thi |
 
 **Cơ chế pair programming chi tiết:**
 
@@ -74,7 +74,7 @@ Navigator (người quan sát):
 **Lợi ích đo được của Pair Programming (theo nghiên cứu IBM, 2012):**
 - Defect density: giảm 15–50% so với solo coding
 - Code review time: giảm ~50% (vì đã review realtime qua pair)
-- Knowledge spread: giảm bus factor风险 — nhiều người biết nhiều code
+- Knowledge spread: giảm bus factor risk — nhiều người biết nhiều code
 
 ---
 
@@ -120,7 +120,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng lặp TDD**:
 | 🎓 **Đòi hỏi kỷ luật cao** | TDD/Pair khó duy trì nếu team chưa quen | Start with 1–2 practices (TDD trước, pair sau); coach/senior guide |
 | 💰 **Chi phí ban đầu lớn** | Pair programming tốn 2 người/1 task | Pair 2–3 giờ/ngày, không phải 8 giờ; non-pair work (doc, research) still solo |
 | 🧩 **Khó áp dụng từng phần** | Practices hỗ trợ nhau, bỏ 1 cái ảnh hưởng cả hệ | Học full XP, không chỉ "lấy vài practice"; hiểu relationship giữa practices |
-| 📏 **Không phù hợp mọi dự án** | Dự án ngắn hạn, prototype nhanh không cần | XP最适合 long-lived products; short projects dùng lightweight approach |
+| 📏 **Không phù hợp mọi dự án** | Dự án ngắn hạn, prototype nhanh không cần | XP phù hợp nhất với long-lived products; short projects dùng lightweight approach |
 | 👤 **Phụ thuộc khách hàng** | On-site customer khó có trong thực tế | Async customer (PO available Slack/email trong 4 giờ) — không lý tưởng nhưng acceptable |
 | 🏢 **Cultural resistance** | Management không quen 2 người/1 task → nhìn như "lãng phí" | Show data: pair program reduces rework; net productivity vẫn cao hơn |
 

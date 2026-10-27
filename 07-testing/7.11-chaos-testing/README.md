@@ -72,6 +72,35 @@ async function experiment(name: string, timeoutMs: number | null): Promise<void>
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Game day process — diễn tập có cấu trúc, không phải thử nghiệm tự do:**
+
+1. **Chuẩn bị:** định nghĩa experiment + steady-state hypothesis (VD: "checkout success rate > 95% ngay cả khi 1 AZ down"), nút abort, team notified, runbook sẵn sàng.
+2. **Thực hiện:** bơm fault từ từ (kill 1 pod → kill 2 pod → network partition); theo dõi metrics real-time.
+3. **Kết thúc:** verify hồi phục tự nhiên hoặc chạy runbook; ghi lại lessons learned → cải thiện system.
+4. **Tự động hóa dần:** game day thành công → chuyển thành chaos test chạy trong CI (nightly, sau deploy lớn).
+
+**Steady-state hypothesis — "hệ thống đang ổn" được định nghĩa trước:**
+- Không phải "tôi thấy ổn" mà là metric query: `success_rate > 0.99 AND p99_latency < 500ms` chạy mỗi 60s.
+- Experiment chỉ bắt đầu khi steady → tránh nhầm lẫn "lỗi experiment" với "lỗi sẵn có".
+- Kết thúc experiment → verify steady lại trước khi dừng (hệ thống hồi phục được không?).
+
+**Litmus vs Gremlin vs Chaos Mesh:**
+
+| Nền tảng | Mô hình | Phạm vi |
+|---|---|---|
+| **LitmusChaos** | Open-source, CNCF, Operator trên K8s, HCE (Hub of Chaos Experiments) | Cloud-native, multi-cloud |
+| **Gremlin** | SaaS có giao diện, attack library, API | Production enterprise, safety guard |
+| **Chaos Mesh** | CNCF, CRD-based, TimeChaos/PodChaos/NetworkChaos... | K8s-only, developer-friendly |
+
+**Blast radius — luôn giới hạn trước:**
+- Quy tắc 1-1-1: 1% traffic / 1 node / giờ thấp điểm → test staging trước production.
+- Experiment scope: annotation `litmus chaos.io/experiment-run` → chỉ experiment pod này, không ảnh hưởng pod khác trên node.
+- Nút dừng khẩn: 1 curl command hoặc 1 click → restore tất cả fault đang chạy.
+
+---
+
 ## 🔗 Liên quan
 
 - **8.5 Kubernetes** — chaos trên K8s: kill pod, network partition (LitmusChaos, Chaos Mesh).

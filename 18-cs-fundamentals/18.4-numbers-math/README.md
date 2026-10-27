@@ -81,6 +81,51 @@ function isSafeInteger(n: number): boolean {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**So sánh floating point an toàn — bao giờ dùng epsilon:**
+```typescript
+// So sánh bằng: KHÔNG dùng ===
+// Nhỏ hơn EPSILON → coi như bằng nhau
+function floatEqual(a: number, b: number, eps = Number.EPSILON): boolean {
+  return Math.abs(a - b) < eps; // ~2.22e-16
+}
+
+// Nhưng EPSILON chỉ an toàn cho số gần 1.0.
+// Với số lớn (VD 1e10), relative error lớn hơn. Dùng:
+function ulpEqual(a: number, b: number, maxUlps = 4): boolean {
+  // ULP = Units in Last Place — đếm số representable numbers giữa a và b
+  return Math.abs(a - b) <= Math.max(Math.abs(a), Math.abs(b)) * Number.EPSILON * maxUlps;
+}
+```
+
+**Tiền tệ — dùng Integer cents cho production:**
+- `0.1 + 0.2 = 0.30000000000000004` — bất kể ngôn ngữ nào, JS/Java/Python float đều không chính xác.
+- Giải pháp: **cents (số nguyên) + display formatter** — phép cộng luôn chính xác. Phần trăm/discount (15%): tính trên cents, làm tròn ceiling/floor tường minh.
+- Khi có phép chia (chia đều 100 cho 3 người): đặt convention từ trước (ai nhận phần dư), không để float.
+
+**JS integer overflow — `Number.MAX_SAFE_INTEGER` (= 2^53 − 1):**
+```typescript
+Number.MAX_SAFE_INTEGER        // 9007199254740991
+Number.MAX_SAFE_INTEGER + 1   // 9007199254740992  — bị mất precision!
+Number.isSafeInteger(n)       // false nếu vượt ngưỡng
+```
+- Ứng dụng: ID từ DB auto-increment, JWT claim exp (Unix timestamp ~1.7e9 < MAX_SAFE_INTEGER → OK), số trong JWT payload. Nhưng UUID v4 (122-bit) → **luôn string**, không parse thành number.
+- BigInt sinh ra để giải quyết: `1n + 1` là `2n`, `2n ** 100n` là số lớn chính xác. Dùng khi: factorial, mã hóa, timestamp nano giây, số nguyên vượt 2^53.
+
+**bfloat16 & float16 trong AI/ML — tại sao cần cả hai:**
+
+| Format | Bits | Exponent | Mantissa | Dùng khi |
+|---|---|---|---|---|
+| **float32** (IEEE 754) | 32 | 8 | 23 | Training (cần precision) |
+| **bfloat16** (Brain Float) | 16 | 8 | 7 | Training: exponent giữ nguyên, chỉ cắt mantissa — range = float32, precision thấp hơn |
+| **float16** (IEEE 754) | 16 | 5 | 10 | Inference: precision đủ, tiết kiệm memory 2× so float32, nhưng range nhỏ hơn (max ~65504) |
+
+- **bfloat16** phổ biến hơn trong training vì cắt mantissa nhưng giữ full exponent range → tránh overflow trong gradient computation.
+- GPU NVIDIA A100+ hỗ trợ cả bfloat16 và float16 natively. PyTorch: `torch.bfloat16`, `torch.float16`.
+
+---
+
 ## 🔗 Liên Quan
 
 - [18.3 Encoding Data](../18.3-encoding-data/README.md) — số cũng là byte (endianness, DataView).

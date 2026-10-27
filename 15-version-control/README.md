@@ -261,8 +261,8 @@ hotfix/*  ──▶ main + develop (khi emergency fix)
 
 | Branch | Mục đích | Ai tạo | lifetime |
 |--------|----------|--------|----------|
-| `main` | Production-ready code | — |永久的 |
-| `develop` | Integration branch | maintainer |永久的 |
+| `main` | Production-ready code | — | vĩnh viễn |
+| `develop` | Integration branch | maintainer | vĩnh viễn |
 | `feature/*` | Tính năng mới | developer | Days–weeks |
 | `release/*` | Chuẩn bị release | maintainer | Days |
 | `hotfix/*` | Fix lỗi production | maintainer | Hours–days |
@@ -456,8 +456,8 @@ type(scope): description
 | Practice | Lý do |
 |----------|-------|
 | Mô tả rõ thay đổi và **tại sao** | Reviewer không cần đoán intent |
-| Giữ PR nhỏ (< 400 dòng thay đổi) | PR nhỏ = review nhanh, ít bug漏 |
-| Yêu cầu ít nhất 1 reviewer | Double-check,知识 sharing |
+| Giữ PR nhỏ (< 400 dòng thay đổi) | PR nhỏ = review nhanh, ít bug sót |
+| Yêu cầu ít nhất 1 reviewer | Double-check, chia sẻ kiến thức |
 | Sử dụng PR templates | Standardize thông tin cung cấp |
 
 ### ✅ Repository Hygiene

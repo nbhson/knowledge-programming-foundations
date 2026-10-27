@@ -118,7 +118,7 @@ Demo chạy 4 đợt release: patch (chỉ fix) → minor (có feat) → major (
 | Nhược điểm | Giải thích |
 |------------|------------|
 | 📚 **Cần kỷ luật team** | 1 message sai format làm tool parse lệch → dùng commitlint hook (xem 15.6) |
-| 🟡 **Squash làm mất粒** | Squash PR thành 1 commit phải viết lại message tổng hợp đúng type |
+| 🟡 **Squash làm mất độ mịn** | Squash PR thành 1 commit phải viết lại message tổng hợp đúng type |
 | 🔧 **Setup ban đầu** | Cần cấu hình semantic-release + CI + token publish |
 
 ---

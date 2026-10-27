@@ -16,6 +16,7 @@
 | 17.4 | Vector Databases | ANN/HNSW/IVF khái niệm, metadata filtering | [17.4-vector-databases](17.4-vector-databases/README.md) |
 | 17.5 | AI Agents | ReAct loop, tools, planning | [17.5-ai-agents](17.5-ai-agents/README.md) |
 | 17.6 | LLM Eval & Safety | Metrics, hallucination, guardrails | [17.6-llm-eval-safety](17.6-llm-eval-safety/README.md) |
+| 17.7 | Model Context Protocol (MCP) | Chuẩn kết nối Agent ↔ Tools/Data (Linux Foundation) | [17.7-model-context-protocol](17.7-model-context-protocol/README.md) |
 
 ---
 
@@ -36,6 +37,10 @@
 │                                                         │
 │  17.5 AGENTS ──► ReAct: Thought → Action → Observation  │
 │  17.6 EVAL/SAFETY ──► đo lường + guardrail mọi tầng     │
+│       │                                                 │
+│       ▼                                                 │
+│  17.7 MCP ──► chuẩn kết nối Agent ↔ Tools/Data          │
+│              (tools/resources/prompts, viết 1 lần)      │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -47,6 +52,7 @@
 | Vector DB | Scale search lên triệu vector? | Partition (IVF) + metadata filter |
 | Agents | Làm sao model tự dùng tools? | ReAct loop gọi tools local |
 | Eval/Safety | Làm sao biết output tốt/an toàn? | Scorer + guardrail keyword-based |
+| MCP | Làm sao agent nối tools theo chuẩn chung? | Registry client/server mô phỏng local |
 
 ---
 
@@ -56,6 +62,7 @@
 2. **17.2 → 17.3 → 17.4**: từ 1 vector → pipeline RAG hoàn chỉnh → index ở quy mô lớn.
 3. **17.5**: cho model "tay chân" (tools) và vòng lặp suy luận ReAct.
 4. **17.6**: đo lường mọi thứ ở trên + chặn output nguy hiểm.
+5. **17.7**: MCP — giao thức chuẩn để agent gọi tools của bên thứ ba.
 
 > 💡 **Nguyên tắc mô phỏng:** mọi ví dụ trong lớp này dùng **số liệu/code thuần** (hash-vector, overlap-score, template),
 > tuyệt đối **không gọi API LLM thật**, không cần key, chạy offline 100%.

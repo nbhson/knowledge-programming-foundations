@@ -15,7 +15,7 @@ MVC chia ứng dụng UI thành 3 phần với trách nhiệm rõ ràng:
 - **Controller → Model:** Controller nhận input, **biến nó thành thao tác trên Model** (tăng counter, tạo order).
 - **Controller → View:** Controller **chọn** View nào được render — trong web MVC, đây là trả về template + data.
 
-**Điểm hay bị hiểu nhầm nhất: trong MVC gốc, Controller KHÔNG gửi dữ liệu thẳng tới View.** View tự订阅 Model. Nhưng các framework web (Spring, Laravel, Express) đã đơn giản hóa: Controller gọi service, rồi **render template với data**. Đó là phiên bản "web MVC", hơi lệch MVC gốc. Biết sự khác biệt để đọc code hai thế giới không bị lẫn.
+**Điểm hay bị hiểu nhầm nhất: trong MVC gốc, Controller KHÔNG gửi dữ liệu thẳng tới View.** View tự subscribe Model. Nhưng các framework web (Spring, Laravel, Express) đã đơn giản hóa: Controller gọi service, rồi **render template với data**. Đó là phiên bản "web MVC", hơi lệch MVC gốc. Biết sự khác biệt để đọc code hai thế giới không bị lẫn.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

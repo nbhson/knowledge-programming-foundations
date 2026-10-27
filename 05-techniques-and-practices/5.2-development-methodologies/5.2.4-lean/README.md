@@ -46,7 +46,7 @@ Lean không quy định role hay ceremony cụ thể như Scrum. Nó là **tập
 
 | Lãng phí | Mô tả | Giải pháp Lean | Tác động nếu không xử lý |
 |----------|-------|----------------|------------------------|
-| **Partially Done Work** | Code viết xong chưa test, chưa deploy | Giảm WIP, CI/CD, Definition of Done | Inventory堆积 = work-in-progress cost; không có business value until shipped |
+| **Partially Done Work** | Code viết xong chưa test, chưa deploy | Giảm WIP, CI/CD, Definition of Done | Inventory chất đống = work-in-progress cost; không có business value until shipped |
 | **Extra Features** | Tính năng khách không dùng (YAGNI) | MoSCoW prioritization; talk to users | Waste of dev time; code complexity tăng → maintenance cost tăng |
 | **Relearning** | Quên kiến thức, giải quyết lại vấn đề cũ | Pair programming, docs as code | Same bug fix 3 lần = 3x cost; knowledge silos = single point of failure |
 | **Handoffs** | Chuyển giao giữa các khâu/team gây mất ngữ cảnh | Cross-functional team, dev owns test | Context switch cost: ~23 phút/recovery; error rate tăng ~30% per handoff |

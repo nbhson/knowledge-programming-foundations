@@ -84,7 +84,7 @@ pick ghi789 fix: update styles
 ```
 
 **Interactive rebase use cases:**
-| Mục đích |操作 |
+| Mục đích | Thao tác |
 |----------|------|
 | Gom 5 WIP commits thành 1 | pick → squash × 4 |
 | Sửa commit message sai | pick → reword |
@@ -130,13 +130,13 @@ git rebase --continue
 Người A:     A---B---C (push main lên remote)
 Người B:     A---B---C---D (pull main, rebase feature lên C, push)
 Người A:     ❌ Khi pull, git thấy C ≠ C' (hash khác sau rebase)
-              → Phải force push hoặc手动 resolve
+              → Phải force push hoặc resolve thủ công
               → Có thể mất work của A nếu không cẩn thận
 ```
 
 > 📌 **Quy tắc vàng:** Chỉ rebase những commit **chỉ bạn mới có**. Nếu commit đã push lên remote và người khác có thể dựa vào, dùng merge thay thế.
 
-** exception:** `git pull --rebase` an toàn vì nó chỉ rebase **local commits của bạn** lên remote的最新 commits, không rebase shared branches.
+** exception:** `git pull --rebase` an toàn vì nó chỉ rebase **local commits của bạn** lên các commits mới nhất trên remote, không rebase shared branches.
 
 ---
 

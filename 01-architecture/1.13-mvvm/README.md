@@ -65,7 +65,7 @@ MVVM (Model-View-ViewModel) tách UI bằng **data binding**: View "lắng nghe"
 |---|---|---|
 | Update View | `presenter.updateView(state)` — tay | Binding tự cập nhật |
 | Interface View | Cần `IView` | Không cần |
-| Code sharing | Presenter绑定 chặt View interface | ViewModel reuse giữa web/ios/android |
+| Code sharing | Presenter ràng buộc chặt View interface | ViewModel reuse giữa web/ios/android |
 | Framework support | Ít (must DIY) | Nhiều (RxJS, MobX, React Hooks, SwiftUI `@StateObject`) |
 
 ---

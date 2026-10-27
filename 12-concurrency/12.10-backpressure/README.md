@@ -69,6 +69,39 @@ class BoundedQueue<T> {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Reactive Streams backpressure spec — pull thay vì push mù:**
+- Spec định nghĩa 4 interface: `Publisher<T>`, `Subscriber<T>`, `Subscription`, `Processor<T,R>`.
+- **Core signal:** `subscription.request(n)` — *consumer kéo* `n` element, producer *chỉ gửi khi được yêu cầu*. Nếu consumer chưa request, producer không gửi (backpressure tự nhiên).
+- RxJS implement: `Observable` là producer, subscriber nhận notifications. Nếu subscriber không unsubscribe, chain có thể leak — điều này đặc biệt nguy hiểm trong long-running subscription.
+
+**Bounded buffer + semaphore (flow control ở tầng HTTP/service):**
+
+```typescript
+// Semaphore: giới hạn N request đồng thời
+const sem = new Semaphore(10); // max 10 concurrent
+async function withSemaphore<T>(fn: () => Promise<T>): Promise<T> {
+  await sem.acquire();
+  try { return await fn(); } finally { sem.release(); }
+}
+
+// Kết hợp với bounded queue: queue đầy → semaphore block producer
+// → cả pipeline tự động slowdown mà không OOM
+```
+
+**HTTP streaming với Retry-After + backpressure:**
+- Server streaming (SSE/grpc streaming): client đọc chậm → server nên `TCP window full` → tự động block ở OS level. Nhưng nếu cần tầng app: client gửi heartbeat NACK → server giảm rate hoặc pause.
+- HTTP 429 `Retry-After`: response này từ server/load balancer báo client "chờ X giây" → không retry liên tục gây thundering herd. Implement: exponential backoff bắt đầu từ Retry-After header.
+
+**Observable backpressure strategies (RxJS):**
+- **`bufferCount(n)` / `windowTime`:** gom element thành batch trước khi emit — phù hợp batch processing.
+- **`throttleTime / debounceTime`:** drop element giữa interval — phù hợp UI event (search box gõ nhanh → debounce).
+- **`latest`:** chỉ giữ element mới nhất, drop những cái cũ khi subscriber không kịp — phù hợp telemetry.
+- **`drop` vs `backpressureOverflow` strategy:** tùy domain (payment không drop, analytics thì được).
+
+---
+
 ## 🔗 Liên quan
 
 - **12.9 Thread Pools** — queue của pool đầy cũng cần policy (cùng họ backpressure).

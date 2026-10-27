@@ -202,7 +202,7 @@ Atomic counter:
   → Không cần lock, hardware-level guarantee
 ```
 
-**Dùng khi:** Các phép toán đơn giản trên shared variables (counter, flag, bitset). Fastest primitive — CPU instruction级别的 `LOCK XADD`, `CMPXCHG`.
+**Dùng khi:** Các phép toán đơn giản trên shared variables (counter, flag, bitset). Fastest primitive — CPU instruction ở cấp độ `LOCK XADD`, `CMPXCHG`.
 
 ---
 
@@ -398,7 +398,7 @@ Thread B: "Không, bạn đi trước" ←  →  ←  →
 
 - [Go Concurrency Patterns](https://go.dev/blog/pipelines)
 - [Python asyncio](https://docs.python.org/3/library/asyncio.html)
-- [Java Virtual Threads (Project Loom)](https://openjdk.org/projects/loom/)
+- [Java Virtual Threads (Project Loom)](https://openjdk.org/projects/loom/) — Virtual Threads đã chính thức trong Java 21 LTS (9/2023, JEP 444), production-ready, không còn là dự án thử nghiệm
 - [Rust Async Book](https://rust-lang.github.io/async-book/)
 
 ---

@@ -128,7 +128,7 @@ class DynamicArray {
 ## ⚠️ Lưu Ý
 
 - **Đệ quy đẹp ≠ đệ quy đúng:** thiếu base case → infinite recursion; base case sai → kết quả sai lặng lẽ. Luôn test n = 0, 1 trước.
-- **Master Theorem không cover mọi thứ:** fib `T(n-1)+T(n-2)` hay quick worst `T(n-1)+O(n)` phải展开 bằng cây đệ quy / substitution, không áp công thức máy móc.
+- **Master Theorem không cover mọi thứ:** fib `T(n-1)+T(n-2)` hay quick worst `T(n-1)+O(n)` phải triển khai bằng cây đệ quy / substitution, không áp công thức máy móc.
 - **Amortized ≠ average:** amortized đảm bảo cho *mọi* chuỗi worst-case input (tổng/n), average-case chỉ đúng trên phân phối ngẫu nhiên.
 - **"NP" = Nondeterministic Polynomial, không phải "Non-Polynomial":** nhầm lẫn phổ biến. NP-complete vẫn có thể giải nhanh với n nhỏ bằng backtracking + pruning.
 

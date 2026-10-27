@@ -212,9 +212,9 @@ function driveCar(engine: CarEngine) {
 |----------|-------------|
 | Ứng dụng lớn, nhiều đối tượng thực thể | ✅ OOP |
 | UI / Game / Simulation | ✅ OOP |
-| Data transformation pipeline | ⚠️ FP更适合 |
+| Data transformation pipeline | ⚠️ FP phù hợp hơn |
 | Script nhỏ, one-off | ⚠️ Procedural đủ |
-| Cần parallel/concurrent | ⚠️ FP/RxJS更适合 |
+| Cần parallel/concurrent | ⚠️ FP/RxJS phù hợp hơn |
 | Domain phức tạp, nhiều business rules | ✅ OOP (DDD + OOP mạnh nhất) |
 
 ---

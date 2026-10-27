@@ -281,7 +281,7 @@ function process(arr: number[]): void {
 
 - **6.2 Core Data Structures** — Complexity của các cấu trúc
 - **6.3 Essential Algorithms** — Thuật toán sắp xếp, tìm kiếm
-- **5.3 Performance Optimization** —实际应用 complexity analysis
+- **5.3 Performance Optimization** — ứng dụng thực tế của complexity analysis
 
 ---
 

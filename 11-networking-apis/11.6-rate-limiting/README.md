@@ -53,7 +53,7 @@ Thực tế, production systems thường dùng cả hai: throttle cho user-faci
 ├───────────────────┼─────────────────┼──────────────────────────────────┤
 │ Cơ chế            │ Tokens refill   │ Record each request timestamp    │
 │                   │ liên tục        │ trong window                     │
-│ Burst允许?        │ ✅ (dùng token  │ ❌ (cứng boundary)              │
+│ Burst cho phép?        │ ✅ (dùng token  │ ❌ (cứng boundary)              │
 │                   │  dự trữ)        │                                  │
 │ Độ chính xác      │ Trung bình      │ Cao (per-request tracking)      │
 │ Memory usage      │ O(1) per client │ O(n) per client (n = requests)  │
@@ -66,7 +66,7 @@ Thực tế, production systems thường dùng cả hai: throttle cho user-faci
 ├───────────────────┼─────────────────┼──────────────────────────────────┤
 │ Cơ chế            │ Count in fixed  │ Weighted combo of current +    │
 │                   │ time bucket     │ previous window                │
-│ Burst允许?        │ ❌ (edge spike) │ ✅ Smoothed                      │
+│ Burst cho phép?        │ ❌ (edge spike) │ ✅ Smoothed                      │
 │ Độ chính xác      │ Thấp (x2 error  │ Cao (~99% accuracy)            │
 │                   │  tại boundary)  │                                  │
 │ Memory usage      │ O(1) per client │ O(1) per client                │
@@ -334,7 +334,7 @@ app.use('/api/', async (req, res, next) => {
 | Scenario | Window | Limit | Lý do | Lập luận sâu |
 |----------|--------|-------|-------|-------------|
 | **Login endpoint** | 15 phút | 5 attempts | Chống brute-force password guessing | Login là target #1 của attack. 5 attempts/15min = ~12 attempts/hour — đủ chậm để stop automated attack, không làm phiền user quên password |
-| **Password reset** | 1 giờ | 3 requests | Chống enumeration + email spam | Reset token có thể dùng để verify email existence. Giới hạn chặt предотвращает mass registration abuse |
+| **Password reset** | 1 giờ | 3 requests | Chống enumeration + email spam | Reset token có thể dùng để verify email existence. Giới hạn chặt ngăn chặn mass registration abuse |
 | **API public (authenticated)** | 1 giờ | 1000 requests | Chống abuse, protect downstream | Public API thường có tier pricing. 1000/hour ≈ 16 req/min — đủ cho legitimate use, chặn scraper |
 | **API public (unauthenticated)** | 1 giờ | 100 requests | Protect without auth gate | Không có auth = khó trace abuse. Giới hạn theo IP chặt hơn, yêu cầu signup để tăng limit |
 | **Search endpoint** | 1 phút | 30 requests | Giảm load DB full-text search | Search query thường expensive (full table scan, text indexing). 30/min = 0.5/sec — acceptable cho most users |

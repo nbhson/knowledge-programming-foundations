@@ -44,7 +44,7 @@
 │        ↓                                                │
 │  Victim click link → Server nhận q=<script>...         │
 │        ↓                                                │
-│  Server反射 (reflect) lại trong response HTML:          │
+│  Server phản chiếu (reflect) lại trong response HTML:          │
 │  <h1>Kết quả cho: <script>steal(document.cookie)</script></h1>
 │        ↓                                                │
 │  Browser render → script chạy → cookie gửi về attacker  │
@@ -229,7 +229,7 @@ async function transfer(amount: number, to: string) {
 }
 ```
 
-### SameSite Cookie —防线 quan trọng nhất
+### SameSite Cookie — tuyến phòng thủ quan trọng nhất
 
 ```typescript
 // Set cookie với SameSite=Strict
@@ -345,7 +345,7 @@ app.use(
 | 6 | HttpOnly cookie | XSS đọc cookie | `httpOnly: true` |
 | 7 | Không dùng `eval()` hay `new Function()` | XSS | Linter rule, static analysis |
 | 8 | Content-Type: application/json | XSS (mime sniff) | Response header |
-| 9 |框架 auto-escape (React/Vue) | XSS | Default behavior |
+| 9 | Framework auto-escape (React/Vue) | XSS | Default behavior |
 | 10 | Monitor CSP violations | XSS detection | `report-uri` hoặc `report-to` directive |
 
 ---

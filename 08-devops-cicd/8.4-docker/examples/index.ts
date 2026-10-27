@@ -30,8 +30,7 @@ CMD ["node", "dist/index.js"]
 `;
 
 const DockerLifecycleCompose = `
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml — Compose v2 (không cần trường \`version\`)
 services:
   api:
     build: .

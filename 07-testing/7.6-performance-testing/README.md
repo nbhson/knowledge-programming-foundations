@@ -225,7 +225,7 @@ http_req_duration{p95}  180ms       95% request < 180ms
 http_req_duration{max}  1,200ms     outliers cần xem
 checks{passed}          99.5%       Hầu hết ok
 error_rate              0.5%        Cần điều tra 95 errors
-vus                     50         峰值 concurrent users
+vus                     50        peak concurrent users
 ═══════════════════════════════════════════════
 
 ⚠️ Nếu p95 > 500ms hoặc error_rate > 1% → cần optimize
@@ -252,7 +252,7 @@ vus                     50         峰值 concurrent users
 |-----------|------------|
 | **Test môi trường giống production** | Result không chính xác nếu config khác (CPU, RAM, DB size) |
 | **Baseline trước khi optimize** | Đo trước/sau để biết improvement thực |
-| **Theo dõi p95/p99** | Average bị che bởi outliers — p95 mới反映真实用户体验 |
+| **Theo dõi p95/p99** | Average bị che bởi outliers — p95 mới phản ánh trải nghiệm người dùng thực tế |
 | **Test gradual increase** | Ramp-up từ từ, không nhảy vọt → tìm breaking point chính xác |
 | **Monitor resource** | CPU, memory, DB connections trong khi test — bottleneck có thể ở infrastructure |
 | **Make it part of CI** | Chạy load test tự động mỗi deploy → phát hiện regression performance sớm |

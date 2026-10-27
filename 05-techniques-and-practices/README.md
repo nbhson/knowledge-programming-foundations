@@ -70,7 +70,7 @@ describe("add", () => {
 **Mô tả:** Kiểm tra các thành phần **hoạt động cùng nhau** (API + Database, Service A + Service B).
 
 ```typescript
-// Integration test — test真实 interactions
+// Integration test — test interactions thực tế
 describe("User API Integration", () => {
   let app: Express;
 
@@ -282,7 +282,7 @@ Driver (người code)          Navigator (người review)
 ├── Focus implementation     ├── Phát hiện lỗi
 └── Kiên nhẫn                └── Nghĩ về test cases
 
-Rotation: Đổi角色 mỗi 25-30 phút (Pomodoro)
+Rotation: Đổi vai trò mỗi 25-30 phút (Pomodoro)
 ```
 
 **Ưu điểm:** Code review real-time, knowledge sharing, fewer bugs.
@@ -1056,8 +1056,7 @@ CMD ["node", "dist/main.js"]
 ```
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml — Compose v2 (không cần trường `version`)
 services:
   app:
     build: .

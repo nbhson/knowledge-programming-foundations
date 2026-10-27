@@ -6,7 +6,7 @@
 Chi phí bảo mật vs chi phí sửa lỗi:
   Thiết kế bảo mật từ đầu  → $1 (secure by design)
   Sửa sau khi bị hack      → $1000+ + mất uy tín + regulatory fines
-  Breach remediation trung bình (2023): $4.45M (IBM Cost of a Data Breach Report)
+  Breach remediation trung bình: ~$4.4M (IBM Cost of a Data Breach Report 2025; đỉnh $4.88M năm 2024)
 ```
 
 ---
@@ -25,7 +25,7 @@ Chi phí bảo mật vs chi phí sửa lỗi:
 
 ## 🔐 JWT Authentication (JSON Web Token)
 
-**Threat model:** Attacker目标是 forge token để access protected resource, hoặc intercept token để impersonate user.
+**Threat model:** Attacker có mục tiêu forge token để access protected resource, hoặc intercept token để impersonate user.
 
 ```
 ┌─────────────────────────────────────────┐
@@ -102,7 +102,7 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
 
 ## 🔑 OAuth 2.0
 
-**Threat model:** Attacker目标是 intercept authorization code, forge redirect_uri, hoặc滥用 access token để access unauthorized resources.
+**Threat model:** Attacker có mục tiêu intercept authorization code, forge redirect_uri, hoặc lạm dụng access token để access unauthorized resources.
 
 ```
 OAuth 2.0 Flow (Authorization Code with PKCE):

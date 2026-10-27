@@ -75,7 +75,7 @@ Nhiều developer cảm thấy DSA "xa rời thực tế" vì daily code có r�
 
 2. **Interview & engineering depth:** DSA là ngôn ngữ chung để đánh giá tư duy thuật toán. Nhưng quan trọng hơn — DSA dạy bạn **cách chia nhỏ vấn đề**, **nhận diện pattern**, và **đánh giá trade-off**. Những skill này không biến mất sau khi khỏi công ty.
 
-3. **Framework底层 đều là DSA:** React virtual DOM diff là tree traversal. Database indexing là B-tree. Redis caching là hash map + LRU eviction. GraphQL query planning là graph traversal. Nếu hiểu DSA, bạn hiểu được **tại sao** công cụ bạn dùng hoạt động như vậy.
+3. **Framework bên dưới đều là DSA:** React virtual DOM diff là tree traversal. Database indexing là B-tree. Redis caching là hash map + LRU eviction. GraphQL query planning là graph traversal. Nếu hiểu DSA, bạn hiểu được **tại sao** công cụ bạn dùng hoạt động như vậy.
 
 > 💡 **Misconception phổ biến:** "Tôi làm frontend/web app CRUD, không cần DSA." — Sai. Mọi app đều xử lý data ở đâu đó. Vấn đề chỉ là scale — với 100 users, O(n²) vẫn chạy ok; với 100K users, cùng code đó sẽ crash. DSA giúp bạn **tư duy trước** về giới hạn.
 

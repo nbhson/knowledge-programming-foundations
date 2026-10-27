@@ -68,6 +68,23 @@ function matchSnapshot(stored: string, received: unknown): { pass: boolean; diff
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**CI snapshot trên OS khác nhau gây diff giả:**
+- Line ending (Windows CRLF vs Linux LF), thứ tự object property phụ thuộc iteration order, đường dẫn chứa `\` vs `/` → snapshot fail mỗi khi đổi runner OS dù code không đổi.
+- Fix: serializer chuẩn hóa trước khi so sánh — sort keys, normalize line endings, che giá trị động (timestamp, UUID, random) bằng placeholder cố định.
+
+**Serialized snapshots (Jest `jest-snapshot-serializer`):** thay vì inline snapshot trong test file (lớn, rối), dùng `toMatchSnapshot()` viết ra file `.snap` riêng + serializer định dạng (indentation, custom serializers cho các loại: React element, Date, error...). Lợi: test file sạch, review diff snapshot dễ hơn vì nó tách rời. Jest + Vitest đều hỗ trợ.
+
+**Khi KHÔNG dùng snapshot:**
+- UI hay thay đổi liên tục (design sprint, thử nghiệm A/B) — snapshot mỗi tuần lại fail, team bấm `-u` mù quáng → mất ý nghĩa.
+- Output chứa data/thời gian/salt — trước tiên loại bỏ bằng serializer, nhưng nếu phần động quá lớn → dùng unit test viết assert cụ thể thay vì snapshot.
+- Business logic tính toán (validate, transform) — assert giá trị đúng/sai thay vì "snapshot của giá trị hôm nay".
+
+**Inline snapshots (`toInlineSnapshot()`):** snapshot được ghi thẳng vào test file thay vì file `.snap` riêng — tiện cho những thứ nhỏ (small payload, error message format), nhưng test file dễ phình to. Use với số lượng ít; nhiều → chuyển sang external file.
+
+---
+
 ## 🔗 Liên quan
 
 - **7.1 Unit Testing** — snapshot là một dạng unit test cho output render.

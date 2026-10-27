@@ -133,7 +133,7 @@ app.delete('/api/users/:id', async (req: Request, res: Response) => {
 
 ## 5.10.2 GraphQL
 
-**Client запрос exactly what it needs.** GraphQL là query language do Facebook xây dựng (2015), cho phép client định nghĩa cấu trúc response thay vì server định nghĩa cứng. Một endpoint duy nhất (`/graphql`) xử lý mọi truy vấn.
+**Client yêu cầu chính xác cái nó cần.** GraphQL là query language do Facebook xây dựng (2015), cho phép client định nghĩa cấu trúc response thay vì server định nghĩa cứng. Một endpoint duy nhất (`/graphql`) xử lý mọi truy vấn.
 
 ### Core Concepts
 
@@ -296,7 +296,7 @@ const resolvers = {
 ```
 
 ✅ **Ưu điểm:** Không over-fetching, 1 endpoint, strong typing tự document, client-controlled shaping, caching at field level.
-❌ **Nhược điểm:** Cache phức tạp (HTTP cache không áp dụng được), N+1 queries, query complexity attack (client yêu cầu很深 recursion), debugging khó hơn REST.
+❌ **Nhược điểm:** Cache phức tạp (HTTP cache không áp dụng được), N+1 queries, query complexity attack (client yêu cầu recursion rất sâu), debugging khó hơn REST.
 
 ---
 

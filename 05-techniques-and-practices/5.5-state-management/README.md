@@ -14,7 +14,7 @@ Trước khi chọn công cụ, cần hiểu **tại sao cần state management*
 4. **Khó test:** Component vừa render, vừa fetch, vừa update local state → test phải mock cả network + DOM.
 5. **Time-travel debug khó:** Không có "hồ sơ" các lần thay đổi state → reproduce bug production gần như không thể.
 
-**Nguyên tắc vàng của state management:** **单一 nguồn thực sự (single source of truth)** — mọi thứ đọc được từ **một chỗ**, mọi thứ viết đi qua **một quy trình rõ ràng**. Không có ngoại lệ. Khi đó bạn có thể:
+**Nguyên tắc vàng của state management:** **Nguồn thực sự duy nhất (single source of truth)** — mọi thứ đọc được từ **một chỗ**, mọi thứ viết đi qua **một quy trình rõ ràng**. Không có ngoại lệ. Khi đó bạn có thể:
 - DevTools liệt kê mọi action + state trước/sau → debug như xem phim.
 - Memoization chính xác: component chỉ re-render khi state **thực sự** thay đổi.
 - Test nghiệp vụ pure: gọi reducer với input cũ + action → dự đoán được output mới.
@@ -217,7 +217,7 @@ export class CounterComponent {
 
 ❌ **Nhược điểm:**
 - **Boilerplate nhiều hơn Redux:** Action class, reducer tách riêng selector, Effects file.
-- **Khó上手 cho team React:** Phải quen RxJS — curve steep.
+- **Khó bắt đầu cho team React:** Phải quen RxJS — curve steep.
 - **Quá sức với app nhỏ:** Angular app CRUD đơn giản không cần store.
 
 **Alternatives:** Akita (nhẹ hơn, imperative API), Elf (functional, immutable first), Nx+NgRx (enterprise scale).
@@ -315,7 +315,7 @@ function FetchComponent() {
 │  Action Creator → Dispatcher (single channel)              │
 │                          │                                  │
 │                          ▼                                  │
-│                    Stores (multiple,各司其职)                │
+│                    Stores (multiple, mỗi cái một vai trò)                │
 │                          │                                  │
 │                          ▼                                  │
 │                    View re-renders                           │
@@ -442,7 +442,7 @@ emitter.once('session:end', () => {
 | React app lớn, cần debug phức tạp | Redux Toolkit | DevTools + Immer + ecosystem phong phú nhất |
 | React app nhỏ/trung bình | Zustand hoặc Jotai | Less boilerplate, API tối giản, tree-shakeable |
 | Angular enterprise app | NgRx | Reactive-first, tích hợp sâu Angular DI system |
-| Angular中小型 app | NGXS hoặc Akita | Nhẹ hơn NgRx, API closer Vuex |
+| Angular app nhỏ và vừa | NGXS hoặc Akita | Nhẹ hơn NgRx, API closer Vuex |
 | Workflow phức tạp (checkout, form đa bước) | XState | FSM prevent invalid states, visualizable |
 | Vue 3 app | Pinia | Default choice, officially recommended by Vue team |
 | Cross-component notification only | EventEmitter / pubsub-js | Không cần store, chỉ cần event routing |
@@ -458,7 +458,7 @@ emitter.once('session:end', () => {
 | Anti-pattern | Dấu hiệu | Fix |
 |-------------|----------|-----|
 | **LocalStorage = State** | Dùng `localStorage.getItem()` trong component render | Move vào store, localStorage chỉ là persistence layer |
-| **Multiple sources of truth** | Same data ở Redux + URL params + component state | Chuẩn hóa: một nguồn duy nhất cho mỗi事实 |
+| **Multiple sources of truth** | Same data ở Redux + URL params + component state | Chuẩn hóa: một nguồn duy nhất cho mỗi sự thật |
 | **Store = God Object** | 1 store chứa 100+ slices, không chia theo domain | Chia store theo module/domain (feature-based slicing) |
 | **Middleware for everything** | Mọi async logic nhồi vào thunk/saga | Dùng RTK Query hoặc TanStack Query cho data fetching |
 | **Emmiter thay thế Store** | 50+ event listeners, không ai biết ai lắng nghe gì | Chuyển state quan trọng vào store, EventEmitter chỉ cho notification |

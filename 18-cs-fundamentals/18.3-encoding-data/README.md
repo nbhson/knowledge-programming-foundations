@@ -81,6 +81,41 @@ function endianDemo(): { be: number; le: number } {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Base64 overhead +33% — khi nào dùng, khi nào không:**
+- 3 bytes → 4 base64 chars (+ 25%) + padding (`=`). Ảnh 1MB gửi base64 trong JSON → ~1.33MB. → Gửi ảnh qua JSON chỉ khi bắt buộc (canvas toDataURL, JWT claim). Thực tế: multipart/form-data hoặc binary stream.
+- Encode tùy chọn: **base16 (hex)** cho debug/hash/output dễ đọc; **base64url** (RFC 4648 §5) thay `+/\=` bằng `-_.` an toàn trong URL/base64 JSON.
+
+**UTF-8 vs UTF-16 — chọn gì:**
+
+| | UTF-8 | UTF-16 |
+|---|---|---|
+| ASCII (A–Z, 0–9) | 1 byte | 2 byte |
+| Latin + European | 1–2 byte | 2 byte |
+| CJK (Hán, Hiragana...) | 3 byte | 2–4 byte |
+| Khi nào dùng | Web/JSON/HTTP (mặc định), Unix, English-heavy | Windows (API Win32), JavaScript engines (V8 dùng UTF-16 bên trong), CJK-heavy storage |
+| BOM (Byte Order Mark) | Không cần (self-synchronizing) | Cần `\xFF\xFE` (LE) hoặc `\xFE\xFF` (BE) |
+
+- Web: **luôn UTF-8**. File `.txt` / `.html` / `.json` / HTTP `Content-Type: utf-8` → dùng UTF-8, không thêm BOM (BOM thường gây lỗi JSON parse hoặc hiển thị ký tự lạ ở đầu file).
+
+**Surrogate pairs — emoji ≠ 1 ký tự trong JS:**
+
+```typescript
+"😀".length          // = 2  (U+1F600 = surrogate pair: 0xD83D 0xDE00)
+"é".length           // = 1  (U+00E9, 1 code unit UTF-16)
+
+// Đếm ký tự Unicode thực sự:
+Array.from("😀🎉").length  // = 2  (dùng spread, tự split surrogate pairs)
+
+// Regex:
+/\p{Emoji}/gu.test("😀")  // = true (Unicode property escapes, ES2018+)
+```
+
+- Bug phổ biến: `str.substring(0, 5)` cắt giữa surrogate pair → ra ký tự rác. Dùng `Intl.Segmenter` hoặc `Array.from(str).slice(0, 5).join('')`.
+
+---
+
 ## 🔗 Liên Quan
 
 - [18.4 Numbers & Math](../18.4-numbers-math/README.md) — số cũng là byte (IEEE-754).

@@ -87,10 +87,10 @@ class Animal {
   move() { /* any movement */ }
 }
 class Bird extends Animal {
-  move() { this.fly(); } //鸟类只能飞，违反Animal的移动约定
+  move() { this.fly(); } // Chim chỉ bay được — vi phạm hợp đồng di chuyển của Animal
 }
 class Penguin extends Bird {
-  move() { this.swim(); } //企鹅不能飞，违反了Bird的move契约
+  move() { this.swim(); } // Chim cánh cụt không bay được — vi phạm hợp đồng move của Bird
 }
 
 // Client code không know Penguin không fly được
@@ -210,7 +210,7 @@ class PremiumVideoPlayer extends VideoPlayer {
   async play(url: string): Promise<void> { /* ... */ }
   pause(): void { /* ... */ }
 }
-// Cả hai đều遵循同样的 contract，可以互相替换
+// Cả hai đều tuân theo cùng một contract, có thể thay thế cho nhau
 ```
 
 ---

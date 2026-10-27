@@ -61,6 +61,40 @@ function udpSend(packets: Packet[], lostSeq: Set<number>): string[] {
 
 ---
 
+## 🚦 TCP Congestion Control (CUBIC, BBR)
+
+TCP tự điều chỉnh tốc độ gửi theo mạng (không flood link) — ảnh hưởng trực tiếp throughput API của bạn:
+
+| Thuật toán | Cách hoạt động | Ghi chú |
+|---|---|---|
+| **CUBIC** (mặc định Linux/Windows) | Window tăng theo hàm lập phương sau mỗi loss event — tăng nhanh, thu hẹp khi mất packet | Ổn định, chuẩn de-facto > 10 năm |
+| **BBR** (Google, 2016) | Đo **bandwidth + RTT** thay vì chờ loss — gửi đúng đường ống, không đầy buffer | Cải thiện lớn trên mạng loss cao/vệ tinh; Chrome/YouTube/QUIC dùng BBR |
+| Loss-based (Reno) | Mất packet = giảm 50% window | Cũ, kém trên đường loss cao |
+
+- Debug: `ss -ti` xem `cwnd` (congestion window) + `retrans` — API chậm bất thường có thể là cwnd nhỏ do loss.
+- Bật BBR server: `sysctl net.ipv4.tcp_congestion_control=bbr` — thường cho lợi ích rõ trên link chất lượng kém.
+
+## 🐌 Nagle vs TCP_NODELAY
+
+- **Nagle's algorithm**: gom các packet nhỏ lại chờ ACK trước để giảm overhead — tốt cho telnet, **tệ cho API/game** (thêm delay 40–200ms).
+- **TCP_NODELAY** (tắt Nagle): gửi ngay mỗi write — mặc định bật trong hầu hết HTTP client/server hiện đại.
+- Hiện tượng "1 request chậm 200ms không rõ lý do" → kiểm tra Nagle + **delayed ACK** tương tác nhau (Nagle đợi delayed-ACK của peer).
+- Quy tắc: app request-response qua TCP → tắt Nagle; gửi stream nhỏ liên tục (telemetry) → cân nhắc giữ Nagle + tự buffer.
+
+## 🎮 Khi nào UDP là lựa chọn ĐÚNG
+
+| Use case | Vì sao UDP, không phải TCP |
+|---|---|
+| **Game FPS/action** | Trạng thái cũ (vị trí 300ms trước) vô giá trị — retransmit làm tình huống tệ hơn; client-side prediction + interpolation |
+| **Voice/Video (WebRTC/RTP)** | Trễ > 150ms phá hội thoại; mất 1 frame chấp nhận được, chờ retransmit thì không |
+| **DNS** | 1 query = 1 packet nhỏ, handshake TCP tốn gấp 2–3 lần; có fallback TCP cho response > 512B (EDNS/DNS over TCP) |
+| **QUIC/HTTP-3** | Xây reliability + TLS 1.3 + multiplexing riêng trên UDP — lấy lợi thế UDP, tự lo phần cần thiết |
+| **IoT/telemetry** | Sensor gửi mẫu mỗi 5s — mất 1 mẫu không sao, tiết kiệm pin (không keep-alive) |
+
+> Đừng quên: UDP thuần = tự xử lý congestion, reordering, path MTU. Muốn reliability có kiểm soát → QUIC thay vì tự viết trên UDP thô.
+
+---
+
 ## 🎯 Khi nào dùng
 
 - TCP: HTTP/API, DB, file, email — mặc định cho mọi thứ cần đúng.

@@ -154,7 +154,7 @@ async function invalidateCache(pattern: string): Promise<void> {
 | Nhược điểm | Giải thích | Giải thích sâu |
 |------------|------------|----------------|
 | 💰 **Chi phí** | Pay per request/bandwidth | Free tier thường giới hạn; enterprise pricing ~$0.04–0.10 per 1M requests + $0.05–0.10/GB egress |
-| 🔄 **Cache delay** | Content mới cần time propagate | TTL hoặc purge mới生效 — không instantaneous, cần chiến lược versioning |
+| 🔄 **Cache delay** | Content mới cần time propagate | TTL hoặc purge mới có hiệu lực — không instantaneous, cần chiến lược versioning |
 | 📋 **Vendor lock-in** | Chuyển CDN phức tạp | Config, rules, custom headers khác nhau giữa provider; exit cost không nhỏ |
 | 🌐 **Privacy** | Data đi qua third-party servers | Cookie, user-agent, IP log qua CDN; cần DPA (Data Processing Agreement) với enterprise customer |
 
@@ -169,7 +169,7 @@ async function invalidateCache(pattern: string): Promise<void> {
 | API endpoint động (user-specific, frequent update) | ❌ Không cần | Cache hit rate thấp, TTL ngắn overhead > benefit; nên dùng API gateway + origin scaling |
 | Nội dung real-time (chat, live score) | ❌ Không phù hợp | Latency goal <100ms; CDN thêm hop không giúp; WebSocket direct tới origin/server cluster tốt hơn |
 | App nội bộ (LAN) | ⚠️ Không cần | Nội bộ latency đã thấp; CDN thêm chi phí & complexity không xứng |
-| Static marketing/landing page | ✅ Rất phù hợp | TTL dài, traffic burst (campaign) CDN absorb được; origin几乎不 cần |
+| Static marketing/landing page | ✅ Rất phù hợp | TTL dài, traffic burst (campaign) CDN absorb được; origin gần như không cần |
 
 ---
 

@@ -18,7 +18,7 @@ D — Dependency Inversion Principle (DIP)      → Phụ thuộc abstraction, k
 > 💡 **Ghi nhớ:** Đọc tắt từng chữ cái thành "S-O-L-I-D" để dễ nhớ.
 
 **Sự thật quan trọng:** SOLID không phải "luật bất di bất dịch" — chúng là **nguyên tắc chỉ dẫn** để đạt được các thuộc tính mong muốn của software:
-- Dễ đọc →可读性
+- Dễ đọc → khả năng đọc
 - Dễ sửa → modifiability
 - Dễ mở rộng → extensibility
 - Dễ test → testability

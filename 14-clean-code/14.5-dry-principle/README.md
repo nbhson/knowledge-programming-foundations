@@ -153,7 +153,7 @@ class OutputFormatter { formatOutput(data: any) { /* ... */ } }
 | DRY quá mức (over-abstract) | Chỉ DRY khi có 2+ lần lặp thực sự | Abstraction không có caller đủ → dead code |
 | Abstract mọi thứ thành function | Đôi khi inline rõ ràng hơn | Function call overhead + indirection cost |
 | Generic wrapper function | Giữ cụ thể cho domain | `processData(data)` không rõ bằng `validateEmail(email)` |
-| Duplicate code trong prototype | Refactor sau khi validate ý tưởng |过早抽象浪费時間 |
+| Duplicate code trong prototype | Refactor sau khi validate ý tưởng | Trừu tượng hóa quá sớm lãng phí thời gian |
 | "DRY" một dòng code | Để nguyên, đừng tạo abstraction cho 1 lần dùng | Abstraction cần ≥ 2 caller để justified |
 
 ---

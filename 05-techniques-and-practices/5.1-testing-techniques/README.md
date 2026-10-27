@@ -10,7 +10,7 @@ Test không chỉ là "kiểm tra bug". Nó phục vụ ba mục đích song son
 
 1. **Phát hiện lỗi** — bắt được regression trước khi đến tay user
 2. **Tài liệu sống** — test case mô tả **hành vi kỳ vọng** của hệ thống, đọc test hiểu hơn đọc spec
-3. **Tự tin thay đổi** — có test suite mạnh,你敢 refactor; không có test suite = mỗi dòng code sửa là một canh động đất
+3. **Tự tin thay đổi** — có test suite mạnh, bạn tự tin refactor; không có test suite = mỗi dòng code sửa là một canh động đất
 
 **Chi phí sửa lỗi theo thời điểm phát hiện** (dựa trên nghiên cứu kinh điển của Barry Boehm và các nghiên cứu sau này của IBM SEI):
 
@@ -510,7 +510,7 @@ Then('I should see {string}', async (text: string) => {
 
 - **Coverage 100% ≠ chất lượng cao** — bạn có thể có 100% coverage với test chỉ check `expect(true).toBe(true)` ở mọi branch
 - **Mutation score đo khả năng phát hiện lỗi THẬT** của test suite
-- Mỗi mutant đại diện cho **một kiểu lỗi thực tế** mà developer có thể寫 introduce
+- Mỗi mutant đại diện cho **một kiểu lỗi thực tế** mà developer có thể vô tình introduce
 
 ```typescript
 // Original code
@@ -614,7 +614,7 @@ Mike Cohn đề xuất **Testing Trophy** như cách nhìn hiện đại hơn:
 | Tool | Loại | Ngôn ngữ | Điểm mạnh | Time/test |
 |------|------|----------|-----------|-----------|
 | **Jest** | Unit/Integration | JS/TS | Fast, built-in mock, snapshot, watch mode | ~1ms |
-| **Vitest** | Unit/Integration | JS/TS |极速 (esbuild), Vite-native, close đến Jest API | ~0.5ms |
+| **Vitest** | Unit/Integration | JS/TS | Cực nhanh (esbuild), Vite-native, close đến Jest API | ~0.5ms |
 | **Playwright** | E2E | JS/TS | Multi-browser native, auto-wait, trace UI | ~5–30s |
 | **Cypress** | E2E | JS/TS | Real-time reload, DOM inspection, recording | ~10–60s |
 | **Supertest** | Integration | JS/TS | HTTP API testing đơn giản, chainable | ~50–200ms |

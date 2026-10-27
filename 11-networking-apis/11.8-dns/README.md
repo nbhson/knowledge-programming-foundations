@@ -60,6 +60,49 @@ class Resolver {
 
 ---
 
+## 📇 DNS Record Types Chính
+
+| Record | Dùng cho | Ví dụ |
+|---|---|---|
+| **A** | Hostname → IPv4 | `example.com. IN A 93.184.216.34` |
+| **AAAA** | Hostname → IPv6 | `example.com. IN AAAA 2606:2800::1` |
+| **CNAME** | Alias sang hostname khác (không dùng được ở apex) | `www → example.com` |
+| **TXT** | Verify sở hữu, SPF/DKIM/DMARC (email), ACME challenge | `_acme-challenge TXT "..."` |
+| **MX** | Mail server của domain, kèm priority | `MX 10 mail.example.com.` |
+| **CAA** | CA nào được phép cấp cert cho domain | `CAA 0 issue "letsencrypt.org"` |
+| **NS / SOA** | Chịu trách nhiệm zone / metadata zone (serial, negative TTL) | — |
+| **SRV / PTR** | Service discovery (_grpc._tcp) / IP → hostname (reverse) | — |
+
+> Lưu ý CNAME: **không thể trộn với record khác trên cùng tên** — apex domain bắt buộc A/AAAA (hoặc ALIAS/ANAME do provider hỗ trợ).
+
+## ⏱️ TTL Trade-off (chi tiết)
+
+| TTL | Ưu | Nhược | Dùng cho |
+|---|---|---|---|
+| 60s | Đổi IP gần tức thì | Query nhiều, latency +, resolver tốn phí | Chỉ trong window migration |
+| 300s | Cân bằng (mặc định phổ biến) | Đổi chậm tối đa 5 phút | Web/API thường |
+| 3600s–86400s | Ít query, cache hit cao | Đổi server chậm — cần kế hoạch trước | Infra ổn định, static assets CDN |
+
+- TTL thấp + số lượng user lớn = recursive resolver query liên tục — chi phí + latency p99 tăng.
+- Cached ở rất nhiều tầng (browser, OS, resolver ISP, CDN) — **không rút được** TTL đã phát ra; muốn đổi nhanh phải chuẩn bị trước (hạ TTL trước 24–48h).
+
+## 🚑 DNS Failover + Health Check
+
+- DNS trả **nhiều A record** hoặc theo region (GeoDNS) — kết hợp health check để tự bỏ node chết:
+  - Active health check: provider (Route 53, Cloudflare LB) ping `/healthz` định kỳ → node fail → gỡ khỏi response.
+  - Latency-based / weighted routing: route user về node gần/nhanh nhất.
+- **Hạn chế cần biết**: cache giữa các tầng khiến failover không tức thì (phụ thuộc TTL) — dùng TTL 60s cho endpoint critical; client nên retry IP tiếp theo trong danh sách.
+- DNS failover giải quyết "node chết", không giải quyết "node sống nhưng lỗi 500" — health check phải check tầng app, không chỉ port mở.
+
+## 🔒 DoH / DoT (DNS over HTTPS / TLS)
+
+- DNS truyền thống (port 53, plaintext): ISP/network trung gian **thấy + sửa được** query bạn tra → leak hành vi, hijack quảng cáo.
+- **DoH** (DNS over HTTPS, port 443): query DNS đi trong HTTPS — ISP chỉ thấy kết nối tới resolver; **DoT** (port 853): TLS riêng cho DNS, hợp cho router/server.
+- Trình duyệt (Firefox/Chrome) bật DoH mặc định ở nhiều quốc gia — app/desktop cũng nên (Windows 11, systemd-resolved hỗ trợ).
+- Lưu ý ops: DoH của client có thể bypass DNS nội bộ/hosts file — các service nội bộ cần dùng tên public hoặc cấu hình resolver rõ ràng.
+
+---
+
 ## 🎯 Khi nào dùng
 
 - Mọi production domain: TTL 300s mặc định; 60s trước migration; CNAME cho alias, A cho apex.

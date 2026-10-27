@@ -108,7 +108,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default state — args là mặc định cho所有 stories
+// Default state — args là mặc định cho tất cả stories
 export const Primary: Story = {
   args: { variant: 'primary', children: 'Click me' },
 };

@@ -49,22 +49,24 @@ cd 09-security/9.10-mtls-zero-trust && npx ts-node examples/index.ts
 
 ## 1. OWASP Top 10
 
-> 10 lỗ hổng bảo mật web phổ biến nhất, được OWASP cập nhật định kỳ (cập nhật lần gần nhất: 2021, bản 2024 đang trong draft).
+> 10 lỗ hổng bảo mật web phổ biến nhất, được OWASP cập nhật định kỳ (cập nhật lần gần nhất: **2025**, phát hành tháng 11/2025 tại OWASP Global AppSec).
 
-### 📋 Danh sách OWASP Top 10 (2021)
+### 📋 Danh sách OWASP Top 10 (2025)
 
 | # | Lỗ hổng | Mô tả | Ví dụ tấn công | Mức độ nghiêm trọng |
 |---|---------|-------|----------------|---------------------|
-| A01 | **Broken Access Control** | Người dùng truy cập tài nguyên không được phép | Thay đổi ID trong URL để xem dữ liệu người khác | 🔴 Cao |
-| A02 | **Cryptographic Failures** | Dữ liệu nhạy cảm không được mã hóa đúng | Lưu password dạng plaintext, SSL offloading sai | 🔴 Cao |
-| A03 | **Injection** | Dữ liệu không tin cậy được gửi vào interpreter | SQL Injection, XSS, Command Injection, LDAP injection | 🔴 Cao |
-| A04 | **Insecure Design** | Thiết kế hệ thống thiếu threat modeling | Không có rate limiting cho API, flow xác thực yếu | 🟡 Trung bình |
-| A05 | **Security Misconfiguration** | Cấu hình sai hoặc mặc định | Debug mode bật trên production, default admin/admin | 🔴 Cao |
-| A06 | **Vulnerable Components** | Sử dụng thư viện có lỗ hổng đã biết | Dependency cũ chưa được patch (Log4Shell) | 🔴 Cao |
-| A07 | **Auth Failures** | Xác thực và quản lý session yếu | Brute force password, session fixation, weak password policy | 🔴 Cao |
-| A08 | **Data Integrity Failures** | Không kiểm tra tính toàn vẹn dữ liệu | Insecure deserialization, unsigned code | 🟡 Trung bình |
-| A09 | **Logging Failures** | Log không đủ, không giám sát | Không phát hiện được tấn công, log thiếu metadata | 🟡 Trung bình |
-| A10 | **SSRF** | Server gửi request đến URL do attacker kiểm soát | Đọc metadata cloud instance (169.254.169.254) | 🔴 Cao |
+| A01 | **Broken Access Control** | Người dùng truy cập tài nguyên không được phép *(SSRF đã được gộp vào đây)* | Thay đổi ID trong URL để xem dữ liệu người khác, đọc metadata cloud | 🔴 Cao |
+| A02 | **Security Misconfiguration** | Cấu hình sai hoặc mặc định *(tăng từ #5)* | Debug mode bật trên production, default admin/admin | 🔴 Cao |
+| A03 | **Security Misconfiguration** *(mới)* | Bao gồm các thành phần yếu, không có hardening, quyền không cần thiết | Thiếu security headers, unused features enabled | 🔴 Cao |
+| A04 | **Cryptographic Failures** | Dữ liệu nhạy cảm không được mã hóa đúng *(giảm từ #2)* | Lưu password dạng plaintext, SSL offloading sai | 🔴 Cao |
+| A05 | **Injection** | Dữ liệu không tin cậy được gửi vào interpreter *(giảm từ #3)* | SQL Injection, XSS, Command Injection, LDAP injection | 🔴 Cao |
+| A06 | **Insecure Design** | Thiết kế hệ thống thiếu threat modeling *(giảm từ #4)* | Không có rate limiting cho API, flow xác thực yếu | 🟡 Trung bình |
+| A07 | **Authentication Failures** | Xác thực và quản lý session yếu *(đổi tên)* | Brute force password, session fixation, weak password policy | 🔴 Cao |
+| A08 | **Software or Data Integrity Failures** | Không kiểm tra tính toàn vẹn dữ liệu | Insecure deserialization, unsigned code, CI/CD tampering | 🟡 Trung bình |
+| A09 | **Security Logging & Alerting Failures** | Log không đủ, không giám sát, không cảnh báo *(đổi tên: Monitoring → Alerting)* | Không phát hiện được tấn công, log thiếu metadata | 🟡 Trung bình |
+| A10 | **Mishandling of Exceptional Conditions** *(hoàn toàn mới)* | Lỗi xử lý ngoại lệ, hệ thống "fail open" khi gặp điều kiện bất thường, trạng thái không an toàn | Error handling leak thông tin, retry storm, race condition | 🟡 Trung bình |
+
+> 📌 **Thay đổi so với 2021:** SSRF (A10 cũ) → gộp vào A01. Vulnerable Components (#6 cũ) → mở rộng thành A03 Software Supply Chain Failures (full supply chain: dependencies, CI/CD, build, distribution). A10 hoàn toàn mới. Security Misconfiguration: #5 → #2. Cryptographic Failures: #2 → #4. Injection: #3 → #5. Insecure Design: #4 → #6. Nguồn: top10.owasp.org/2025
 
 ### 🔍 Chi tiết Injection (A03) — Ví dụ điển hình nhất
 
@@ -191,7 +193,7 @@ Client                    Server                    Auth Service
    → Argon2id thắng PHC (Password Hashing Competition) 2015
 
 4. LUÔN dùng TLS/HTTPS cho data in transit
-   → HTTP plaintext = mọi中間 person đọc được
+   → HTTP plaintext = mọi người đứng giữa (man-in-the-middle) đọc được
 
 5. LUÔN dùng AES-256-GCM cho data at rest
    → GCM cung cấp cả confidentiality + integrity (authenticated encryption)
@@ -345,7 +347,7 @@ Cache-Control: no-store  (cho sensitive endpoints)
 |-----------|-----------|-------|
 | **Identity** | IAM least privilege, MFA bắt buộc, service accounts riêng | 69% breaches liên quan credential compromise |
 | **Network** | VPC, private subnets, security groups, no public DB | Reduces attack surface dramatically |
-| **Data** | Encrypt at rest (AES-256) + in transit (TLS 1.2+), backup encryption | Data breach cost avg $4.45M (IBM 2023) |
+| **Data** | Encrypt at rest (AES-256) + in transit (TLS 1.2+), backup encryption | IBM Cost of a Data Breach Report 2025: trung bình toàn cầu ~$4.4M (đỉnh $4.88M năm 2024) |
 | **Compute** | Hardened images, auto-patching, no SSH to production | Unpatched VM = easy entry point |
 | **Monitoring** | CloudTrail/audit logs, SIEM integration, alert on anomalous API calls | Detect breach trong minutes, not months |
 | **Secrets** | AWS KMS / HashiCorp Vault, rotate regularly (90 days) | Hardcoded secrets = #1 cloud misconfig |
@@ -379,7 +381,7 @@ Level 3 (Senior — "Thiết kế an toàn"):
 └── Compliance (SOC2, GDPR, PCI-DSS requirements)
 
 Level 4 (Expert — "Kiến tạo văn hóa bảo mật"):
-├── Custom WAF rules (miễn cưỡng khi standard不够)
+├── Custom WAF rules (miễn cưỡng khi các rule chuẩn không đủ)
 ├── Zero Trust Architecture (không tin gì, xác minh mọi thứ)
 ├── Security architecture design (secure by design)
 ├── Red team / Blue team exercises (attacker vs defender)
@@ -392,12 +394,11 @@ Level 4 (Expert — "Kiến tạo văn hóa bảo mật"):
 
 | Nguồn | Link | Ghi chú |
 |-------|------|---------|
-| OWASP Top 10 | https://owasp.org/Top10/ | Standard reference |
+| OWASP Top 10 | https://top10.owasp.org/ | Standard reference — bản mới nhất: **2025** (phát hành 11/2025) |
 | OWASP Cheat Sheet Series | https://cheatsheetseries.owasp.org/ | Practical guides |
 | CWE Top 25 | https://cwe.mitre.org/top25/ | Common Weakness Enumeration |
 | NIST Cybersecurity Framework | https://www.nist.gov/cyberframework | Enterprise framework |
 | The Web Application Hacker's Handbook | Dafydd Stuttard & Marcus Pinto | Bible of web hacking |
-| Rust Empire's OWASP Cheat Sheet | https://cheatsheetseries.owasp.org/ | Quick reference |
 
 ---
 

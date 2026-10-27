@@ -1,7 +1,7 @@
 # 🏗️ 8.6 Terraform — Infrastructure as Code
 
 > **Terraform** là công cụ Infrastructure as Code (IaC) phổ biến nhất của HashiCorp — cho phép định nghĩa và quản lý infrastructure (server, network, database...) qua code thay vì click trên web console.
-> Được tạo 2014, giờ là standard industry cho cloud provisioning.
+> Được tạo 2014, giờ là standard industry cho cloud provisioning. Terraform CLI bản hiện hành là **1.12.x**; nếu cần phương án open-source thuần, xem thêm **OpenTofu** — fork của Terraform sau khi HashiCorp chuyển sang license BUSL (2023).
 
 ---
 
@@ -358,7 +358,7 @@ terraform import aws_instance.web i-0abc123def456
 | | Local State | Remote State (S3 + DynamoDB) |
 |---|---|---|
 | **Vị trí** | `terraform.tfstate` local | S3 bucket |
-| **Collaboration** | 1 người (file lock local) | Team多人 (DynamoDB lock) |
+| **Collaboration** | 1 người (file lock local) | Team nhiều người (DynamoDB lock) |
 | **Locking** | Không | DynamoDB table prevents concurrent writes |
 | **Security** | Ít an toàn (file trên disk) | Encryption + IAM + bucket policies |
 | **Versioning** | Không (ghi đè) | S3 versioning giữ lịch sử state |

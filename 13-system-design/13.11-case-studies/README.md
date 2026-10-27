@@ -117,6 +117,31 @@ Read: timeline = merge(precomputed inbox, celeb tweets) + rank + paginate(cursor
 | **Pull** (fan-out on read) | Nhẹ | Nặng (merge lúc đọc) | Celeb (followers huge) |
 | **Hybrid** | Vừa | Vừa | ✅ Production (ngưỡng ~10k followers) |
 
+## 13.11.4 Case 4: RAG Search at Scale (Era AI)
+
+**Requirements:** search/chat trên ~10M tài liệu nội bộ, câu trả lời có trích dẫn (< 2s p99); index cập nhật trong vài phút; retrieval phải "đúng doc" (hallucination thấp).
+
+**Capacity estimation (ước tính cho mục đích minh họa):**
+
+| Tham số | Giả định | Kết quả |
+|---------|----------|---------|
+| Corpus | 10M docs × ~500 tokens → ~15M chunks (vector 768 float32) | ~45 GB vectors |
+| Search QPS | 10k users × 1 query/10s | ~100 avg QPS, peak ~500 |
+| Embedding cost | 15M chunks embed một lần | Offline batch job (GPU), không nằm request path |
+
+**Architecture:**
+
+```
+Ingest: Doc ─▶ chunk ─▶ embed (batch) ─▶ [Vector index: HNSW/IVF] (+ metadata store)
+Query:  Q ─▶ embed ─▶ Hybrid retrieve (BM25 top-50 ∪ vector top-50)
+            ─▶ Rerank (cross-encoder: 100 → top-5)
+            ─▶ LLM generate + cite nguồn
+```
+
+**Data model:** `chunks(id, doc_id, text, embedding, metadata)` — metadata filter (phòng ban, thời gian, ACL) prune trước khi ANN search; pgvector đủ cho vừa và nhỏ (< ~50M vectors), Pinecone/Milvus/Qdrant/OpenSearch k-NN khi scale lớn hơn.
+
+**Deep dive:** **hybrid search (BM25 + vector) là best practice** — keyword bắt chính xác (mã lỗi, tên API), vector bắt ngữ nghĩa ("reset mật khẩu" ↔ "khôi phục đăng nhập"); **rerank** là bước rẻ nhất tăng precision vì chỉ đánh giá top-100 chứ không cả corpus. Cache embedding theo chunk hash; freshness = re-embed chỉ chunk thay đổi (CDC). Câu hỏi phỏng vấn kinh điển era AI: chọn vector DB nào và vì sao, đo chất lượng thế nào (recall@k của retrieval + faithfulness của câu trả lời). Chi tiết vector DB ở [10.12](../../10-database/10.12-vector-db/README.md).
+
 ---
 
 ## 💻 Code/Khái Niệm Ví Dụ

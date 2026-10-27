@@ -3,10 +3,12 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "example": "ts-node"
+    "example": "tsx"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "ts-node": "^10.9.2",
-    "typescript": "5.4"
+    "tsx": "^4.19.0",
+    "typescript": "^7.0.0"
   }
 }

@@ -43,7 +43,7 @@ ModuleUnderTest cần:
 ├────────────┼──────────────────────────┼─────────────────────────┤
 │  MOCK      │ Giả lập + verify         │ Cần kiểm tra method      │
 │            │ tương tác (call count,   │ được gọi đúng args/không│
-│            │ args,次数)               │ bị gọi                  │
+│            │ args, số lần gọi)               │ bị gọi                  │
 ├────────────┼──────────────────────────┼─────────────────────────┤
 │  SPY       │ Wrap object thật         │ Giữ behavior thật,      │
 │            │ + ghi lại calls          │ chỉ theo dõi call count │
@@ -130,7 +130,7 @@ describe("UserService", () => {
 **Khi nào dùng Stub:**
 - Bạn cần **data đầu vào cố định** cho function under test
 - Không quan tâm **method có được gọi** hay không
--只想 verify output dựa trên input
+- Chỉ muốn verify output dựa trên input
 
 ---
 
@@ -335,7 +335,7 @@ Thay thế toàn bộ dependency        → FAKE
 | **Test implementation** | Verify mock calls chi tiết quá | Chỉ verify behavior quan trọng |
 | **Không restore spy** | Spy tồn tại qua nhiều test | Luôn `mockRestore()` trong `afterEach` |
 | **Fake quá phức tạp** | Fake gần bằng production code | Giữ fake đơn giản, chỉ đủ cho test |
-| **Mock internal methods** | Test implementation细节 | Test public interface, không private |
+| **Mock internal methods** | Test implementation chi tiết | Test public interface, không private |
 | **False positive mocks** | Mock trả về đúng value nhưng không gọi method thật | Dùng `mockRejectedValue` khi expect throw |
 
 ```typescript

@@ -69,7 +69,7 @@ class CashPayment implements PaymentMethod { pay(amount: number) { /* ... */ } }
 | Class có tính năng hardcode | Khó customize | Dùng strategy pattern |
 | Test phải chạy lại toàn bộ khi thêm tính năng | Code cũ dễ break | Mỗi class test riêng |
 
-### Ví dụ thực tế:违反 OCP
+### Ví dụ thực tế: vi phạm OCP
 
 ```typescript
 // ❌ BAD: ReportService vi phạm OCP
@@ -140,7 +140,7 @@ class ExcelReportFormatter implements ReportFormatter {
 | Quick prototype / PoC | ❌ Bỏ qua OCP | Tốc độ quan trọng hơn maintainability |
 | API versioning | ⚠️ Cân nhắc | Đôi khi cần sửa interface |
 
-> 💡 **Quy tắc ngón tay cái:** "Chỉ抽象 hóa khi bạn biết sẽ có ít nhất 2 implementation khác nhau."
+> 💡 **Quy tắc ngón tay cái:** "Chỉ trừu tượng hóa khi bạn biết sẽ có ít nhất 2 implementation khác nhau."
 
 ---
 

@@ -33,7 +33,7 @@ Xem đầy đủ: [`examples/index.ts`](examples/index.ts)
 
 ```typescript
 // ─────────────────────────────────────────────
-// ❌ BAD: 代码未优化
+// ❌ BAD: Code chưa được tối ưu
 // ─────────────────────────────────────────────
 // math.ts
 export function add(a: number, b: number) { return a + b; }
@@ -42,14 +42,14 @@ export function multiply(a: number, b: number) { return a * b; }
 export function divide(a: number, b: number) { return a / b; }
 
 // app.ts
-import * as math from './math'; // 导入所有
+import * as math from './math'; // Import tất cả
 console.log(math.add(1, 2));
-// → bundle包含所有4个函数
+// → Bundle bao gồm cả 4 hàm
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: 使用命名导入 + sideEffects
+// ✅ GOOD: Dùng named import + sideEffects
 // ─────────────────────────────────────────────
-// math.ts - 纯函数，无副作用
+// math.ts — thuần function, không side effect
 export function add(a: number, b: number): number {
   return a + b;
 }
@@ -62,31 +62,31 @@ export function subtract(a: number, b: number): number {
   "sideEffects": false
 }
 
-// app.ts - 只导入需要的
-import { add } from './math'; // 只导入add
+// app.ts — chỉ import thứ cần dùng
+import { add } from './math'; // Chỉ import add
 console.log(add(1, 2));
-// → bundle只包含add函数
+// → Bundle chỉ chứa hàm add
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: 有副作用的处理
+// ✅ GOOD: Xử lý side effect
 // ─────────────────────────────────────────────
-// utils.ts - 有副作用的函数
+// utils.ts — hàm có side effect
 export function init() {
-  console.log('Initializing...'); // 副作用：日志
+  console.log('Initializing...'); // Side effect: log
 }
 export function helper() {
-  return 42; // 纯函数
+  return 42; // Thuần function
 }
 
-// 标记哪些文件有副作用
+// Đánh dấu file nào có side effect
 // package.json
 {
   "sideEffects": ["./utils.ts"]
 }
 
 // app.ts
-import { helper } from './utils'; // Tree shaking会移除init
-console.log(helper()); // → 只有helper在bundle中
+import { helper } from './utils'; // Tree shaking sẽ loại bỏ init
+console.log(helper()); // → Chỉ helper nằm trong bundle
 ```
 
 ---

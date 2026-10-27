@@ -444,7 +444,7 @@ const result = numbers
 
 ### Concurrent (Song song)
 
-Nhiều task **xen kẽ**执行 trên cùng 1 core — context switching tạo cảm giác đồng thời.
+Nhiều task **xen kẽ** thực thi trên cùng 1 core — context switching tạo cảm giác đồng thời.
 
 ```typescript
 // JavaScript Event Loop — Concurrent
@@ -533,7 +533,7 @@ Chi tiết: constraints, variance, repository/stack generic → [→ 4.8](4.8-ge
 
 | Paradigm | Cốt Lõi | Best For |
 |----------|---------|----------|
-| **OOP** | Objects, classes, inheritance |大型 projects, UI frameworks |
+| **OOP** | Objects, classes, inheritance | projects lớn, UI frameworks |
 | **FP** | Pure functions, immutability | Data transformation, concurrent |
 | **Reactive** | Streams, async data | Real-time apps, UI events |
 | **Procedural** | Step-by-step instructions | Simple scripts, utilities |

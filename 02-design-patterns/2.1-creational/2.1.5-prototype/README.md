@@ -155,7 +155,7 @@ class Point {
 
 | Nhược điểm | Giải thích | Giải thích sâu & giảm thiểu |
 |------------|------------|------------------------------|
-| 🐛 **Deep copy khó** | Nested object phải clone thủ công | Recursive clone = complex, dễ漏. *Giảm thiểu:* dùng `structuredClone` (native) hoặc thư viện clone (lodash.cloneDeep). |
+| 🐛 **Deep copy khó** | Nested object phải clone thủ công | Recursive clone = complex, dễ sót. *Giảm thiểu:* dùng `structuredClone` (native) hoặc thư viện clone (lodash.cloneDeep). |
 | 🔗 **Circular reference** | Object tham chiếu vòng khó clone | A → B → A → stack overflow khi deep clone. *Gi giảm thiểu:* detect cycle + handle (JSON replacer strategy, WeakMap). |
 | 🧩 **Phức tạp** | Overkill cho object đơn giản | Object có 2 field primitive → clone = thừa abstraction. |
 | 🧨 **Mutation confusion** | Shallow vs deep copy nhầm | Programmer expect deep clone nhưng nhận shallow → bug khó phát hiện. *Giảm thiểu:* document rõ ràng, mặc định deep clone. |

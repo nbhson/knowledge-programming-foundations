@@ -59,6 +59,37 @@ function verify(password: string, stored: string): boolean {
 
 ---
 
+## ⚖️ So sánh bcrypt / Argon2id / scrypt
+
+| Thuộc tính | bcrypt | Argon2id (recommend) | scrypt |
+|---|---|---|---|
+| **Thời gian** | O(2^r) sequential | O(memory × time) | O(N × r × p) |
+| **Memory** | ~4KB (low, GPU-friendly) | Tùy chỉnh 1MB–128MB | Tùy chỉnh 16MB–1GB |
+| **Kháng GPU/ASIC** | Yếu (GPU đào 1 tỷ bcrypt/s) | Khá (memory-hard ngăn GPU song song) | Khá (tương tự) |
+| **Tuning** | `cost` (2^cost) tăng 2× thời gian | `memory`, `time`, `parallelism` | `N, r, p` |
+| **Hỗ trợ** | Gần như mọi ngôn ngữ (built-in) | Node.js 10+, libsodium | Node built-in (crypto.scrypt) |
+| **Recommend** | Legacy | ✅ **Ưu tiên cho password mới** (PHC 2015 winner) | Khi argon2 không có lib |
+| **Benchmark** | ~100ms/hash (cost=12) | ~200ms/hash (argon2id, 64MB, 3 iter) | ~300ms/hash (N=16384, r=8, p=1) |
+
+> **Argon2id** = mix of Argon2d (GPU-hard) + Argon2i (cache-hard), khuyến nghị cho mọi password mới 2026+.
+
+## 📜 NIST 800-63B khuyến nghị thực tế (2017, cập nhật 2023)
+
+- **Độ dài ≥ 8** (tối thiểu); **≥ 12–16** cho tài khoản quan trọng — độ dài > độ phức tạp.
+- **KHÔNG** yêu cầu ký tự đặc biệt bắt buộc (người dùng chọn "Password123!" dễ đoán — thay vào đó dùng **passphrase**).
+- **Blacklist password**: kiểm tra top 10,000 password phổ biến (HaveIBeenPwned API) — từ chối thay vì cảnh báo.
+- **Không hints/trivia**: attacker dùng social media để guess.
+- **Rate limit + MFA**: hash chậm chỉ chống offline brute-force; online brute-force cần rate-limit (`/login` → 5 lần → CAPTCHA/block).
+
+## 🔑 Password Manager + Passkeys (Hướng 2026)
+
+- **Password manager** (Bitwarden/1Password/KeePass): random 20+ ký tự cho mỗi site → unique, không nhớ nổi → không tái sử dụng. User chỉ nhớ 1 master password (tốt nhất dùng passphrase).
+- **Passkeys (WebAuthn/FIDO2)**: thay password bằng **asymmetric key pair** — private key trong device (Yubikey/phone), public key lưu server. Không có gì để leak nên phishing/ransomware không lấy được.
+- **2026 adoption**: Google, Apple, Microsoft, GitHub hỗ trợ passkey; FIDO2/WebAuthn là standard — mới hoàn toàn cho user mới (password vẫn hỗ trợ backward).
+- Khi ưu tiên security: **passkey > password manager > password người tự nhớ**.
+
+---
+
 ## 🎯 Khi nào dùng
 
 - Mọi nơi lưu credential user: signup/login, reset password, API secret.

@@ -5,7 +5,7 @@
 ```
 ❌ VẤN ĐỀ: Viết code trước rồi mới test
 Bước 1: Viết hàm tính discount (có thể có bug)
-Bước 2: Viết test后发现 bug
+Bước 2: Viết test rồi mới phát hiện bug
 Bước 3: Sửa code → tạo bug mới
 → Code không đảm bảo, test thiếu coverage
 
@@ -22,7 +22,7 @@ Bước 3: 🔵 REFACTOR — Làm sạch code, vẫn pass test
 
 Phát triển không có TDD thường gặp:
 - **Bug ẩn**: Code chạy được nhưng có logic sai
-- **Không敢 refactor**: Sợ hỏng vì không có test bao phủ
+- **Không dám refactor**: Sợ hỏng vì không có test bao phủ
 - **Test sau cùng**: Đội thời gian, thường bị bỏ qua
 - **Coverage thấp**: Chỉ test happy path
 

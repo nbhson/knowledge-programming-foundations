@@ -97,7 +97,7 @@ const config = Object.freeze({
 
 ## 5.12.2 Pure Functions
 
-**Pure function:** Cùng input → cùng output, KHÔNG có side effects. Đây là khái niệm quan trọng nhất trong FP — nếu函数 là pure, nó **đơn vị testable, parallelizable, và memoizable**.
+**Pure function:** Cùng input → cùng output, KHÔNG có side effects. Đây là khái niệm quan trọng nhất trong FP — nếu hàm là pure, nó **đơn vị testable, parallelizable, và memoizable**.
 
 ### Định nghĩa chính thức
 

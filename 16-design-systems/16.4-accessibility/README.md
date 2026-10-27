@@ -12,7 +12,7 @@ WCAG là standard quốc tế (W3C) định nghĩa 4 nguyên tắc cốt lõi:
 ┌─────────────────────────────────────────────────────────────┐
 │                 WCAG 4 PRINCIPLES                           │
 │                                                             │
-│  P — Perceptible (Có thể感知 được)                         │
+│  P — Perceptible (Có thể cảm nhận được)                         │
 │  │  → Có alt text cho ảnh, captions cho video               │
 │  │  → Color không phải cách duy nhất truyền info            │
 │  │  → Content có thể trình bày lại theo cách khác           │
@@ -257,7 +257,7 @@ describe('Accessibility', () => {
 - [ ] **Keyboard test:** Tab qua hết interactive elements — focus visible? Logical order?
 - [ ] **Screen reader test:** Dùng NVDA (Windows) hoặc VoiceOver (macOS) — content readable?
 - [ ] **Zoom test:** Zoom 200% — content still usable? No horizontal scroll?
-- [ ] **Color test:** Toggle màu (grayscale) — info still传达?
+- [ ] **Color test:** Toggle màu (grayscale) — info vẫn truyền đạt?
 - [ ] **Reduced motion test:** `prefers-reduced-motion` — animation disabled?
 
 ---
@@ -267,7 +267,7 @@ describe('Accessibility', () => {
 | ✔️ Nên làm | ❌ Tránh làm |
 |------------|-------------|
 | Semantic HTML (button, nav, main, article) | Dùng div cho mọi thứ (loss of semantics) |
-| ARIA khi cần thiết (补足 native HTML limitations) | Bỏ qua hoặc滥用 aria (redundant/misleading) |
+| ARIA khi cần thiết (bổ sung native HTML limitations) | Bỏ qua hoặc lạm dụng aria (redundant/misleading) |
 | Keyboard navigation test | Chỉ test mouse |
 | Contrast ratio ≥ 4.5:1 (AA) | Màu nhạt không đọc được |
 | Focus visible style (`:focus-visible`) | Default browser outline bị CSS override |

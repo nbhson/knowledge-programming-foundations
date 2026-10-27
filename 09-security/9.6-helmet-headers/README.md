@@ -2,7 +2,7 @@
 
 > **Security HTTP Headers** là các headers gửi từ server đến client (browser) để bật các tính năng bảo mật tích hợp sẵn của trình duyệt.
 >
-> **Tại sao cần?** Browser mặc định KHÔNG đảm bảo an toàn cho bạn — chúng được design cho usability, không security. Server PHẢI tự保护自己的 bằng cách set headers đúng.
+> **Tại sao cần?** Browser mặc định KHÔNG đảm bảo an toàn cho bạn — chúng được design cho usability, không security. Server PHẢI tự bảo vệ mình bằng cách set headers đúng.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -15,9 +15,9 @@
 │  - Cho phép MIME sniffing (executing CSS as JS)            │
 │  - Không enforce HTTPS (http:// works fine)                │
 │  - Cho phép cross-origin data access (CORS permissive)     │
-│  - Gửi full URL作為 referrer đến third-party sites         │
+│  - Gửi full URL làm referrer đến third-party sites         │
 │                                                             │
-│  → Server PHẢI tự保护自己的 bằng cách set headers đúng.    │
+│  → Server PHẢI tự bảo vệ mình bằng cách set headers đúng.    │
 │  → Headers này là "instruction" cho browser:                │
 │    "Đây là rules bảo mật cho trang của tôi."                │
 │                                                             │
@@ -30,17 +30,17 @@
 
 | Header | Giá trị khuyến nghị | Mục đích | Trình duyệt support |
 |--------|---------------------|----------|-------------------|
-| **Strict-Transport-Security** | `max-age=31536000; includeSubDomains; preload` | Enforce HTTPS, chặn SSL stripping | Tất cả现代 browsers |
-| **Content-Security-Policy** | `default-src 'self'` | Chặn XSS bằng control nguồn script/style | Tất cả现代 browsers |
+| **Strict-Transport-Security** | `max-age=31536000; includeSubDomains; preload` | Enforce HTTPS, chặn SSL stripping | Tất cả các browsers hiện đại |
+| **Content-Security-Policy** | `default-src 'self'` | Chặn XSS bằng control nguồn script/style | Tất cả các browsers hiện đại |
 | **X-Content-Type-Options** | `nosniff` | Chặn MIME sniffing (browser không tự guess content-type) | Tất cả |
 | **X-Frame-Options** | `DENY` hoặc `SAMEORIGIN` | Chặn clickjacking (iframe embed) | Tất cả (legacy) |
 | **Frame-Ancestors** | `'none'` hoặc `'self'` | CSP version của X-Frame-Options | Modern browsers |
-| **Referrer-Policy** | `strict-origin-when-cross-origin` | Kiểm soát thông tin gửi qua Referer header | Tất cả现代 |
+| **Referrer-Policy** | `strict-origin-when-cross-origin` | Kiểm soát thông tin gửi qua Referer header | Tất cả các browsers hiện đại |
 | **Permissions-Policy** | `camera=(), microphone=(), geolocation=()` | Giới hạn browser features | Modern browsers |
 | **Cache-Control** | `no-store` (cho sensitive endpoints) | Chặn cache sensitive response | Tất cả |
 | **Cross-Origin-Opener-Policy** | `same-origin` | Isolate browsing context | Modern browsers |
 | **Cross-Origin-Resource-Policy** | `same-origin` | Chặn cross-origin resource access | Modern browsers |
-| **Cross-Origin-Embedder-Policy** | `require-corp` | Chặn load cross-origin resources без COOP | Modern browsers |
+| **Cross-Origin-Embedder-Policy** | `require-corp` | Chặn load cross-origin resources nếu thiếu COOP | Modern browsers |
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -60,7 +60,7 @@
 │                                                             │
 │  X-Content-Type-Options: nosniff:                           │
 │  → Báo browser: "Đừng guess content-type, dùng header nói."│
-│  → Ngăn MIME confusion attacks (CSS được parse как JS)     │
+│  → Ngăn MIME confusion attacks (CSS bị parse như JS)     │
 │                                                             │
 │  X-Frame-Options / Frame-Ancestors:                         │
 │  → Báo browser: "Đừng cho trang khác embed mình trong      │

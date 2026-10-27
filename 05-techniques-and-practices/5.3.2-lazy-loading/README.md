@@ -7,7 +7,7 @@
 <script src="app.js">     → 500KB
 <script src="admin.js">   → 2MB
 <script src="chart.js">   → 1MB
-→ Total: 3.5MB — chậm,浪費 bandwidth
+→ Total: 3.5MB — chậm, lãng phí bandwidth
 
 ✅ GIẢI PHÁP: Lazy Loading
 <script src="app.js">     → 500KB (trang chủ)

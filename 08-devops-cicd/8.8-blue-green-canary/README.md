@@ -71,6 +71,26 @@ function blueGreenSwitch(): { before: string; after: string } {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Progressive delivery = canary/blue-green được điều phối + phân tích tự động:**
+
+| Công cụ | Cách hoạt động | Auto rollback |
+|---|---|---|
+| Argo Rollouts | CRD `Rollout` thay `Deployment`, traffic shifting qua service mesh/LB | `AnalysisTemplate` query Prometheus; metric vượt ngưỡng → abort ngay |
+| Flagger | Annotate Deployment, tự sinh canary + VirtualService/Ingress weights | Canary analysis từng bước, metric xấu → rollback không cần người |
+
+- **Metric-based auto rollback:** mỗi bước canary (5% → 25% → 50%) chạy analysis trong window (vd 2 phút): error rate > 1% hoặc p99 > ngưỡng SLO → tăng dừng, traffic về 0%, alert Slack. Người chỉ review sau, không đứng canh.
+
+**Chi phí blue-green = 2× hạ tầng:** trong lúc switch cả 2 version chạy song song đủ capacity. Canary chỉ cần +10–25% (1 replica mới), rolling gần như 0. → Blue-green chỉ đáng tiền khi rollback tức thì là bắt buộc (release lớn, batch không chia được).
+
+**Feature flags kết hợp canary:**
+- Canary kiểm soát *traffic tới version mới* (tầng hạ tầng); flag kiểm soát *code path bên trong* (tầng app).
+- Pattern "dark launch": deploy version mới nhận 100% traffic nhưng flag tắt với 99% user → test thật không rủi ro, rollout = bật flag dần, rollback = tắt flag (giây) thay vì redeploy (phút).
+- Đặt deadline xóa flag ngay khi tạo — flag sống mãi thành debt và nhánh code chết.
+
+---
+
 ## 🔗 Liên quan
 
 - **8.7 GitOps ArgoCD** — Argo Rollouts điều phối canary/blue-green tự động.

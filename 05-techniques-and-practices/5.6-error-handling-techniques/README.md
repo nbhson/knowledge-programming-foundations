@@ -1,6 +1,6 @@
 # 🛡️ 5.6 Error Handling Techniques (Kỹ Thuật Xử Lý Lỗi)
 
-> **Error Handling** là cách ứng phó với lỗi运行时 — giữ cho hệ thống ổn định, recoverable, và user-friendly. Lỗi là **điều chắc chắn sẽ xảy ra**, không phải ngoại lệ. Kỹ sư giỏi không "tránh lỗi" — họ **thiết kế hệ thống chịu lỗi graceful degradation**.
+> **Error Handling** là cách ứng phó với lỗi runtime — giữ cho hệ thống ổn định, recoverable, và user-friendly. Lỗi là **điều chắc chắn sẽ xảy ra**, không phải ngoại lệ. Kỹ sư giỏi không "tránh lỗi" — họ **thiết kế hệ thống chịu lỗi graceful degradation**.
 
 ---
 
@@ -33,7 +33,7 @@ Nếu xử lý thủ công từng chỗ: `try/catch` lồng nhau, retry logic l�
 
 ## ⚡ Circuit Breaker Pattern
 
-**Mô tả:** Circuit Breaker mô phỏng **cầu dao điện gia đình** — khi phát hiện quá tải (nhiều lỗi liên tiếp), nó **ngắt mạch** (open) để bảo vệ hệ thống, thay vì tiếp tục gọi service đang hỏng (gây cascade failure). Sau một khoảng thời gian, nó **thử nghiệm** (half-open) — cho 1 request đi qua để kiểm tra service đã恢复 chưa.
+**Mô tả:** Circuit Breaker mô phỏng **cầu dao điện gia đình** — khi phát hiện quá tải (nhiều lỗi liên tiếp), nó **ngắt mạch** (open) để bảo vệ hệ thống, thay vì tiếp tục gọi service đang hỏng (gây cascade failure). Sau một khoảng thời gian, nó **thử nghiệm** (half-open) — cho 1 request đi qua để kiểm tra service đã hồi phục chưa.
 
 **Tại sao cần?** Nếu Service A gọi Service B, và B bị sập:
 - Không có circuit breaker: A **liên tục retry** B → B càng đuối → A cũng kiệt tài nguyên (connection pool, thread) → **cascade failure lan toàn bộ hệ thống**.
@@ -93,7 +93,7 @@ class CircuitBreaker<TArgs extends any[], TReturn> {
   private onSuccess(): void {
     this.failures = 0;
     if (this.state === 'HALF_OPEN') {
-      this.state = 'CLOSED'; // Service恢复了，circuit đóng lại
+      this.state = 'CLOSED'; // Service đã hồi phục, circuit đóng lại
     }
   }
 
@@ -214,7 +214,7 @@ async function retry<T>(
 }
 ```
 
-> 💡 **Thundering herd problem:** Nếu 1000 client retry cùng lúc sau khi service恢复, chúng lại gây lỗi cho service. **Solution:** jitter + full jitter (random delay 0–maxDelay) hoặc **adaptive retry** (giảm tốc độ nếu still failing).
+> 💡 **Thundering herd problem:** Nếu 1000 client retry cùng lúc sau khi service hồi phục, chúng lại gây lỗi cho service. **Solution:** jitter + full jitter (random delay 0–maxDelay) hoặc **adaptive retry** (giảm tốc độ nếu still failing).
 
 ✅ **Ưu điểm:** Tự động recover transient failures — tăng uptime mà không cần can thiệp.
 ❌ **Nhược điểm:** Tăng latency tổng (user phải chờ), có thể làm vấn đề tệ hơn nếu server đã overload.
@@ -320,7 +320,7 @@ await saga.execute();
 // Inventory fail → compensate: refund payment + cancel order
 ```
 
-> ⚠️ **Compensating transaction không phải rollback ACID!** Nếu compensation自己也失败（例如 refund API down），需要人工介入。Saga **最终一致性** — dữ liệu có thể ở trạng thái "nửa nọ nửa kia" trong thời gian ngắn.
+> ⚠️ **Compensating transaction không phải rollback ACID!** Nếu compensation tự nó cũng thất bại (ví dụ refund API down), cần can thiệp thủ công. Saga **chỉ đảm bảo eventual consistency** — dữ liệu có thể ở trạng thái "nửa nọ nửa kia" trong thời gian ngắn.
 
 ✅ **Ưu điểm:** Giải quyết được distributed transaction — mô hình thực tế của microservices.
 ❌ **Nhược điểm:** Complexity cao, compensation logic dễ sai, debugging khó (event-driven choreography).
@@ -334,7 +334,7 @@ await saga.execute();
 
 ## 📮 Dead Letter Queue (DLQ)
 
-**Mô tả:** DLQ là **queue chuyên dụng** chứa messages **không thể xử lý sau N lần retry** — thay vì forever retry mãi (vòng lặp vô tận), message được "chôn" vào DLQ để **human review** hoặc **replay后有问题的数据修复后**。
+**Mô tả:** DLQ là **queue chuyên dụng** chứa messages **không thể xử lý sau N lần retry** — thay vì forever retry mãi (vòng lặp vô tận), message được "chôn" vào DLQ để **human review** hoặc **replay các dữ liệu gặp vấn đề sau khi đã sửa**.
 
 ```
 Producer → Main Queue → Consumer

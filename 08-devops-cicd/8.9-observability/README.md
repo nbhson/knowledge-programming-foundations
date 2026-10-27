@@ -70,6 +70,24 @@ function red(spans: Span[]): { rate: number; errorRate: number; p99: number } {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**3 trụ cột → 1 chuẩn duy nhất: OpenTelemetry (OTel).** Năm 2020 mỗi backend (Prometheus, Jaeger, ELK...) có SDK riêng; tới 2026 OTel đã là standard de-facto: 1 SDK instrument cho cả metrics + logs + traces, xuất ra backend nào cũng được.
+
+- **Collector:** agent nhận telemetry từ app (OTLP protocol), rồi xử lý pipeline: `receive → process (batch, tail-sampling, redact PII) → export` tới Prometheus/Jaeger/Loki. Đổi backend không phải sửa code app — chỉ đổi config collector.
+- **Semantic conventions:** quy ước đặt tên thuộc tính chuẩn (`http.method`, `db.system`, `service.name`...) — mọi service nói cùng ngôn ngữ, dashboard/alert tái sử dụng được.
+
+**Correlation trace ↔ log:** log luôn mang `trace_id` (+ `span_id`) — khi trace chỉ ra span DB chậm, 1 cú click lọc log theo trace_id là thấy câu lệnh/lỗi cụ thể. Điều này bắt buộc logger nhận context từ tracer (OTel baggage/context propagation).
+
+**SLO burn-rate alerting:** thay vì alert "error rate > 1%", alert theo tốc độ đốt error budget — burn rate 14× trong 1h (nhanh, cấp cứu) + 6× trong 6h (chậm, hôm nay xử lý) để vừa bắt được sự cố vừa tránh nhiễu. Chi tiết multi-window burn-rate → xem **8.10 SRE & SLO**.
+
+**eBPF observability — nhìn tầng kernel, không cần instrument:**
+- **Cilium Hubble:** flow service-to-service, network policy drops, DNS/L7 insight tự động từ K8s.
+- **Pixie:** auto-collect latency HTTP/SQL các loại, không sửa code, không sidecar.
+- Phù hợp: tìm "ai gọi ai, chậm ở đâu" khi chưa kịp instrument OTel, hoặc debug tầng network.
+
+---
+
 ## 🔗 Liên quan
 
 - **7.11 Chaos Testing** — không có observability thì chaos mù.

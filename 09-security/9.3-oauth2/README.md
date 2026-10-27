@@ -289,7 +289,7 @@ ID Token payload example:
 | **Open redirect** | Redirect to evil.com after consent | Validate redirect_uri against whitelist |
 | **State parameter missing** | CSRF via auth flow | Always generate and validate state parameter |
 | **Weak scope** | Requesting excessive permissions | Request minimal scope needed |
-| **Token in URL** | Token泄露 trong referer logs | Use Authorization header, not URL param |
+| **Token in URL** | Token lộ trong referer logs | Use Authorization header, not URL param |
 | **Implicit flow** | Token in hash fragment | Deprecated — don't use |
 
 ```

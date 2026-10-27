@@ -15,7 +15,7 @@
 │  • Developer A thêm cột email trên local, Developer B        │
 │    xóa bảng orders trên production — không ai biết schema    │
 │    thực tế là gì                                             │
-│  • Production DB khác local 3 tháng → "works on my机"       │
+│  • Production DB khác local 3 tháng → "works on my máy"       │
 │  • Rollback: phải nhớ tay từng ALTER, DROP, RENAME lệnh      │
 │  • Audit: không biết ai thêm cột này khi nào                 │
 │  • CI/CD: deploy pipeline không thể tự động migrate          │

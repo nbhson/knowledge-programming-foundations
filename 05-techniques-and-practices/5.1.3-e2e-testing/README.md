@@ -15,7 +15,7 @@
 ✅ GIẢI PHÁP: E2E Testing
 ┌───────┐    ┌───────┐    ┌───────┐    ┌───────┐
 │Browser│───>│Server │───>│ Database│──>│Third  │
-│(真实)  │    │(真实) │    │(真实)  │    │party │
+│(thật)  │    │(thật) │    │(thật)  │    │party │
 └───────┘    └───────┘    └───────┘    └───────┘
 → Kiểm tra toàn bộ hệ thống hoạt động đúng
 ```

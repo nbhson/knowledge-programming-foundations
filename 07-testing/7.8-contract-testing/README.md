@@ -78,6 +78,25 @@ function verify(actual: unknown, expected: Record<string, unknown>): string[] {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Pact Broker + `can-i-deploy` — cổng deploy tự động:**
+- Consumer CI publish pact file lên broker kèm version; provider CI fetch + verify, ghi kết quả vào ma trận tương thích.
+- Trước khi deploy consumer version X: `pact-broker can-i-deploy --pacticipant OrderService --version X --to-environment prod` — trả lời "version này đã được verify với provider nào đang sống ở môi trường đó chưa?". Chưa → chặn deploy, không cần hỏi ai.
+- Kết thúc "họp đồng bộ API": mỗi team deploy khi broker báo xanh.
+
+**Consumer-driven vs Provider-driven:**
+
+| | Consumer-driven (Pact) | Provider-driven (OpenAPI-first, Schemathesis) |
+|---|---|---|
+| Ai viết contract | Consumer định nghĩa kỳ vọng, provider xác minh | Provider phát hành spec, consumer bám theo |
+| Phù hợp | Microservices nội bộ, consumer biết rõ mình cần gì | API public/partner, cần tài liệu + SDK sinh tự động |
+| Kiểu test | Mock ở consumer + verify ở provider | Validate request/response thật theo schema |
+
+**OpenAPI schema validation = contract testing nhẹ:** chưa cần Pact, chỉ cần response thực tế khớp OpenAPI spec (schemathesis, dredd, openapi-response-validator trong CI) đã chặn được phần lớn breaking change: thiếu field bắt buộc, sai type, sai status code. Nâng cấp dần: schema validation → consumer contract (Pact) khi số team tăng.
+
+---
+
 ## 🔗 Liên quan
 
 - **7.2 Integration Testing** — contract test nằm giữa unit và integration trong testing sphinx.

@@ -29,7 +29,7 @@
 
 | Feature | REST | GraphQL | Giải thích sâu |
 |---------|------|---------|----------------|
-| Endpoints | Nhiều (`/users`, `/posts`, `/orders`) | 1 (`/graphql`) | GraphQL dùng single endpoint cho mọi operation — client self-describe需要什么 |
+| Endpoints | Nhiều (`/users`, `/posts`, `/orders`) | 1 (`/graphql`) | GraphQL dùng single endpoint cho mọi operation — client self-describe cần gì |
 | Dữ liệu thừa | Có thể có (GET /users trả về full object) | Không — client chọn field | Client control over shape = precise payloads, especially critical for mobile (bandwidth savings) |
 | Network requests | Nhiều lần cho nested data | 1 lần | ONE crucial advantage: 1 request thay vì N sequential HTTP calls |
 | Versioning | `/v1/users`, `/v2/users` (breaking = new version) | Schema evolution | GraphQL schema có thể thêm field mà không breaking existing queries |
@@ -64,7 +64,7 @@ GraphQL schema là **single source of truth** — định nghĩa tất cả type
 
 ```typescript
 // schema.ts — Định nghĩa schema bằng SDL
-import { gql } from 'apollo-server-express';
+import { gql } from 'graphql-tag'; // Apollo Server 4/5: gql nằm ở graphql-tag (apollo-server-express đã EOL)
 
 const typeDefs = gql`
   # Scalar types — built-in: String, Int, Float, Boolean, ID
@@ -482,7 +482,11 @@ const resolvers = {
 
 ```typescript
 // server.ts
-import { ApolloServer } from 'apollo-server-express';
+// ⚠️ Apollo Server 3 (package `apollo-server-express`) đã EOL — dùng Apollo Server 4/5:
+//    import từ '@apollo/server' và tích hợp Express qua '@as-integrations/express5' (hoặc express4).
+//    Alternative: GraphQL Yoga hoặc graphql-http.
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@as-integrations/express5';
 import express from 'express';
 import cors from 'cors';
 import { typeDefs } from './schema';
@@ -500,11 +504,8 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 
-  // Context: shared across all resolvers (user, DB client, etc.)
-  context: ({ req }) => ({
-    user: (req as any).user,          // Set by auth middleware
-    pubsub: new (require('graphql-subscriptions').PubSub)(),
-  }),
+  // Lưu ý: Apollo Server 4/5 KHÔNG nhận `context` trong constructor nữa —
+  // context được truyền qua expressMiddleware() bên dưới.
 
   // Error formatting: strip stack traces from production errors
   formatError: (err) => {
@@ -539,7 +540,15 @@ const server = new ApolloServer({
 });
 
 await server.start();
-server.applyMiddleware({ app, path: '/graphql', cors: false });
+
+// Tích hợp với Express qua @as-integrations/express5 (thay cho server.applyMiddleware của AS3)
+app.use('/graphql', expressMiddleware(server, {
+  // Context: shared across all resolvers (user, DB client, etc.)
+  context: async ({ req }) => ({
+    user: (req as any).user,          // Set by auth middleware
+    pubsub: new (require('graphql-subscriptions').PubSub)(),
+  }),
+}));
 
 app.listen({ port: process.env.PORT || 4000 }, () => {
   console.log(`🚀 GraphQL server at http://localhost:4000${server.graphqlPath}`);

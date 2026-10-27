@@ -47,10 +47,10 @@ Kanban quản lý công việc qua **bảng trực quan** với các cột trạ
 
 | Metric | Công thức | Ý nghĩa | Benchmark healthy |
 |--------|-----------|---------|-------------------|
-| **WIP** | Số item trong cột "In Progress" | Multitasking indicator |越低越好 — WIP cao = context switching nhiều |
+| **WIP** | Số item trong cột "In Progress" | Multitasking indicator | Càng thấp càng tốt — WIP cao = context switching nhiều |
 | **Cycle Time** | Thời gian từ `Started` → `Done` (ngày) | Tốc độ giao hàng | Giảm dần qua các tuần; median < 5 ngày là tốt |
 | **Lead Time** | Thời gian từ `Requested` → `Done` | Customer-perceived speed | Bao gồm cả thời gian chờ trong backlog |
-| **Throughput** | Số item hoàn thành / tuần |产能 | Stabilize rồi tăng dần, không boost cưỡng ép |
+| **Throughput** | Số item hoàn thành / tuần | Năng suất | Stabilize rồi tăng dần, không boost cưỡng ép |
 | **CFD** (Cumulative Flow Diagram) | Area between cumulative curves per column | Flow health overview | Bands should be horizontal (stable width = stable WIP) |
 | **Work Age** | Days an item has been in current column | Stale work identification | Flag items > 2× median cycle time |
 
@@ -116,13 +116,13 @@ Ví dụ `examples/index.ts` mô phỏng **Kanban board với WIP limit**:
 
 | Scenario | Khuyến nghị | Lập luận |
 |----------|-------------|----------|
-| Hỗ trợ vận hành liên tục (support, incident, hotfix) | ✅ Rất phù hợp | Work đến không đoán trước được; Kanban pull-based最适合 reactive flow |
+| Hỗ trợ vận hành liên tục (support, incident, hotfix) | ✅ Rất phù hợp | Work đến không đoán trước được; Kanban pull-based phù hợp nhất với reactive flow |
 | Team maintenance, bugfix, công việc không đoán trước | ✅ Rất phù hợp | Không có sprint cố định → work item đến khi nào xử lý khi đó |
 | Team mới chuyển từ quy trình cũ, cần thay đổi nhẹ nhàng | ✅ Phù hợp | "Start where you are" — không disrupt current process, chỉ visualize + limit WIP |
 | Cần cam kết ngày giao cụ thể cho khách hàng | ⚠️ Cần probability forecasting | Dùng historical Lead Time để tính P85/P90 delivery date, thay vì sprint commitment |
-| Team mới, chưa có kỷ luật quy trình | ⚠️ Cần kết hợp Scrum/XP | Kanban cần self-discipline; team chưa熟了 có thể bỏ WIP limit |
+| Team mới, chưa có kỷ luật quy trình | ⚠️ Cần kết hợp Scrum/XP | Kanban cần self-discipline; team chưa thành thạo thì có thể bỏ WIP limit |
 | Dự án có deadline cứng, scope rõ | ❌ Cân nhắc Scrum | Deadline hard = cần sprint commitment; Scrum có cadence rõ hơn |
-| Sản phẩm mới, requirement đang hình thành | ❌ Cân nhắc Scrum/XP | Requirement unclear = cần iteration ngắn + stakeholder feedback (Scrum更好) |
+| Sản phẩm mới, requirement đang hình thành | ❌ Cân nhắc Scrum/XP | Requirement unclear = cần iteration ngắn + stakeholder feedback (Scrum tốt hơn) |
 
 > 💡 **Scrumban** — kết hợp Scrum + Kanban: giữ sprint ngắn (2 tuần) nhưng dùng board + WIP limit thay vì cam kết cứng nhắc. Phổ biến trong các team muốn **linh hoạt hơn Scrum** nhưng **cấu trúc hơn Kanban thuần**.
 

@@ -64,6 +64,39 @@ function simulateBuild(routes: RouteSpec[]): string[] {
 | ISR | Tốc độ SSG + nội dung tươi theo chu kỳ |
 | SSR | SEO + FCP tốt cho nội dung động |
 | CSR | Giàu tương tác, giảm tải server cho app nội bộ/dashboard |
+| PPR | Shell tĩnh trả ngay + phần động stream trong cùng 1 request |
+
+---
+
+## 🧩 Partial Prerendering (PPR)
+
+**PPR (Next.js 15+, 2024+)** = SSR "shell" tĩnh lúc build + **streaming** phần động trong cùng một request:
+
+```
+Request ──► shell tĩnh (prebuilt, trả ngay từ CDN)
+              └──► phần động (cart, user info) stream dần vào các "hole" qua Suspense
+```
+
+- Phần tĩnh của trang được prerender như SSG → hiển thị **ngay**, không chờ data.
+- Phần động bọc trong `<Suspense>` → stream sau, user thấy shell + skeleton trước.
+- Khắc phục nhị phân "SSG nhanh nhưng tĩnh" vs "SSR động nhưng chậm TTFB": một route được cả hai.
+
+⚠️ Lưu ý: PPR vẫn beta trong Next.js (đổi config `experimental`), và chỉ mạnh khi phân tách tĩnh/động
+đúng ở component level — bọc cả trang trong Suspense thì tương đương SSR thường.
+
+---
+
+## ⚛️ React Server Components (RSC) + Edge Rendering
+
+- **RSC**: component chạy **chỉ trên server**, gửi kết quả (không gửi JS) xuống client — giảm bundle
+  và hydration; component client ("use client") chỉ cần ở phần tương tác thật sự.
+- **Edge rendering**: chạy render ở edge node gần user (Cloudflare Workers, Vercel Edge Functions) —
+  TTFB thấp vì không round-trip về origin server trung tâm.
+
+| | RSC | Edge rendering |
+|---|---|---|
+| Giải quyết | JS bundle to, hydration tốn kém | Độ trễ địa lý, TTFB |
+| Lưu ý | Không dùng hook/browser API trong server component; mental model mới | Runtime edge giới hạn (không full Node), cold start nhỏ vẫn có |
 
 ---
 
@@ -72,6 +105,8 @@ function simulateBuild(routes: RouteSpec[]): string[] {
 - Hydration lỗi (HTML server ≠ render client) gây nhấp nháy + lỗi React hydration — giữ render deterministic.
 - SSR không miễn phí: TTFB tăng, server phải scale; đo trước khi "SSR hóa" toàn site.
 - ISR có nội dung cũ trong cửa sổ revalidate — không dùng cho giá/tồn kho realtime.
+- Chẩn đoán chậm tương tác: ngoài Long Tasks API, dùng **Long Animation Frames API (LoAF, Chrome 123+)** —
+  cho thấy frame nào (kể cả render + style/layout) gây chậm INP, chi tiết hơn long task truyền thống.
 
 ---
 

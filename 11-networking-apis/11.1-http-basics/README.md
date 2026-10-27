@@ -186,7 +186,7 @@ console.log(resHeaders.get('Retry-After'));     // "60" — seconds to wait (429
 | `Retry-After` | When to retry (429) | `Retry-After: 60` (seconds) or `Retry-After: Mon, 01 Jan 2024 00:00:00 GMT` |
 | `X-Request-ID` | Trace correlation | `req_abc123` — same ID across request→log→response |
 
-### Security headers —保護 your API
+### Security headers — bảo vệ your API
 
 ```typescript
 // Add these to ALL responses

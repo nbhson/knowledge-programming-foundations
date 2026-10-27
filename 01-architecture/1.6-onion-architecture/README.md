@@ -113,7 +113,7 @@ ApplicationServices  ──define──▶  IOrderRepository  ◀──implement
 | 🏗️ **Overkill dự án nhỏ** | CRUD đơn giản không cần | Đúng 100% với script, internal tool, MVP 2 tuần. |
 | 🕸️ **Không định nghĩa cấu trúc domain** | (Giới hạn cố hữu) | Onion cho biết **vòng nào chứa gì**, nhưng **không** cho biết domain nên tổ chức thành aggregate/service/event thế nào → phải dùng kèm DDD (1.7). |
 | 🐢 **Overhead mapping** | Domain ↔ persistence model | Bắt buộc 2 model (vì entity không mang ORM attribute) → map qua lại, thêm chi phí CPU & code lặp. |
-| 👕 **Không có ranh giới theo feature** | (Điểm yếu bị lãng quên) | Onion chia **trục đứng** (kỹ thuật). Không có gì ngăn `OrderService` gọi thẳng `UserRepository` → **trục ngang** (module) vẫn烂. Cần kết hợp Modular Monolith (1.14). |
+| 👕 **Không có ranh giới theo feature** | (Điểm yếu bị lãng quên) | Onion chia **trục đứng** (kỹ thuật). Không có gì ngăn `OrderService` gọi thẳng `UserRepository` → **trục ngang** (module) vẫn lộn xộn. Cần kết hợp Modular Monolith (1.14). |
 
 ---
 
@@ -151,7 +151,7 @@ Nếu bạn thấy 3 diagram này và nghĩ "có gì khác đâu" → **đúng**
 | Domain phức tạp, nhiều business rules | ✅ Phù hợp | Onion là khung tốt nhất để "nhốt" rule ở một chỗ có thể test. |
 | Cần test domain độc lập hoàn toàn | ✅ Phù hợp | Không cần DB/framework trong unit test. |
 | Ứng dụng doanh nghiệp vòng đời dài | ✅ Phù hợp | ROI của isolation chỉ hiện ra sau 3+ năm, khi framework đã lỗi thời 1–2 lần. |
-| Team .NET/Java enterprise, quen分层 rõ | ✅ Phù hợp | Naming Application/Domain/Infrastructure khớp hệ sinh thái enterprise. |
+| Team .NET/Java enterprise, quen phân tầng rõ | ✅ Phù hợp | Naming Application/Domain/Infrastructure khớp hệ sinh thái enterprise. |
 | Dự án nhỏ, CRUD đơn giản | ❌ Overkill | Trả giá boilerplate không mua được gì. |
 | Domain đã đơn giản, không có rule | ❌ Không cần | Onion tạo interface cho CRUD — pure ceremony. |
 | Cần tách deploy độc lập (nhiều team) | ❌ Không đủ | Onion không chia deployment → cần thêm module/service axis. |

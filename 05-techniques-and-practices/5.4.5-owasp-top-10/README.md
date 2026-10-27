@@ -7,32 +7,36 @@
 ## 🎯 Vấn đề
 
 ```
-Thống kê 2023:
+Thống kê 2025 (IBM Cost of a Data Breach):
 ├─ 78% ứng dụng có ít nhất 1 lỗ hổng bảo mật
-├─ Chi phí trung bình cho 1 breach: $4.45 triệu USD
+├─ Chi phí trung bình breach: ~$4.4M USD (đỉnh $4.88M năm 2024)
 └─ 68% tấn công exploit được lỗ hổng trong OWASP Top 10
 ```
 
 ---
 
-## 📊 OWASP Top 10 (2021)
+## 📊 OWASP Top 10 (2025)
 
 ```
 ┌────┬──────────────────────────────────────────────────────────┐
 │ #  │ Vulnerability                                            │
 ├────┼──────────────────────────────────────────────────────────┤
 │ 01 │ Broken Access Control                                    │
-│ 02 │ Cryptographic Failures                                   │
-│ 03 │ Injection                                                │
-│ 04 │ Insecure Design                                          │
-│ 05 │ Security Misconfiguration                                │
-│ 06 │ Vulnerable and Outdated Components                     │
-│ 07 │ Authentication and Session Management Failures         │
-│ 08 │ Software and Data Integrity Failures                   │
-│ 09 │ Security Logging and Monitoring Failures               │
-│ 10 │ Server-Side Request Forgery (SSRF)                     │
+│    │ ↳ SSRF đã gộp vào đây (từ A10/2021)                     │
+│ 02 │ Security Misconfiguration (#5→#2)                        │
+│ 03 │ Software Supply Chain Failures (MỚI)                     │
+│    │ ↳ Mở rộng từ Vulnerable Components → full supply chain  │
+│ 04 │ Cryptographic Failures (#2→#4)                           │
+│ 05 │ Injection (#3→#5)                                        │
+│ 06 │ Insecure Design (#4→#6)                                  │
+│ 07 │ Authentication Failures (đổi tên)                        │
+│ 08 │ Software and Data Integrity Failures                     │
+│ 09 │ Security Logging and Alerting Failures (đổi tên)         │
+│ 10 │ Mishandling of Exceptional Conditions (MỚI hoàn toàn)  │
 └────┴──────────────────────────────────────────────────────────┘
 ```
+
+Nguồn: [top10.owasp.org/2025](https://top10.owasp.org/2025/en)
 
 ---
 
@@ -155,7 +159,7 @@ app.use((err, req, res, next) => {
 
 ---
 
-## 🎯 Khi nào cần关注 OWASP?
+## 🎯 Khi nào cần quan tâm OWASP?
 
 | Stage | Action |
 |-------|--------|
@@ -177,7 +181,7 @@ app.use((err, req, res, next) => {
 
 ## 📚 Tài liệu tham khảo
 
-- 📖 [OWASP Top 10 2021](https://owasp.org/Top10/)
+- 📖 [OWASP Top 10 2025](https://top10.owasp.org/2025/en)
 - 📖 [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
 - 📖 [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)
 

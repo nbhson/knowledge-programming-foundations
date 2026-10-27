@@ -55,6 +55,17 @@ Producer ─▶ [orders] ─┬─▶ W1        order.created ─┬─▶ Notif
 | Replay | ✅ Seek offset đọc lại | ❌ Đã ack là mất |
 | Khi dùng | Event streaming, log pipeline, replay/audit | Task queue, RPC phức tạp, routing linh hoạt, low latency |
 
+### Kafka alternatives (2026)
+
+Kafka không còn là lựa chọn duy nhất cho event streaming — một số alternative đáng biết:
+
+| Hệ | 1 dòng |
+|----|--------|
+| **Redpanda** | Kafka API-compatible, viết bằng C++, không JVM/ZooKeeper — latency thấp, vận hành nhẹ hơn Kafka |
+| **Apache Pulsar** | Tách lớp compute/storage, multi-tenancy + geo-replication built-in — mạnh cho multi-tenant scale lớn |
+| **NATS JetStream** | Single binary, siêu nhẹ, latency thấp — phù hợp edge/microservices nhỏ, persistence + at-least-once |
+| **WarpStream** | Kafka-compatible, diskless (S3-backed) — chi phí storage thấp, không cần quản lý broker disk |
+
 ## 13.8.3 Delivery Semantics + DLQ
 
 | Semantics | Đảm bảo | Giá phải trả | Khi dùng |

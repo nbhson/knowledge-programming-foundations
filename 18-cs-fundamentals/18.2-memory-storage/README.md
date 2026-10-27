@@ -81,6 +81,35 @@ function translateAddress(virtualAddr: number, pageSize: number, pageTable: Map<
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**NUMA (Non-Uniform Memory Access) — RAM không đều nhau:**
+- Server multi-socket (2+ CPU): mỗi CPU có RAM gần nhất ("local memory") nhanh hơn RAM của CPU khác ("remote memory") ~20–30%.
+- K8s pod chạy trên node 2-socket: nếu không set ` topology.kubernetes.io/zone` / ` topology.node.kubernetes.io/memory` → pod có thể bị split qua 2 NUMA node → latency tăng không dự đoán được.
+- Tối ưu: dùng `systemReserved` / `kubelet` topology hints, hoặc `KubeletMemoryManager` trong Kubernetes 1.28+ để pin pod vào NUMA node.
+
+**Memory hierarchy latency — con số thực tế:**
+
+| Cấp độ | Dung lượng | Latency | Ghi chú |
+|---|---|---|---|
+| L1 cache | ~32–64 KB/core | ~1 ns | Split I+D, 4-cycle hit |
+| L2 cache | ~256 KB–1 MB/core | ~3–4 ns | Inclusive hoặc exclusive |
+| L3 cache | ~8–32 MB/socket | ~10–20 ns | Shared giữa cores |
+| **RAM** | 8–256 GB | **~100 ns** | NUMA penalty +20–30 ns nếu remote |
+| **NVMe SSD** | TB-level | **~100 µs** | Random read |
+| **HDD** | TB-level | **~10 ms** | Seek + rotation |
+| **S3/remote storage** | ∞ | **~100–500 ms** | Network + API overhead |
+
+→ Cache miss trên RAM là chậm gấp ~100 lần cache hit; NVMe chậm hơn RAM gấp 1000 lần. Bài học: duyệt mảng đúng thứ tự (cache-line locality) quan trọng hơn thuật toán phức tạp hơn.
+
+**`mmap` vs `read` syscall:**
+- `read(fd, buf, n)`: kernel đọc vào kernel buffer → copy sang user buffer = 2 copies.
+- `mmap(fd, offset, length)`: ánh xạ file vào virtual address space, page fault triggers read on-demand → không copy thừa, lazy load theo page.
+- Dùng `mmap` khi: đọc file lớn ngẫu nhiên (database indexes), random access pattern, share memory giữa processes. Dùng `read` khi: sequential scan nhỏ, stream processing (streaming không cần random access).
+- Risk: mmap unmapped page khi file thay đổi (truncate → SIGBUS) — cần handle signal.
+
+---
+
 ## 🔗 Liên Quan
 
 - [18.1 Operating Systems](../18.1-operating-systems/README.md) — OS quản lý trang nhớ, phân trang.

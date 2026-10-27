@@ -99,7 +99,7 @@ Retrospective CHUNG  → cải tiến toàn hệ, không tách team
 |---------|------------|---------|
 | 🪶 **Tối giản cồng kềnh** | Không thêm tầng quản lý trung gian như SAFe | Transformation cost thấp; faster adoption |
 | 🎯 **Giữ đúng tinh thần Scrum** | Ít role mới, ít artifact mới | Less bureaucracy = faster decisions |
-| 🌍 **Tập trung sản phẩm toàn cục** | 1 PO → 1 backlog → tránh mỗi team làm một hướng |全局 optimization > local optimization |
+| 🌍 **Tập trung sản phẩm toàn cục** | 1 PO → 1 backlog → tránh mỗi team làm một hướng | Global optimization > local optimization |
 | 💰 **Chi phí chuyển đổi thấp hơn SAFe** | Không cần bộ máy đào tạo đồ sộ | Can start in weeks, not months |
 | 🔄 **Đồng bộ tự nhiên** | Các team phối hợp trực tiếp thay vì báo cáo lên trên | Cross-team communication tăng, silos giảm |
 | 👥 **Team autonomy preserved** | Mỗi team vẫn self-organizing như Scrum gốc | Không hy sinh agility khi scale |

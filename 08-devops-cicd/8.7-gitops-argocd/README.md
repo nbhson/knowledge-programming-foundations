@@ -72,6 +72,30 @@ function reconcile(desired: Workload, actual: Workload): Workload {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**ArgoCD 3.x là bản hiện hành (2026):** dòng 3.x (3.0 ra mắt giữa 2025) là mặc định của cài đặt mới — API `ApplicationSet` v1alpha1, hỗ trợ OCI artifacts làm nguồn manifest (không chỉ Git), siết bảo mật mặc định (bỏ self-signed cert kiểu cũ, RBAC chi tiết hơn cho multi-tenant).
+
+**ArgoCD vs Flux 2.x — chọn GitOps engine nào:**
+
+| Tiêu chí | ArgoCD 3.x | Flux 2.x |
+|---|---|---|
+| Giao diện | Web UI đẹp + CLI, onboarding nhanh | Thuần CLI (flux CLI), dashboard riêng lẻ |
+| Mô hình | CRD `Application`/`ApplicationSet` | GitOps Toolkit (Kustomize/Helm controllers) |
+| Multitenancy | AppProject + RBAC mạnh | Namespace-per-team, kiểm soát qua Git |
+| Secrets | Sealed Secrets, External Secrets | SOPS + KMS, Vault integration |
+| Phù hợp | Team muốn UI + quản lý app tập trung | Team "GitOps thuần", infra-as-code tối giản |
+
+**App-of-apps pattern:** 1 Application "gốc" trỏ tới thư mục chứa các manifest Application con → onboard app mới chỉ là 1 PR thêm file YAML; chuẩn hóa template, không ai tạo app bằng UI tay nữa.
+
+**Sync waves & hooks:**
+- Wave: annotation `argocd.argoproj.io/sync-wave: "0"` — DB (0) → backend (1) → frontend (2); wave sau chỉ sync khi wave trước đã Healthy.
+- Hook: `PreSync` (chạy DB migration trước), `PostSync` (smoke test sau khi sync xong), `SyncFail` (hook dọn dẹp khi sync lỗi).
+
+**Drift detection:** ArgoCD poll Git + cluster theo chu kỳ (mặc định ~3 phút) hoặc nhận webhook đẩy nhanh. `automated.selfHeal: true` ghi đè mọi thay đổi tay trên cluster; chỗ cần hotfix tạm thời thì cấu hình `ignoreDifferences` tường minh thay vì tắt self-heal cả app.
+
+---
+
 ## 🔗 Liên quan
 
 - **8.5 Kubernetes** — ArgoCD sync manifests lên K8s cluster.

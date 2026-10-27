@@ -81,7 +81,7 @@ const directory: Record<string, number> = {
 
 **Chọn shard key đúng là quan trọng nhất quyết định sharding có hoạt động hay không.** Nguyên tắc:
 1. **High cardinality** — tránh hot key (user_id tốt, country xấu vì vài shard overload).
-2. **Query locality** — query thường có shard key trong WHERE →直达 shard, không scatter.
+2. **Query locality** — query thường có shard key trong WHERE → đi thẳng tới shard, không scatter.
 3. **Stable** — shard key không thay đổi thường xuyên (dễ rebalancing).
 
 > 💡 **Quy tắc ngón tay cái:** shard key = entity được truy cập nhiều nhất, có query pattern rõ ràng theo entity đó.

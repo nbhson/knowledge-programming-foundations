@@ -475,7 +475,7 @@ function bfsShortestPath(graph: Map<string, string[]>, start: string, end: strin
 
 | Vấn Đề | Thuật Toán Gợi Ý | Thời Gian | Lập luận |
 |--------|-------------------|-----------|----------|
-| Tìm kiếm trong sorted array | Binary Search | O(log n) | Loại bỏ一半 mỗi bước — không thể tốt hơn với comparison-based |
+| Tìm kiếm trong sorted array | Binary Search | O(log n) | Loại bỏ một nửa mỗi bước — không thể tốt hơn với comparison-based |
 | Sắp xếp array ngẫu nhiên | Quick Sort / TimSort | O(n log n) | Fast in practice, in-place, cache-friendly |
 | Cần stable sort (giữ thứ tự equal elements) | Merge Sort / TimSort | O(n log n) | Stability quan trọng khi multi-key sort (database ORDER BY) |
 | Data quá lớn, không vừa RAM | Merge Sort (external) | O(n log n) | Chia chunk sort in-memory, merge từ disk |
@@ -498,7 +498,7 @@ function bfsShortestPath(graph: Map<string, string[]>, start: string, end: strin
 | "O(n log n) luôn nhanh hơn O(n²)" | Với n nhỏ (< 50), O(n²) với hằng số nhỏ có thể nhanh hơn O(n log n) với hằng số lớn. asymptotic chỉ đúng khi n → ∞ |
 | "Quick Sort luôn nhanh nhất" | Quick Sort fast trong practice nhưng worst case O(n²). TimSort (Python/Java) thường nhanh hơn trên real-world data (nearly sorted, duplicates) |
 | "DP là memoization" | Memoization (top-down) chỉ là 1 cách implement DP. Bottom-up tabulation thường dùng ít memory hơn và tránh recursion stack overflow |
-| "Greedy luôn đúng" | Greedy chỉ đúng khi bài toán có **greedy choice property** và **optimal substructure**. Nhiều bài看似 greedy nhưng thực tế cần DP (vd: Knapsack 0/1) |
+| "Greedy luôn đúng" | Greedy chỉ đúng khi bài toán có **greedy choice property** và **optimal substructure**. Nhiều bài tưởng chừng greedy nhưng thực tế cần DP (vd: Knapsack 0/1) |
 | "Binary search chỉ dùng cho sorted array" | Binary search có thể áp dụng cho **binary search on answer** — tìm giá trị tối ưu trong khoảng đơn điệu, kể cả khi không có array sorted rõ ràng |
 
 ---

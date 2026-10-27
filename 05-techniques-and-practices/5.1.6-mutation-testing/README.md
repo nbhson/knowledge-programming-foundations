@@ -122,7 +122,7 @@ console.log(`Mutation Score: ${calculateMutationScore(report).toFixed(1)}%`);
 |--------|------------|
 | **Chậm** | Chạy trên CI, không chạy mỗi lần build |
 | **Chi phí cao** | Chỉ chạy cho core business logic |
-| **Mutant vô nghĩa** | Bỏ qua等价 mutants (không đổi behavior) |
+| **Mutant vô nghĩa** | Bỏ qua các mutants tương đương (không đổi behavior) |
 | **Khó setup** | Dùng tools: Stryker (JS/TS), PIT (Java) |
 
 ---

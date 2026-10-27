@@ -56,7 +56,7 @@ USER nodejs
 
 EXPOSE 3000
 
-# Health check — Kubernetes/docker dùng để probe存活
+# Health check — Kubernetes/docker dùng để probe liveness
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1) })"
 
@@ -66,7 +66,6 @@ CMD ["node", "dist/main.js"]
 ### docker-compose.yaml (local dev)
 
 ```yaml
-version: '3.8'
 services:
   app:
     build: .
@@ -335,9 +334,9 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs24.x
   region: us-east-1
-  memorySize: 512        # MB — càng ít càng省钱 nhưng slow
+  memorySize: 512        # MB — càng ít càng tiết kiệm nhưng slow
   timeout: 10            # seconds — Lambda max 15 min
   environment:
     NODE_ENV: production
@@ -394,7 +393,7 @@ functions:
 | **Best for** | Event-driven, sporadic traffic | Long-running, consistent traffic |
 | **Ops overhead** | Thấp (managed) | Cao (self-managed or EKS) |
 
-> ⚠️ **Misconception:** "Serverless永远比container便宜." Không đúng. Với traffic liên tục cao (e.g., 1000 req/s suốt ngày), serverless có thể đắt hơn 5–10x so với 2–3 containers chạy liên tục vì bạn pay per invocation.
+> ⚠️ **Misconception:** "Serverless luôn rẻ hơn container." Không đúng. Với traffic liên tục cao (e.g., 1000 req/s suốt ngày), serverless có thể đắt hơn 5–10x so với 2–3 containers chạy liên tục vì bạn pay per invocation.
 
 ---
 

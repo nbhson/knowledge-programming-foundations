@@ -1,6 +1,6 @@
 # 🏢 5.2.6 SAFe (Scaled Agile Framework)
 
-> Framework mở rộng Agile cho **doanh nghiệp lớn (Enterprise)** quy mô hàng trăm/hàng nghìn người. Kết hợp Lean, Agile, và DevOps ở cấp độ Team, Program, và Portfolio. Được phát triển bởi **Suite Agile** (nay là Scaling Agile, Inc.), phiên bản hiện tại là SAFe 6.0 (2023).
+> Framework mở rộng Agile cho **doanh nghiệp lớn (Enterprise)** quy mô hàng trăm/hàng nghìn người. Kết hợp Lean, Agile, và DevOps ở cấp độ Team, Program, và Portfolio. Được phát triển bởi **Suite Agile** (nay là Scaling Agile, Inc.), phiên bản hiện tại là SAFe 6.0 (2023). SAFe 6.0 vẫn là phiên bản Core hiện hành; tháng 6/2026 Scaled Agile công bố **AI-Native SAFe** (AI-Native Operating Model: outcome-driven development, team patterns cho human + AI agents).
 
 ---
 
@@ -101,7 +101,7 @@ Inspect & Adapt → root-cause + action cải tiến cho PI sau
 | 🐌 **Dễ biến tướng Waterfall** | Nếu thực thi máy móc → "Waterfall gắn mác Agile" | Coach sát; enforce real Agile principles, not just ceremony mimicry |
 | 👥 **Không hợp team nhỏ** | Overhead khổng lồ cho < 50 người | Don't use SAFe for small orgs; use Scrum or LeSS |
 | 🪜 **Phụ thuộc RTE/SAFe coach giỏi** | Người dẫn dắt yếu → framework sụp đổ | Invest in good RTE; SaFe có certification pathway (SSC, SAC, CSP) |
-| 📉 **Resistance to change** | Organization惯性 — managers fear losing control | Leadership buy-in essential; start with volunteer teams |
+| 📉 **Resistance to change** | Organization có quán tính — managers fear losing control | Leadership buy-in essential; start with volunteer teams |
 | 🔤 **Jargon overload** | ART, PI, RTE, ESZ... terminology barrier | Glossary on wall; new members feel overwhelmed |
 
 ---
@@ -116,7 +116,7 @@ Inspect & Adapt → root-cause + action cải tiến cho PI sau
 | Team nhỏ 1-9 người | ❌ Dùng Scrum/Kanban | SAFe overhead destroys agility at small scale |
 | 2-8 team cùng 1 sản phẩm | ❌ Cân nhắc LeSS (nhẹ hơn) | LeSS achieves coordination with far less ceremony |
 | Văn hóa phân cấp nặng, không muốn trao quyền | ❌ SAFe khó thành công | SAFe requires empowered teams; command-and-control kills it |
-| Organization chưa có Agile foundation | ❌需要先培训 | SAFe assumes teams already know Scrum/XP; starting from zero is risky |
+| Organization chưa có Agile foundation | ❌ Cần đào tạo trước | SAFe assumes teams already know Scrum/XP; starting from zero is risky |
 
 ---
 

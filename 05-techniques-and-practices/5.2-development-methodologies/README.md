@@ -30,7 +30,7 @@ BẮT ĐẦU: Team & dự án của bạn như thế nào?
 │
 ├─ Yêu cầu thay đổi thường xuyên, cần phản hồi nhanh? (Agile zone)
 │   ├─ Team nhỏ (1-9 người)?
-│   │   ├─ Cần kỷ luật kỹ thuật cao, quality是第一优先级 → 5.2.3 XP
+│   │   ├─ Cần kỷ luật kỹ thuật cao, quality là ưu tiên hàng đầu → 5.2.3 XP
 │   │   ├─ Cần quy trình rõ ràng, role phân định, sprint fixed → 5.2.1 Scrum
 │   │   └─ Cần flow liên tục, ít ceremony, công việc đến liên tục → 5.2.2 Kanban
 │   ├─ Team vừa (10-50 người)?
@@ -254,7 +254,7 @@ Phát triển **prototype nhanh** với sự tham gia liên tục của người
 | Kanban | Team không đo được metrics, WIP limit không được tôn trọng |
 | XP | Team thiếu senior developer, không có CI/CD infrastructure, deadline quá gấp (2 tuần) |
 | Waterfall | Yêu cầu chưa rõ, công nghệ mới, dự án > 6 tháng |
-| SAFe | Team < 50 người, chưa có Scrum成熟, ngân sách training < $100k |
+| SAFe | Team < 50 người, chưa có Scrum trưởng thành, ngân sách training < $100k |
 | LeSS | Các team làm product khác nhau, thiếu giao tiếp trực tiếp |
 | Crystal | Không có senior người hiểu biết để "tinh chỉnh" quy trình |
 

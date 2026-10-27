@@ -48,7 +48,7 @@ RAD chống lại tư duy Waterfall "tài liệu trước, code sau": thay vì �
 **Javelin Session** (Requirements Planning workshop format):
 - All stakeholders (user, developer, manager) in cùng room
 - Facilitated session để capture requirements
--产出: high-level scope document, not detailed spec
+- Sản phẩm đầu ra: high-level scope document, not detailed spec
 - Key: user có mặt đầy đủ, ra quyết định ngay
 
 **Pha 2 là trái tim RAD:** Vòng prototype lặp cho đến khi user nói "đây là cái tôi muốn". Mỗi iteration: build → test với user → feedback → sửa → repeat. Thông thường 2–5 vòng trước khi "approve".
@@ -86,7 +86,7 @@ Ví dụ [`examples/index.ts`](examples/index.ts) mô phỏng **4 pha + vòng l�
 | 🔄 **Bắt sai yêu cầu rất sớm** | Feedback xuyên suốt → ít đổ bể ở cuối | Requirement mismatch phát hiện ở prototype phase (~1% cost) thay vì post-build (~100% cost) |
 | 🧩 **Build song song được** | Chia module nhỏ → nhiều nhóm cùng làm | Parallel development → overall project time giảm |
 | 📉 **Ít tài liệu nặng nề** | Chỉ cần tài liệu vừa đủ, tập trung prototype | Documentation overhead giảm 50–70% so với Waterfall |
-| 🎯 **User satisfaction cao** | User参与了 design → feel ownership | Higher adoption rates; fewer "this is not what I wanted" moments |
+| 🎯 **User satisfaction cao** | User tham gia vào design → feel ownership | Higher adoption rates; fewer "this is not what I wanted" moments |
 
 ---
 

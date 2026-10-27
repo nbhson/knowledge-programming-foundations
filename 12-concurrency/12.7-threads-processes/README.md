@@ -66,6 +66,26 @@ function splitWork<T>(items: T[], workers: number): T[][] {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**So sánh concurrency model theo runtime:**
+
+| Tiêu chí | Node.js (libuv pool) | Browser (Web Workers) | Java Virtual Threads (JEP 444, Java 21+) | Go Goroutines |
+|---|---|---|---|---|
+| Mô hình | Event loop + thread pool (I/O async) | Main + worker threads (1:1) | 1 JVM thread → N virtual threads (M:N) | 1 OS thread → N goroutines (M:N) |
+| CPU-bound | `worker_threads` (riêng pool) | Worker riêng hoàn toàn | Tự nhiên, không đổi code | `GOMAXPROCS` = số core |
+| RAM/thread | ~8KB stack (libuv) | ~5MB (browser spec) | ~200B–1KB (virtual) | ~2KB stack |
+| Blocking call | Non-blocking bắt buộc | Blocking chặn worker | Platform blocking → park virtual thread (rẻ) | Chặn goroutine khác (scheduler đổi) |
+| Khởi tạo | ~µs | ~ms (worker spawn) | ~µs (VirtualThread.start) | ~µs (go func(){}) |
+
+**Context-switching cost — số liệu thực tế:**
+- OS thread context switch: ~1–5 µs, tốn cache L1/L2 miss (stack toàn bộ + registers).
+- Goroutine context switch: ~0.2–0.5 µs (chỉ chuyển registers + stack pointer, không switch MMU/segment), do Go scheduler (`GOMAXPROCS` ≤ CPU cores).
+- Virtual thread context switch: ~0.5–2 µs (park/unpark lightweight, không OS context switch).
+- **Thực hành:** 10K goroutines rẻ; 10K OS threads → hàng GB RAM + context switch flood → treo.
+
+---
+
 ## 🔗 Liên quan
 
 - **12.3 Event Loop** — microtask/macrotask, vì sao block loop nguy hiểm.

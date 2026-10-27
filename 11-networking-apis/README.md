@@ -139,7 +139,7 @@ API (Application Programming Interface) là **hợp đồng giao tiếp** giữa
 
 ### HTTP/HTTPS — The protocol of the web
 
-HTTP (Hypertext Transfer Protocol) là giao thức application-layer cho web. Phiên bản hiện tại phổ biến: HTTP/1.1 (1999), HTTP/2 (2015), HTTP/3 (2020,基于 QUIC/UDP).
+HTTP (Hypertext Transfer Protocol) là giao thức application-layer cho web. Phiên bản hiện tại phổ biến: HTTP/1.1 (1999), HTTP/2 (2015), HTTP/3 (chuẩn hóa chính thức trong RFC 9114 — 6/2022, dựa trên QUIC/UDP; draft dùng tên "HTTP/3" từ 2020).
 
 ```
 Client                          Server
@@ -202,7 +202,7 @@ Client                          Server
 | **Connection setup** | 3-way TCP + 2-way TLS = ~3 RTTs | 3-way TCP + 2-way TLS = ~3 RTTs | 0-RTT possible (connection resumption) |
 | **Migration** | Hard (TCP connection breaks on IP change) | Same as HTTP/1.1 | Easy (QUIC is connection-less) |
 
-**Head-of-line blocking explained:** Trong HTTP/2 trên TCP, nếu 1 packet lost, TẤT CẢ streams bị block直到 packet được retransmit. HTTP/3 chuyển sang UDP (QUIC) giải quyết bằng per-stream retransmission — packet loss ảnh hưởng chỉ 1 stream, không phải tất cả.
+**Head-of-line blocking explained:** Trong HTTP/2 trên TCP, nếu 1 packet lost, TẤT CẢ streams bị block cho tới khi packet được retransmit. HTTP/3 chuyển sang UDP (QUIC) giải quyết bằng per-stream retransmission — packet loss ảnh hưởng chỉ 1 stream, không phải tất cả.
 
 ### DNS (Domain Name System) — Từ hostname đến IP
 
@@ -340,7 +340,7 @@ subscription OnOrderCreated($userId: ID!) {
 |----------|------------|
 | Exactly one endpoint (`/graphql`) — no URL sprawl | Steeper learning curve (schema, resolvers, directives) |
 | No over-fetching — client selects fields | No HTTP cache (must implement manual caching) |
-| No under-fetching — one query gets nested data | N+1 query problem (resolver-level,需 DataLoader) |
+| No under-fetching — one query gets nested data | N+1 query problem (resolver-level, cần DataLoader) |
 | Strongly typed schema — self-documenting | File upload awkward (multipart on GraphQL complex) |
 | Real-time with Subscription | Complex pagination (cursor-based, not offset) |
 | Evolution without versioning — add fields, don't break | Query complexity/depth limits needed (DoS prevention) |
@@ -740,7 +740,7 @@ es.onerror = () => console.error('SSE connection error');
 ✅ Implement proper authentication (OAuth2/JWT with short expiry)
 ✅ Rate limiting để bảo vệ server khỏi abuse/DDoS
 ✅ API versioning từ ngày đầu (URL path /api/v1/...)
-✅ Consistent error format across所有 endpoints
+✅ Consistent error format across tất cả endpoints
 ✅ Pagination cho list endpoints (cursor preferred for large datasets)
 ✅ CORS configuration đúng (restricted origins, not wildcard *)
 ✅ Request/Response logging với requestId correlation

@@ -10,7 +10,7 @@ Angular không có built-in state management. Khi app phức tạp, component co
 
 ```
 ❌ Không có NgRx
-├─ Input/Output boilerplate qua nhiều层
+├─ Input/Output boilerplate qua nhiều tầng
 ├─ Service chia sẻ state → khó test
 └─ Khó debug khi state thay đổi
 
@@ -170,7 +170,7 @@ export class CounterComponent implements OnInit {
 |------------|-----------------|
 | 🔴 Boilerplate nhiều | Dùng NgRx schematic/ng generate |
 | 🟡 Học curve | Tài liệu đầy đủ |
-| 🟡過kill cho app nhỏ | Dùng signal-based state (Angular 16+) |
+| 🟡 Overkill cho app nhỏ | Dùng signal-based state (Angular 16+) |
 
 ---
 

@@ -85,6 +85,44 @@ function cacheHeader(fileName: string): string {
 
 ---
 
+## 🧰 Toolchain Bundler 2026
+
+- **Webpack v5** đã vào **maintenance mode (2026)** — vẫn chạy tốt, chỉ nhận fix bảo mật, không thêm feature mới.
+- Lựa chọn chính hiện nay:
+  - **Vite** (dev bằng **esbuild**, build bằng Rollup; đang chuyển sang **Rolldown** viết bằng Rust) — mặc định cho app mới.
+  - **Turbopack** (viết bằng Rust, Vercel) — bundler tích hợp Next.js, thay thế Webpack trong dev.
+
+---
+
+## 🔍 Phân Tích Bundle
+
+"Không đo thì không tối ưu" — dùng source map để xem **cái gì chiếm dung lượng**:
+
+| Tool | Dùng với | Output |
+|---|---|---|
+| `webpack-bundle-analyzer` | Webpack | Treemap tương tác từng module |
+| `rollup-plugin-visualizer` | Rollup/Vite | Treemap + stats JSON cho CI |
+| `source-map-explorer` | Mọi bundler | So sánh byte theo file từ source map |
+
+Workflow: generate source map → visualize → tìm lib nặng (moment, lodash full, polyfill cũ) →
+thay bằng lib nhỏ hơn (`dayjs`, import submodule, `@babel/preset-modules`) hoặc dynamic import.
+
+---
+
+## 🌐 HTTP/2 Multiplexing & Số Lượng Chunk
+
+Thời HTTP/1.1, mỗi request tốn 1 connection song song giới hạn → chia **vụn** nhiều chunk nhỏ là tối ưu.
+**HTTP/2 multiplexing** gửi nhiều request song song trên **một** connection:
+
+- → Overhead per-request gần như biến mất, **ít chunk to cũng được** (thậm chí tốt hơn: ít request,
+  ít overhead nén, cache ít file dễ quản hơn).
+- Ưu tiên **ít request lớn hơn** thay vì hàng chục chunk 2KB — vẫn giữ split theo route/vendor để tận dụng cache.
+
+> 💡 **Import maps** cho micro-frontends: dùng `<script type="importmap">` ánh xạ module URL qua CDN/bundle
+> — chia sẻ dependency giữa các micro-app mà không build chung một bundle.
+
+---
+
 ## 🔗 Liên Quan
 
 - [19.1 Rendering Strategies](../19.1-rendering-strategies/README.md) — CSR phụ thuộc nặng vào bundle.

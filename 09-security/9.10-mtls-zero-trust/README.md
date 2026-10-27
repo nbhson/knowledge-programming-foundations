@@ -59,6 +59,45 @@ function authorize(caller: string, action: string, policy: Record<string, string
 
 ---
 
+## 🪪 SPIFFE/SPIRE: Identity cho Workload
+
+Vấn đề: mTLS cần cert — nhưng **ai cấp cert cho service, làm sao service biết mình là ai?**
+
+- **SPIFFE** (Secure Production Identity Framework For Everyone): chuẩn định danh workload — URI dạng `spiffe://cluster/ns/prod/sa/payment-service`.
+- **SPIRE** server cấp **SVID** (SPIFFE Verifiable Identity Document = X.509 cert hoặc JWT) cho workload qua agent, **tự rotate** (TTL ngắn, mặc định 1 giờ).
+- Workload không cần secret/hardcode — SPIRE agent xác thực workload qua nền tảng (K8s service account, AWS instance identity…).
+- Kết quả: identity nhất quán **cross-cluster, cross-cloud** — service mesh và policy engine đều dùng chung.
+
+## 🕸️ Service Mesh: mTLS tự động
+
+Tự viết mTLS (CA, rotate, revoke, CA cấp phát) là đau đầu — mesh làm hộp ở sidecar/eBPF layer:
+
+| Mesh | Cách cấp mTLS | Điểm mạnh |
+|---|---|---|
+| **Istio** | Envoy sidecar + Citadel (CA) | Đầy đủ nhất: mTLS + authz policy + telemetry, `PeerAuthentication` bật STRICT |
+| **Linkerd** | Rust proxy siêu nhẹ, mTLS mặc định | Đơn giản, ít tài nguyên hơn Istio |
+| **Cilium (sidecar-free)** | eBPF ở kernel, không sidecar | Hiệu năng cao, network policy + mTLS trong kernel |
+| **SPIRE + mesh riêng lẻ** | SPIFFE identity cho mọi mesh | Đa cloud, đa mesh dùng chung identity |
+
+- Bật mTLS mesh-wide = 1 CRD, không sửa code app: app nói HTTP trần, sidecar mã hóa hộ.
+- Gradual rollout: `PERMISSIVE` (chấp nhận cả HTTP + mTLS) → quan sát → `STRICT` (chỉ mTLS) — tránh outage khi chuyển.
+
+## 🎯 Zero Trust = Identity-based Policy, Không phải Network Perimeter
+
+Sai lầm phổ biến: "có VPN + VPC private subnet là zero trust". **Không phải:**
+
+| Tư duy cũ (perimeter) | Zero trust đúng |
+|---|---|
+| Tin theo **vị trí mạng** (trong VPC = tin) | Tin theo **identity** (cert/token + policy từng request) |
+| Firewall chặn port, bên trong mở toang | Deny-by-default từng service-to-service call |
+| IP là định danh | Cert ngắn hạn (SPIFFE SVID) là định danh |
+| Audit theo log truy cập mạng | Audit từng request: ai (identity), gọi gì (method), cho phép không (policy decision) |
+
+- Nguyên tắc NIST 800-207: **"never trust, always verify"** — mỗi request được authenticate + authorize riêng, kể cả trong cùng cluster.
+- Stack thực tế: mTLS (xác thực) + policy engine (OPA/Cedar/Istio AuthorizationPolicy — phân quyền) + network policy (chặn tầng L3/L4) — ba lớp, mỗi lớp một việc.
+
+---
+
 ## 🎯 Khi nào dùng
 
 - Microservices nội bộ (service-to-service), đặc biệt payment/PII, đa cluster/cloud.

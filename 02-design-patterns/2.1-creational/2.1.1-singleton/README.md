@@ -175,7 +175,7 @@ import { db } from './db';  // luôn là cùng instance
 | DI Container | ✅ Phù hợp | Container phải tồn tại ở 1 nơi để resolve dependencies. |
 | Cần testable, inject dependency | ⚠️ Dùng DI thay thế | `new Foo(new Bar())` > `Foo.getInstance()`. |
 | Multi-thread, cần thread-safe | ⚠️ Cân nhắc kỹ | Synchronized singleton có chi phí performance. |
-| Singleton class có mutable state phức tạp | ⚠️ Cân nhắc重构 | State phức dễ dẫn đến side-effect khó debug. |
+| Singleton class có mutable state phức tạp | ⚠️ Cân nhắc refactor | State phức dễ dẫn đến side-effect khó debug. |
 
 ---
 

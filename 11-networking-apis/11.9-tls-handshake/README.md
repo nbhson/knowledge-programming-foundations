@@ -54,6 +54,47 @@ function negotiate(client: string[], server: string[]): string | null {
 
 ---
 
+## 🆚 TLS 1.3 vs TLS 1.2
+
+| Khía cạnh | TLS 1.2 | TLS 1.3 |
+|---|---|---|
+| **Handshake** | 2-RTT (full) | 1-RTT (gần một nửa thời gian) |
+| **0-RTT resumption** | Không | Có (early data) — caveat replay bên dưới |
+| **Key exchange** | RSA, DH, ECDHE (nhiều lựa chọn) | Chỉ (EC)DHE + forward secrecy bắt buộc |
+| **Cipher suites** | ~30 suite, gồm cái yếu (CBC, RC4) | 5 suite AEAD thôi (AES-GCM, ChaCha20) |
+| **Signature/Cert** | Mọi thứ negotiate 2 lượt | Bỏ bớt round, compress handshake |
+| **Hỗ trợ (2026)** | Legacy bắt buộc giữ | Mọi browser/server hiện đại — mặc định |
+
+**0-RTT caveat**: early data gửi trước khi hoàn tất handshake — **chống replay không hoàn chỉnh**: attacker bắt lại và gửi lại early data. Chỉ dùng cho **GET idempotent**, không đặt trong early data: chuyển tiền, POST tạo order.
+
+## 📜 Certificate Transparency (CT)
+
+- Mọi CA bắt buộc log cert cấp ra vào **public CT logs** (được Google Chrome/Safari yêu cầu) — CA cấp cert trái phép sẽ bị phát hiện công khai.
+- Check: crt.sh, Google CT search — **monitor subdomain/domain của bạn** để biết cert lạ cấp ra (dấu hiệu CA bị compromise hoặc misconfiguration).
+- SCT (Signed Certificate Timestamp) đính kèm cert — client verify cert có trong log.
+- Với doanh nghiệp: **giám sát CT log** để phát hiện typosquat subdomain và rogue cert sớm.
+
+## ♻️ Let's Encrypt + ACME (Auto-renewal)
+
+- **ACME protocol**: client (certbot/cert-manager/acme.sh) chứng minh sở hữu domain qua HTTP-01/DNS-01 challenge → cấp cert tự động, **rotate mỗi 60–90 ngày không cần người**.
+- K8s: `cert-manager` + `Issuer` CRD = cert tự sinh + renew + mount secret — đừng xin cert bằng tay nữa.
+- Precedence: DNS-01 cho wildcard cert (`*.example.com`), HTTP-01 cho domain đơn.
+- Giám sát vẫn cần: cert hết hạn đồng loạt (CA sự cố, misconfig DNS-01) từng gây outage lớn — **alert trước hạn 30 ngày** là lớp phòng thủ cuối cùng.
+
+## 🔁 Session Resumption
+
+Handshake tốn kém (CPU crypto + 1 RTT) — client quay lại nhanh hơn bằng tái sử dụng session:
+
+| Cơ chế | Cách hoạt động | Ghi chú |
+|---|---|---|
+| **Session tickets (TLS 1.3)** | Server cấp ticket mã hóa, client gửi lại lần sau → resumption 1-RTT hoặc 0-RTT | Chuẩn hiện đại (PSK) |
+| **Session ID (TLS 1.2)** | Server lưu session state, client nhắc lại ID | Cần server-side cache, khó load-balance |
+| Lợi ích | Bỏ bước negotiate + cert verify lần 2 → tiết kiệm ~1 RTT + CPU | Connection pool/keep-alive còn tốt hơn: không handshake chút nào |
+
+> Thực tế: **keep-alive + connection pooling** vẫn là tối ưu số 1; resumption là dự phòng khi phải mở connection mới.
+
+---
+
 ## 🎯 Khi nào dùng
 
 - Mọi production traffic: HTTPS everywhere (TLS 1.2+, HSTS).

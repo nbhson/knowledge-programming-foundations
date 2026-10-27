@@ -25,7 +25,7 @@
 Thiết kế (Figma/Sketch)
          │
          ▼
-    Design Tokens  ← 唯一数据源
+    Design Tokens ← nguồn dữ liệu duy nhất
          │
     ┌────┼────┐
     ▼    ▼    ▼
@@ -60,7 +60,7 @@ React Native: Button → color: tokens.color.primary, size: tokens.spacing.md
 ❌ Hard-coded (không scalable):
    padding: 8px;  // Where does 8 come from?
    margin: 16px;  // What if we need to change?
-   → Phải grep + replace thủ công, dễ漏
+   → Phải grep + replace thủ công, dễ sót
 ```
 
 ---
@@ -108,7 +108,7 @@ React Native: Button → color: tokens.color.primary, size: tokens.spacing.md
 | Audience | Developers | Devs + designers + PMs |
 | Example | Material-UI, Ant Design | Google Material Design, Shopify Polaris |
 
-> 💡 Component library là **part** của design system, không phải toàn bộ. Design system还包括 guidelines, tokens, contribution guide, và governance process.
+> 💡 Component library là **part** của design system, không phải toàn bộ. Design system bao gồm cả guidelines, tokens, contribution guide, và governance process.
 
 ---
 

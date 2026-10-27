@@ -68,6 +68,59 @@ function guardrail(text: string): { safe: boolean; reason: string } {
 
 ---
 
+## 🧱 Guardrails (2025–2026)
+
+Keyword-filter trong demo chỉ là lớp đầu tiên. Production dùng **model guardrail chuyên dụng** làm lớp riêng:
+
+| Guardrail | Ai làm | Vai trò |
+|---|---|---|
+| [LlamaGuard](https://github.com/meta-llama/PurpleLlama) | Meta | LLM classifier phân loại input/output an toàn theo chính sách |
+| [PromptGuard](https://huggingface.co/meta-llama/Llama-Prompt-Guard-2-86M) | Meta | Nhận diện **prompt injection / jailbreak** ngay ở input |
+| AWS Bedrock Guardrails | AWS | Policy content filter + denied topics + PII mask, managed |
+
+**Phòng thủ prompt injection** (defense-in-depth, không chỉ 1 lớp):
+
+```
+User input ──► INPUT FILTER (PromptGuard/injection detector) ──► LLM (dùng tools)
+                     │                                                    │
+            chặn/jailbreak pattern                            OUTPUT FILTER ──► user
+                                                            (kiểm nội dung + PII)
+```
+
+- **Privilege separation**: agent chạy tool với quyền tối thiểu, riêng biệt với quyền của user —
+  bị injection thì thiệt hại chỉ trong sandbox của agent, không phải toàn hệ thống.
+- Input/output filter là 2 lớp độc lập: chặn dữ liệu vào và nội dung ra — một lớp bị lọt lớp kia giữ.
+- Guardrail model chạy song song, **không thay** eval: eval đo chất lượng, guardrail chặn rủi ro runtime.
+
+---
+
+## 🤥 Hallucination Measurement
+
+Đo hallucination ở 3 mức, từ rẻ đến đắt:
+
+| Cách | Làm thế nào | Ưu / Nhược |
+|---|---|---|
+| **Self-check** | Hỏi lại model "câu trên có chính xác không?" hoặc sample nhiều lần, đo sự đồng thuận | Rẻ, tự động — nhưng model có thể tự tin sai (cùng bias) |
+| **Citation-grounded** | Ép trả lời kèm trích dẫn nguồn (chunk RAG §mấy), kiểm mỗi câu có căn cứ không | Khách quan, kiểm tra được tự động — cần pipeline retrieval tốt |
+| **LLM-as-judge** | Model chấm câu trả lời so với context/gold answer theo rubric | Mềm dẻo, chấm được câu mở — thiên vị, cần luân phiên judge + human spot-check |
+
+---
+
+## 📊 RAG Eval — RAGAS Metrics
+
+Với pipeline RAG (17.3), đừng chỉ đo "trả lời hay" — đo cả **chất lượng truy xuất**. Bộ metrics [RAGAS](https://docs.ragas.io/):
+
+| Metric | Đo gì | Câu hỏi |
+|---|---|---|
+| **Faithfulness** | Câu trả lời có bám vào context được truy xuất không? | Có bịa không? |
+| **Answer relevance** | Câu trả lời có đúng câu hỏi không? | Có trả lẹo/lạc đề không? |
+| **Context precision** | Trong các chunk truy xuất, chunk liên quan có đứng trước không? | Rerank có tốt không? |
+| **Context recall** | Mọi thông tin cần có nằm trong context chưa? | Retrieval có bỏ sót không? |
+
+> Faithfulness + context metrics cho biết **nên sửa retriever hay sửa generator** — thay vì chỉ biết "trả lời dở".
+
+---
+
 ## ⚠️ Lưu Ý
 
 - Keyword-guardrail trong demo chỉ là **lớp đầu tiên**: production cần thêm classifier, PII detector, policy engine.
@@ -95,7 +148,9 @@ function guardrail(text: string): { safe: boolean; reason: string } {
 
 ## 📚 Tài Liệu
 
-- 📖 [OpenAI Evals](https://github.com/openai/evals)
+- 📖 [Braintrust](https://www.braintrust.dev/) — nền tảng eval/observatory cho LLM (thay OpenAI Evals, đã deprecated 2024)
+- 📖 [LangSmith](https://smith.langchain.com/) — tracing + eval suite; [RAGAS](https://docs.ragas.io/) — metrics RAG
+- 📖 [Arize Phoenix](https://phoenix.arize.com/) • [Trulens](https://www.trulens.org/) • [DeepEval](https://deepeval.com/) — các nền tảng eval hiện hành 2025–2026
 - 📖 *TruthfulQA: Measuring How Models Mimic Human Falsehoods* — Lin et al., 2021
 - 📖 [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 

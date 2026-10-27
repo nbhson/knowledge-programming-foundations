@@ -48,14 +48,14 @@ Barry Boehm giới thiệu Spiral Model để khắc phục điểm yếu của 
 
 | Loại rủi ro | Ví dụ | Cách giảm thiểu (trong Spiral) |
 |-------------|-------|-------------------------------|
-| **Technical risk** | Công nghệ mới chưa stabilize, performance达不到 | Prototype technical spike; proof-of-concept trước khi commit |
+| **Technical risk** | Công nghệ mới chưa stabilize, performance không đạt | Prototype technical spike; proof-of-concept trước khi commit |
 | **Schedule risk** | Deadline không thực tế, scope không rõ | Early validation of timeline with stakeholders |
 | **Cost risk** | Budget không đủ cho scope thực | Phased funding; go/no-go gates mỗi vòng |
 | **Requirements risk** | Hiểu sai nhu cầu user | User prototype; iterative requirements gathering |
-| **Resource risk** | Key person离开, team thiếu skill | Knowledge sharing; cross-training; backup plan |
-| **External risk** | Regulation change, market shift | Monitor外部环境; flexibility in scope |
+| **Resource risk** | Key person rời đi, team thiếu skill | Knowledge sharing; cross-training; backup plan |
+| **External risk** | Regulation change, market shift | Monitor môi trường bên ngoài; flexibility in scope |
 
-**Quy tắc vàng Spiral:** Nếu risk assessment ở quadrant 2 cho thấy rủi ro > threshold → **không tiếp tục build**,而是做 thêm prototype hoặc dừng.
+**Quy tắc vàng Spiral:** Nếu risk assessment ở quadrant 2 cho thấy rủi ro > threshold → **không tiếp tục build**, mà làm thêm prototype hoặc dừng.
 
 ---
 
@@ -117,7 +117,7 @@ Vòng 3: Bản đầy đủ 100 thiết bị + cảnh báo + dashboard
 | Dự án government/defense contract | ✅ Phù hợp | Risk management required by procurement regulations |
 | Scope rõ ràng, ít rủi ro, deadline gấp | ❌ Waterfall/Agile đơn giản hơn | Overkill to use Spiral for low-risk projects |
 | Team nhỏ cần chạy nhanh | ❌ Quá nặng — dùng Scrum/Kanban | Spiral overhead too high for small/fast teams |
-| Startup, product discovery | ❌ Cân nhắc Crystal/Lean Startup | Spiral is too formal; lean experimentation更适合 |
+| Startup, product discovery | ❌ Cân nhắc Crystal/Lean Startup | Spiral is too formal; lean experimentation phù hợp hơn |
 
 ---
 

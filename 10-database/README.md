@@ -97,7 +97,7 @@ CAP theorem khẳng định: trong hệ thống phân tán, bạn chỉ có th�
 - **A (Availability)** — Mọi request đều nhận được response (có thể là lỗi, không phải stale data)
 - **P (Partition Tolerance)** — Hệ thống vẫn hoạt động khi network bị chia cắt
 
-Thực tế, **partition là điều không tránh được** →你必须 chọn giữa C và A:
+Thực tế, **partition là điều không tránh được** → bạn buộc phải chọn giữa C và A:
 - **CP systems** (PostgreSQL cluster, MongoDB with majority writes): Chọn consistency. Khi partition xảy ra, một phần hệ thống có thể không truy cập được để đảm bảo data luôn nhất quán.
 - **AP systems** (Cassandra, DynamoDB, Redis cluster): Chọn availability. Khi partition xảy ra, client vẫn đọc được dữ liệu cũ (stale read) nhưng hệ thống không sập.
 
@@ -380,7 +380,7 @@ PEXPIRE user:1:session 3600000             # TTL tính bằng ms
 MSET user:1:name "Son" user:1:email "son@example.com" user:1:role "admin"
 MGET user:1:name user:1:email
 
-# ──原子操作 — quan trọng cho counter/rate-limit ──────
+# ── Thao tác nguyên tử — quan trọng cho counter/rate-limit ──────
 INCR view_count:post:123          # Tăng 1, trả về giá trị mới
 INCRBY view_count:post:123 10     # Tăng 10
 DECR balance:account:1            # Giảm 1
@@ -499,7 +499,7 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 - `Nested Loop` = join kiểu vòng lặp lồng — tốt cho small × small
 - `Hash Join` = join bằng hash table — tốt cho large × large
 - `Merge Join` = sort-then-merge — tốt cho sorted large datasets
-- `Actual rows` vs `Estimated rows` lệch nhau → statistics陈旧 → chạy `ANALYZE table_name`
+- `Actual rows` vs `Estimated rows` lệch nhau → statistics đã cũ → chạy `ANALYZE table_name`
 
 ### Các kỹ thuật tối ưu chi tiết
 
@@ -677,7 +677,7 @@ Hash Index            → Chỉ tốt cho = (equality)
 
 GIN Index             → Generalized Inverted Index
                         Dành cho: full-text search, JSONB, arrays, hstore
-                        Tốc độ: O(log n) nhưng constant factor nhỏ hơn B-Tree cho這些 cases
+                        Tốc độ: O(log n) nhưng constant factor nhỏ hơn B-Tree cho các cases này
                         PostgreSQL: CREATE INDEX ... USING gin
 
 GiST Index            → Generalized Search Tree

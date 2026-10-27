@@ -9,7 +9,7 @@
 ```
 ❌ Quản lý state không có Redux
 ├─ State nằm rải rác nhiều component
-├─ Props drilling: truyền qua nhiều层
+├─ Props drilling: truyền qua nhiều tầng
 ├─ Khó debug: không biết ai thay đổi state
 └─ Hard to test: state phụ thuộc vào component hierarchy
 

@@ -30,7 +30,7 @@
 | **Availability** | Mọi request đến **node không failed** nhận được response (không reject) — không guarantee correctness | Luôn trả về kết quả, dù có thể là data cũ (stale) |
 | **Partition Tolerance** | Hệ thống tiếp tục hoạt động khi **network partition** xảy ra (2 nhóm node không liên lạc được) | 2 datacenter mất kết nối vẫn phục vụ user riêng |
 
-> ⚠️ **Hiểu lầm kinh điển:** CAP không nói "chọn 2 trong 3 là lựa chọn永恒". Nó nói: **trong điều kiện partition xảy ra**, bạn phải chọn giữa C và A. Khi không có partition (phần lớn thời gian), hệ thống có thể chạy cả C lẫn A — đó là PACELC.
+> ⚠️ **Hiểu lầm kinh điển:** CAP không nói "chọn 2 trong 3 là lựa chọn vĩnh viễn". Nó nói: **trong điều kiện partition xảy ra**, bạn phải chọn giữa C và A. Khi không có partition (phần lớn thời gian), hệ thống có thể chạy cả C lẫn A — đó là PACELC.
 
 ---
 
@@ -195,7 +195,7 @@ Giải pháp:
 |--------|---------|------------|-------|
 | **LWW** | Đơn giản, latency thấp | Mất data nếu clock lệch; không recover được | DynamoDB default |
 | **Vector Clocks** | Phát hiện conflict chính xác | Metadata lớn; merge logic phức tạp | CouchDB |
-| **CRDT** | Automatically convergent, no conflict | Chỉ áp dụng cho cấu trúc data特定 (counter, set, G-Counter) | AWS DynamoDB Streams, Yjs |
+| **CRDT** | Automatically convergent, no conflict | Chỉ áp dụng cho cấu trúc data cụ thể (counter, set, G-Counter) | AWS DynamoDB Streams, Yjs |
 | **MVC (Multi-Version)** | Recover được mọi version | Storage cost cao; conflict resolve thủ công | Git, Versioned DB |
 
 **CRDT mẫu — G-Counter (grow-only counter):**

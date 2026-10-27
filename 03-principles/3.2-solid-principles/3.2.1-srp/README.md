@@ -64,7 +64,7 @@ class UserReportService { generateReport(user: any) { /* ... */ } }
 | Method có dấu chấm phẩy phân cách | `save(); sendEmail();` | Tách thành các service riêng |
 | Test class cần mock nhiều thứ | Vì class làm nhiều việc | Tách ra, test từng phần |
 
-### Ví dụ thực tế:违反 SRP
+### Ví dụ thực tế: vi phạm SRP
 
 ```typescript
 // ❌ BAD: OrderService làm 3 việc khác nhau
@@ -114,7 +114,7 @@ class OrderNotificationService {
 | Tình huống | Khuyến nghị | Lý do |
 |------------|-------------|-------|
 | Class nhỏ (< 50 dòng), 1 việc duy nhất | ❌ Không cần tách | Over-engineering |
-|相关业务逻辑 tightly coupled | ⚠️ Cân nhắc | Tách ra sẽ phức tạp hóa |
+| Logic nghiệp vụ liên quan tightly coupled | ⚠️ Cân nhắc | Tách ra sẽ phức tạp hóa |
 | Microservice boundaries | ✅ Tách thành service | SRP ở cấp service |
 | One-off script | ❌ Không cần | Đơn giản là ưu tiên |
 

@@ -508,7 +508,7 @@ jobs:
 Environment: production
 ├── Required reviewers: 1 người approver (có thể set nhiều người)
 ├── Wait timer: 5 phút sau approval (chặn accidental deploy)
-├── Branch restriction: only main (hoặc特定的 branches)
+├── Branch restriction: only main (hoặc các branches cụ thể)
 ├── Deployment branches: main only
 └── Secret mask: mọi giá trị được redact trong log
 ```

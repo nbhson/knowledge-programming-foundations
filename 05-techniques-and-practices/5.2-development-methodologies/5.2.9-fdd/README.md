@@ -1,6 +1,6 @@
 # 🏗️ 5.2.9 Feature-Driven Development (FDD)
 
-> Phương pháp Agile tập trung vào **xây dựng phần mềm theo từng tính năng cụ thể (feature)**, kết hợp thiết kế hướng đối tượng (OO Design) và quy trình ngắn hạn (2 tuần/feature). Được phát triển bởi **Jeff De Luca** và **Peter Coad** (1997), áp dụng thành công tại马来西亚 Đại Hà (Great River) và many large Java projects.
+> Phương pháp Agile tập trung vào **xây dựng phần mềm theo từng tính năng cụ thể (feature)**, kết hợp thiết kế hướng đối tượng (OO Design) và quy trình ngắn hạn (2 tuần/feature). Được phát triển bởi **Jeff De Luca** và **Peter Coad** (1997), áp dụng thành công tại Singapore Đại Hà (Great River) và many large Java projects.
 
 ---
 

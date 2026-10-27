@@ -171,7 +171,7 @@ Nếu chỉ pick B mà không pick A:
 
 | Scenario | Hành động | Lập luận |
 |----------|-----------|----------|
-| Hotfix production急需 | ✅ Cherry-pick fix commit | Cách nhanh nhất đưa fix vào main mà không merge feature đang dev |
+| Hotfix production cần gấp | ✅ Cherry-pick fix commit | Cách nhanh nhất đưa fix vào main mà không merge feature đang dev |
 | Backport feature sang older release branch | ⚠️ Cân nhắc merge thay thế | Cherry-pick từng commit phức tạp nếu có dependencies |
 | Debug isolated issue | ✅ Pick commit test | Tách commit test ra branch debug riêng |
 | Need the whole branch | ❌ Dùng merge thay vì pick | Cherry-pick không phải tool cho bulk transfer |

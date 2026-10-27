@@ -56,6 +56,47 @@ interface OrderItem { orderId: number; productId: number; qty: number; priceAtBu
 
 ---
 
+## 🧭 1NF → 3NF Nhanh (Mỗi dạng 1 quy tắc)
+
+| Dạng | Quy tắc để pass | Ví dụ vi phạm | Cách fix |
+|---|---|---|---|
+| **1NF** | Mỗi cell = 1 giá trị nguyên tử | `tags = "vue,react"` hoặc `phone_numbers[]` | Tách bảng riêng `tags`, 1 row/tag |
+| **2NF** | 1NF + không partial dependency (cột phụ thuộc 1 phần khóa) | Bảng `(order_id, product_id, product_name)` — product_name phụ thuộc product_id, không phải order_id | Tách `products(product_id, name)` + `order_items(order_id, product_id)` |
+| **3NF** | 2NF + không transitive dependency (A→B→C) | `users(user_id, city_id, city_name)` — city_name phụ thuộc city_id, không phải user_id | Tách `cities(city_id, name)` |
+| **BCNF** | 3NF + mọi determinant phải là candidate key | Bảng `(student, subject, teacher)` — teacher→subject, nhưng teacher không phải key | Tách bảng riêng, mỗi quan hệ là 1 bảng |
+
+> Tóm: **1NF = atomic**, **2NF = toàn khóa**, **3NF = không gián tiếp**, **BCNF = khóa là duy nhất đường đi**.
+
+---
+
+## ⚖️ Khi nào chủ động denormalize
+
+**Đừng normalize thái quá rồi JOIN 10 bảng để đọc 1 row.** Denormalize có chủ đích khi:
+
+| Tín hiệu | Hành động |
+|---|---|
+| Read-heavy (90% reads, 10% writes) + reporting/analytics | Thêm `denormalized_orders_view` hoặc `price_at_buy` snapshot column |
+| Query đơn (dashboard) cần 5+ JOINs, latency > 200ms dù có index | Materialized view hoặc trigger giữ đồng bộ |
+| Nhiều AGGREGATE (SUM, COUNT) bị JOIN block | Bảng `order_summary(user_id, total_orders, total_spent)` cập nhật trigger |
+| Reporting tách biệt (OLAP) khỏi transactional (OLTP) | Star schema, bảng fact + dimension — đây là design khác, không phải "lỗi" 3NF |
+
+**Nguyên tắc:** ghi rõ lý do + migration plan + migration (sau đó mới implement).
+
+---
+
+## 📋 Checklist Review Schema
+
+- [ ] Mỗi bảng có primary key rõ ràng?
+- [ ] 1NF: không comma-separated, không array trong cell?
+- [ ] 2NF: cột nào phụ thuộc 1 phần khóa composite → tách?
+- [ ] 3NF: cột nào phụ thuộc cột không-phải-khóa → tách?
+- [ ] FK giữa bảng có index (đặc biệt cột FK dùng trong JOIN)?
+- [ ] Bảng có column trùng lặp ở > 1 chỗ (dấu hiệu cần tách)?
+- [ ] Có bảng nào cần denormalize chủ đích (read-heavy, reporting)?
+- [ ] Ghi rõ lý do denormalize + migration strategy chưa?
+
+---
+
 ## 🎯 Khi nào dùng
 
 - Mọi schema quan hệ mới: thiết kế 3NF trước, đo performance, rồi mới denormalize chỗ nóng.

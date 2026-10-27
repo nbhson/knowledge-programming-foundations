@@ -103,7 +103,7 @@ async function getUser(id: string): Promise<User> {
     // Chỉ bắt những lỗi chúng ta biết cách xử lý
     if (error instanceof NotFoundError || error instanceof AppError) {
       logger.warn(error.message);
-      throw error; // propagate —上层 knows how to handle
+      throw error; // propagate — tầng trên knows how to handle
     }
     // Lỗi không mong đợi → wrap và throw
     throw new AppError(
@@ -127,7 +127,7 @@ try {
 
 | Thao tác | Đúng | Sai |
 |----------|------|-----|
-| Giữ stack trace | `Error.captureStackTrace(this, this.constructor)` hoặc spread `...e` | `throw new Error('msg')`丢掉 nguyên gốc |
+| Giữ stack trace | `Error.captureStackTrace(this, this.constructor)` hoặc spread `...e` | `throw new Error('msg')` mất nguyên gốc |
 | Thêm context | `{ originalError: e, context: { userId: id } }` | `throw new Error('User not found')` (mất id) |
 | Rethrow | `throw error` (giữ nguyên object) | `throw new Error(error.message)` (mất type) |
 
@@ -222,7 +222,7 @@ function mapToHTTP(status: ApiError): Response {
 
 | ❌ Tránh | ✅ Thay thế | Giải thích |
 |----------|-------------|-----------|
-| `catch (e) {}` —吞 lỗi | Log + re-throw hoặc return default | Im lặng error = mất visibility |
+| `catch (e) {}` — nuốt lỗi | Log + re-throw hoặc return default | Im lặng error = mất visibility |
 | `catch (e: any)` rồi `throw new Error()` | Giữ nguyên error type, chỉ add context | Mất stack, type info |
 | Dùng error code string thay class | Define custom Error subclasses | Không type-safe, không instanceof |
 | Throw lỗi trong constructor | Dùng factory function hoặc init() | Constructor không async, init có thể throw controlled |

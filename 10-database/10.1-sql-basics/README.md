@@ -302,7 +302,7 @@ FROM active_users au
 LEFT JOIN user_orders uo ON au.id = uo.user_id
 ORDER BY uo.lifetime_value DESC
 LIMIT 10;
--- Lợi ích: readable, reusable (có thể refer多次), recursive CTE support
+-- Lợi ích: readable, reusable (có thể refer nhiều lần), recursive CTE support
 -- PostgreSQL recursive CTE: traverse hierarchy, graph traversal
 ```
 
@@ -411,7 +411,7 @@ process.on('SIGINT', async () => {
 | Dùng transaction cho nhiều thao tác | BEGIN → multi-statement → COMMIT/ROLLBACK | Đảm bảo atomicity — all-or-nothing guarantee |
 | Chuẩn hóa schema (3NF) | Loại bỏ redundancy, enforce constraints | Prevent update anomalies, data inconsistency |
 | Dùng EXPLAIN ANALYZE trước khi optimize | Nhìn query plan thực tế | Optimize đúng chỗ, không phải intuition |
-|分批批量操作 | Batch INSERT/UPDATE thay vì từng row | Giảm round-trip overhead, tăng throughput |
+| Thao tác batch | Batch INSERT/UPDATE thay vì từng row | Giảm round-trip overhead, tăng throughput |
 | Monitor slow query log | Catch queries > threshold (e.g., 1s) | Proactive optimization, not reactive fire-fighting |
 
 **Common anti-patterns to avoid:**

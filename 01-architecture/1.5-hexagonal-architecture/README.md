@@ -226,7 +226,7 @@ npx ts-node examples/index.ts
 
 - 📖 [Hexagonal Architecture - Alistair Cockburn](https://alistair.cockburn.us/hexagonal-architecture/)
 - 📖 [Ports & Adapters - Wikipedia](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
-- 📖 [Hexagonal Architecture explained - Philip Schwahn](https://philipp-schmitt.com/2023/03/11/hexagonal-architecture-explained/)
+- 📖 [Hexagonal Architecture explained - Philipp Schmitt](https://philipp-schmitt.com/2023/03/11/hexagonal-architecture-explained/)
 
 ---
 

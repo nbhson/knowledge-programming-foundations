@@ -68,6 +68,33 @@ errorBudget({ goodEvents: 999_500, totalEvents: 1_000_000, slo: 0.999 });
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Error budget policy — ai quyết, khi nào ngừng feature.** Budget cạn không phải "cảm giác" mà là hợp đồng viết trước:
+
+| Budget còn lại | Hành động | Ai quyết |
+|---|---|---|
+| ≥ 50% | Ship thoải mái, feature mới bình thường | Team tự chủ |
+| 50% → 25% | Đánh giá risk trước release, siết canary | Tech lead |
+| < 25% | Freeze feature rủi ro, ưu tiên reliability work | Dev + Product cùng bảng |
+| 0% | Ngừng hẳn feature mới tới khi budget hồi phục | Product manager — đã ký chính sách từ trước |
+
+- Chìa khóa: chính sách **thống nhất khi chưa có sự cố** — lúc khủng hoảng mới không cãi nhau "release hay không".
+
+**Multi-window multi-burn-rate alert (Google SRE Workbook):** alert khi cả 2 điều kiện cùng thỏa để giảm nhiễu:
+
+| Cửa sổ nhanh (bắt sự cố) | Cửa sổ dài (lọc nhiễu) | Burn rate | Hành động |
+|---|---|---|---|
+| 5 phút | 1 giờ | 14.4× | Page (gọi người dậy) |
+| 30 phút | 6 giờ | 6× | Page/ticket khẩn |
+| 6 giờ | 3 ngày | 1× | Ticket — budget sẽ cạn trong 30 ngày |
+
+- Logic: burn 14.4× nghĩa là nếu tiếp diễn, cả error budget 30 ngày sẽ cháy trong 2 ngày → phải hành động ngay.
+
+**Toil tracking:** đo thời gian chạy việc tay lặp lại (deploy manual, reset job, copy config). Nguyên tắc SRE: toil > 50% thời gian → dừng feature, tự động hóa. Toil không đo thì không giảm — log mỗi lần làm tay vào sheet/tracker, review hằng tháng.
+
+---
+
 ## 🔗 Liên quan
 
 - **8.9 Observability** — SLI lấy từ metrics RED (rate/errors/duration).

@@ -12,9 +12,9 @@ Scrum là framework quản lý công việc phức tạp — **không phải quy
 
 | Trụ cột | Ý nghĩa | Manifestation trong Scrum |
 |---------|---------|---------------------------|
-| **Transparency** (Minh bạch) | Mọi người cùng thấy cùng hiểu | Product Backlog公开, Definition of Done rõ ràng, Sprint Board visible |
-| **Inspection** (Kiểm tra) | Kiểm tra tiến độ thường xuyên | Daily Scrum, Sprint Review — phát hiện偏差 sớm |
-| **Adaptation** (Thích ứng) | Điều chỉnh khi phát hiện偏差 | Retrospective → cải tiến quy trình; Backlog grooming → điều chỉnh priority |
+| **Transparency** (Minh bạch) | Mọi người cùng thấy cùng hiểu | Product Backlog công khai, Definition of Done rõ ràng, Sprint Board visible |
+| **Inspection** (Kiểm tra) | Kiểm tra tiến độ thường xuyên | Daily Scrum, Sprint Review — phát hiện lệch hướng sớm |
+| **Adaptation** (Thích ứng) | Điều chỉnh khi phát hiện lệch hướng | Retrospective → cải tiến quy trình; Backlog grooming → điều chỉnh priority |
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -53,7 +53,7 @@ Scrum là framework quản lý công việc phức tạp — **không phải quy
 | Vai trò | Trách nhiệm | Quyền hạn | Hậu quả nếu yếu |
 |---------|-------------|-----------|-----------------|
 | **Product Owner (PO)** | Quản lý Product Backlog, ưu tiên theo giá trị, đại diện khách hàng/stakeholder | Quyết định **WHAT** — thứ tự item, chấp nhận/reject increment | Backlog mơ hồ, sprint items sai priority, stakeholder không hài lòng |
-| **Scrum Master (SM)** | Đảm bảo Scrum được hiểu & thực thi, gỡ blockers, coach team vềScrum | Bảo vệ team khỏi interference, facilitator ceremonies | Team làm "Scrum-but" (nửa vời), ceremony变成 meeting vô ích |
+| **Scrum Master (SM)** | Đảm bảo Scrum được hiểu & thực thi, gỡ blockers, coach team vềScrum | Bảo vệ team khỏi interference, facilitator ceremonies | Team làm "Scrum-but" (nửa vời), ceremony biến thành meeting vô ích |
 | **Developers** | Tự tổ chức, phát triển Increment, chịu trách nhiệm chất lượng | Quyết định **HOW** — cách technical thực hiện, estimation | Code quality thấp, không tự chủ, phụ thuộc SM/PO |
 
 > 💡 **Không có Project Manager trong Scrum.** Team **tự quản lý** (self-managing). SM không phải "team leader" — SM là **servant-leader**, phục vụ team bằng cách gỡ obstacles.
@@ -129,7 +129,7 @@ DoD là **checklist chung** mọi item phải đạt trước khi được coi l
   - **Continue** — điều gì đang tốt, giữ nguyên?
 - **Output:** 1–3 improvement items đưa vào Sprint tiếp theo
 
-> ⚠️ **Rủi ro Retro:** Nếu không có action item cụ thể, Retro变成 just complaint session. SM phải đảm bảo mỗi Retro có **ít nhất 1改进 được assign owner + due date**.
+> ⚠️ **Rủi ro Retro:** Nếu không có action item cụ thể, Retro biến thành just complaint session. SM phải đảm bảo mỗi Retro có **ít nhất 1 cải tiến được assign owner + due date**.
 
 ### 5. Backlog Refinement (không chính thức trong Scrum Guide 2020 nhưng thực tế bắt buộc)
 - **Mục đích:** Phân rã Epic → Story, estimate, clarify acceptance criteria
@@ -190,7 +190,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng đời 1 Sprint** của team Sc
 | 🚫 **Không phù hợp mọi thứ** | Ops/support liên tục khó nhét vào sprint cố định | Dùng Kanban cho support track; Scrum cho feature track (Scrumban) |
 | 👑 **Phụ thuộc PO** | PO yếu → backlog mơ hồ → Sprint thất bại | Backup PO (alternate contact); PO phải available daily, không chỉ planning |
 | 📉 **Velocity fluctuation** | Velocity dao động → khó predict release date | Dùng range (min/max velocity) thay vì single number; communicate uncertainty |
-| 🏢 **Enterprise resistance** | Management muốn Gantt chart, không thích self-organizing |教育 leadership về benefits; show data từ pilot team |
+| 🏢 **Enterprise resistance** | Management muốn Gantt chart, không thích self-organizing | Giáo dục leadership về benefits; show data từ pilot team |
 
 ---
 
@@ -203,7 +203,7 @@ Ví dụ `examples/index.ts` mô phỏng **vòng đời 1 Sprint** của team Sc
 | Cần phản hồi khách hàng thường xuyên | ✅ Phù hợp | Sprint Review là kênh chính thức cho feedback; stakeholder thấy working software mỗi 2 tuần |
 | Đội ngũ remote/hybrid | ⚠️ Cần điều chỉnh | Daily standup online, async communication tools (Slack, Notion); SM phải proactive hơn |
 | Team nhỏ 1-2 người, dự án cực ngắn | ❌ Cân nhắc Kanban | Scrum ceremony overhead > value cho team siêu nhỏ; Kanban lightweight hơn |
-| Hỗ trợ vận hành liên tục (incident, hotfix) | ❌ Cân nhắc Kanban | Incident flow không theo sprint rhythm; Kanban pull-based更适合 |
+| Hỗ trợ vận hành liên tục (incident, hotfix) | ❌ Cân nhắc Kanban | Incident flow không theo sprint rhythm; Kanban pull-based phù hợp hơn |
 | Tổ chức 50+ người, nhiều team | ❌ Cân xét SAFe / LeSS | 1 Scrum team = 1 product; nhiều team cần scale framework mới phối hợp được |
 | Dự án compliance-ngặt (y tế, tài chính) | ⚠️ Cần kết hợp documentation rigor | Scrum có thể kết hợp với waterfall documentation requirements; DoD include audit trail |
 

@@ -55,7 +55,7 @@ Data Flow trong ứng dụng:
 
 **Implementation example:**
 ```typescript
-// 1. Interface —契约，业务层只依赖这个
+// 1. Interface — hợp đồng, tầng nghiệp vụ chỉ phụ thuộc vào cái này
 interface UserRepository {
   findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;

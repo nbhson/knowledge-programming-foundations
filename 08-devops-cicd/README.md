@@ -57,7 +57,7 @@ DevOps không phải là một **công cụ** hay **vị trí công việc** —
 - **Development** (phát triển): viết code, test, build
 - **Operations** (vận hành): deploy, monitor, scale, maintain
 
-**Tại sao cần cầu nối giữa Dev và Ops?** Потому что в традиционной модели "hand-off" (Dev写完交给Ops部署) есть фундаментальный конфликт интересов:
+**Tại sao cần cầu nối giữa Dev và Ops?** Vì trong mô hình truyền thống "hand-off" (Dev viết xong đưa cho Ops deploy) có một xung đột lợi ích mang tính nền tảng:
 
 | Dev wants | Ops wants |
 |-----------|-----------|
@@ -358,7 +358,7 @@ Container là một **đơn vị đóng gói** chứa ứng dụng + dependencie
 | **Size** | GB (full OS image) | MB (app + runtime only) |
 | **Startup** | Phút (boot OS) | Giây (start process) |
 | **Isolation** | Full OS (hardware virtualization) | Process-level (namespaces + cgroups) |
-| **Resource** | Nặng (đổ đầy RAM cho OS) | Nhẹ (chỉ dùng内存 ứng dụng) |
+| **Resource** | Nặng (đổ đầy RAM cho OS) | Nhẹ (chỉ dùng RAM ứng dụng) |
 | **Density** | Ít per host (5-10 VMs) | Nhiều per host (50-100 containers) |
 | **Boot time** | 30-120 giây | 1-5 giây |
 | **Snapshot** | Toàn bộ VM state | Container image layer |
@@ -389,8 +389,7 @@ CMD ["node", "dist/main.js"]
 ### Docker Compose
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml — Compose v2 (không cần trường `version`)
 services:
   app:
     build: .

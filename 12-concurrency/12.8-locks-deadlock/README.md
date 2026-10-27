@@ -71,6 +71,60 @@ async function transfer(a: Mutex, b: Mutex, first: string, second: string): Prom
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**4 điều kiện Coffman — deadlock xảy ra khi đủ cả 4 cùng lúc:**
+
+| Điều kiện | Ý nghĩa | Phá bằng cách nào |
+|---|---|---|
+| **Mutual exclusion** | Tài nguyên không share được (lock) | Dùng lock-free data structures (không khả thi cho tất cả) |
+| **Hold and wait** | Thread giữ lock rồi chờ lock khác | Lock-all-then-acquire (acquire tất cả cùng lúc, hoặc không giữ khi chờ) |
+| **No preemption** | OS không tước lock | tryLock(với timeout) / tránh blocking vô hạn |
+| **Circular wait** | A→B→C→A chain chờ vòng | Lock ordering (luôn acquire theo thứ tự cố định, ví dụ resource ID tăng dần) |
+
+→ Phá lock ordering là rẻ nhất: chỉ cần 1 convention nhất quán.
+
+**Lock ordering + timeout + try-lock:**
+
+```typescript
+// Lock ordering: sort IDs trước khi acquire — không bao giờ circular wait
+async function safeTransfer(aId: string, bId: string, ...): Promise<void> {
+  const [first, second] = [aId, bId].sort(); // luôn nhất quán
+  const firstLock = locks.get(first)!;
+  const secondLock = locks.get(second)!;
+  try {
+    await firstLock.acquire();
+    await secondLock.acquire();
+  } finally {
+    firstLock.release();
+    secondLock.release();
+  }
+}
+
+// tryLock với timeout: không chờ vĩnh viễn
+async function tryAcquire(lock: Mutex, ms: number): Promise<boolean> {
+  const deadline = Date.now() + ms;
+  while (Date.now() < deadline) {
+    if (lock.tryAcquire()) return true;
+    await sleep(10);
+  }
+  return false; // timeout → fallback / throw
+}
+```
+
+**Read-write lock:** nhiều reader cùng đọc, writer độc quyền. Ứng dụng: config cache, session store — đọc 100× nhiều hơn ghi. Implementation: cho phép N readers vào khi không có writer; writer vào khi queue readers rỗng.
+
+**Optimistic vs Pessimistic locking:**
+
+| | Optimistic (CAS) | Pessimistic (lock dữ liệu) |
+|---|---|---|
+| Cơ chế | Đọc → ghi chỉ khi version unchanged | Lock trước khi đọc |
+| Xử lý conflict | Retry từ đầu | Đợi unlock |
+| Phù hợp | Ít conflict, nhiều read, distributed | Thường xuyên conflict, transaction dài |
+| Ví dụ | Redis WATCH/MULTI, PostgreSQL `SELECT ... FOR UPDATE` vs `WHERE version = ?` | DB row lock, `SELECT FOR UPDATE` |
+
+---
+
 ## 🔗 Liên quan
 
 - **12.5 Race Conditions** — race là gốc, lock là một cách chữa.

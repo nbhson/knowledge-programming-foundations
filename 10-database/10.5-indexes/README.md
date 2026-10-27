@@ -128,7 +128,7 @@ CREATE INDEX idx_users_name_lower ON users(lower(name));
 -- Query: SELECT total, status FROM orders WHERE user_id = ?
 CREATE INDEX idx_orders_covering ON orders(user_id) INCLUDE (total, status);
 -- Database có thể trả kết quả từ index alone, không cần đọc table heap
--- Lợi ích:减少 I/O, đặc biệt hữu ích cho wide tables
+-- Lợi ích: giảm I/O, đặc biệt hữu ích cho wide tables
 
 -- Multi-column with different sort directions
 CREATE INDEX idx_posts_published ON posts(status, created_at DESC);
@@ -160,7 +160,7 @@ CREATE INDEX idx(a, b, c) ON table(a, b, c);
 Query                         Uses Index?      Giải thích
 ─────────────────────────────────────────────────────────────
 WHERE a = ?                   ✅ Yes           First column match
-WHERE a = ? AND b = ?         ✅ Yes           Leftmost prefix完整
+WHERE a = ? AND b = ?         ✅ Yes           Leftmost prefix hoàn chỉnh
 WHERE a = ? AND b = ? AND c = ? ✅ Yes        Full match
 WHERE b = ?                   ❌ No            Skip first column
 WHERE b = ? AND c = ?         ❌ No            Still skip first
@@ -170,7 +170,7 @@ ORDER BY a, b, c              ✅ Yes           Matches index order
 ORDER BY c, b, a              ⚠️ May use      Depends on query plan
 ```
 
-> 📌 **Rule thực tế:** luôn đặt cột có **selectivity cao nhất** (nhiều giá trị уникальных nhất) đầu tiên trong composite index. `WHERE user_id = ? AND status = ?` nên là `(user_id, status)` chứ không phải `(status, user_id)` — user_id có selectivity cao hơn (many users) so với status (few statuses).
+> 📌 **Rule thực tế:** luôn đặt cột có **selectivity cao nhất** (nhiều giá trị riêng biệt nhất) đầu tiên trong composite index. `WHERE user_id = ? AND status = ?` nên là `(user_id, status)` chứ không phải `(status, user_id)` — user_id có selectivity cao hơn (many users) so với status (few statuses).
 
 ---
 
@@ -246,7 +246,7 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 │ hash_join        │ Join bằng hash table — tốt cho large    │
 │ nested_loop      │ Join vòng lặp — tốt cho small × small   │
 │ sort             │ Extra sort step — có thể tránh bằng index│
-│ costs            │越低越好 — estimated cost units           │
+│ costs            │ Càng thấp càng tốt — estimated cost units           │
 │ rows             │ Estimation row count — compare với       │
 │ actual_rows      │ actual để check statistics accuracy     │
 │ loops            │ Số lần lặp — 1 là ideal                 │
@@ -284,7 +284,7 @@ EXPLAIN ANALYZE SELECT * FROM orders WHERE created_at > '2024-01-01';
 -- Case 4: Statistic stale — estimate far from actual
 EXPLAIN ANALYZE SELECT * FROM users WHERE role = 'admin';
 -- Output: Est rows=1, Actual rows=500
--- → Statistics过时 — cần: ANALYZE users;
+-- → Statistics đã cũ — cần: ANALYZE users;
 ```
 
 ### Analyze command — refresh statistics

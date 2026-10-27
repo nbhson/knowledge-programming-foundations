@@ -152,7 +152,7 @@ abstract class Pipeline {
 | 🧠 **Khó hiểu nếu nhiều hook** | Nhiều bước abstract → phức tạp | Subclass phải biết bao nhiêu methods cần override. *Gi giảm thiểu:* document clearly, use IDE contracts. |
 | 🔒 **Vi phạm composition over inheritance** | Nếu lạm dụng | Deep inheritance hierarchies fragile. *Gi giảm thiểu:* prefer composition when variation points > 2. |
 | 👻 **Fragile base class** | Sửa base class ảnh hưởng tất cả subclass | Base class change = potential break for all subclasses. *Gi giảm thiểu:* minimal interface, document contract. |
-| 📉 **Hard to test in isolation** | Template method牵涉 cả base + subclass | Unit test phải create concrete subclass. *Gi giảm thiểu:* extract logic thành independent functions. |
+| 📉 **Hard to test in isolation** | Template method liên quan cả base + subclass | Unit test phải create concrete subclass. *Giảm thiểu:* extract logic thành independent functions. |
 
 ---
 

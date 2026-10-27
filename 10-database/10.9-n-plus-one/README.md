@@ -64,6 +64,35 @@ async function ordersOfMany(ids: number[]): Promise<Map<number, Order[]>> {
 
 ---
 
+## 🔍 Phát hiện N+1 & So sánh chiến lược fetch
+
+**Phát hiện bằng logging / APM:**
+
+| Cách | Cách làm |
+|---|---|
+| Query counter | Đếm số query/request, log + alert khi vượt ngưỡng (vd: > 10 query/request) |
+| Prisma/ORM middleware | Bọc `$use()` hoặc interceptor — in mỗi SQL + duration, nhìn thấy N+1 ngay |
+| APM (Datadog/Sentry/Grafana) | Trace query count + latency per endpoint — phát hiện endpoint 101 queries tự động |
+| Test assertion | Unit test assert query count (`assertQueryCount(2)`) — chặn N+1 trước khi lên production |
+
+**DataLoader pattern (batch + cache per-request):**
+
+- Gom (batch): resolver nào cũng đăng ký key vào queue → sau 1 tick event loop, gom tất cả key thành 1 query `IN (...)`.
+- Cache (per-request): cùng key hỏi 2 lần trong 1 request → lần 2 trả từ cache, không query.
+- **Bắt buộc tạo mới mỗi request**: `context` của GraphQL là chỗ đúng — cache global sẽ rò data giữa các user.
+- Trong GraphQL: mỗi field resolver trả `dataloader.load(user.id)` thay vì query trực tiếp — 100 resolver song song vẫn gom thành 1-2 query.
+
+**So sánh 4 chiến lược fetch:**
+
+| Chiến lược | Số query | Khi nào dùng |
+|---|---|---|
+| Lazy (mặc định ORM) | N+1 💥 | Chỉ hợp khi lấy 1 parent |
+| Eager (`include` tất cả) | 1–k queries | Cần mọi quan hệ — nhưng over-fetch nếu chỉ dùng 1 field |
+| Select-in (batch thủ công) | 2 | Liste lớn, kiểm soát rõ từng quan hệ cần |
+| DataLoader | 2 + cache hit | GraphQL / nhiều resolver hỏi trùng nhau |
+
+---
+
 ## 🔗 Liên quan
 
 - **11.3 GraphQL** — resolver + DataLoader là combo chuẩn chống N+1.

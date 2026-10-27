@@ -254,7 +254,7 @@ function Card({
 | Different button styles for same action | Single Button component | User confusion: "2 buttons khác nhau làm gì?" |
 | Mixed naming (buttonBtn vs Button) | Consistent naming | Cognitive load tăng, lookup time tăng |
 | Duplicate tokens across files | Single token file | Multiple sources = drift over time |
-| Component có prop API khác nhau | Unified BaseProps | Developer phải memorize不同 API |
+| Component có prop API khác nhau | Unified BaseProps | Developer phải ghi nhớ các API khác nhau |
 
 ---
 
@@ -263,7 +263,7 @@ function Card({
 Sử dụng checklist này để audit design system định kỳ:
 
 ### Visual Consistency
-- [ ] Tất cả màu sắc来自 tokens, không hardcode
+- [ ] Tất cả màu sắc từ tokens, không hardcode
 - [ ] Spacing các component đều dùng spacing scale
 - [ ] Border radius nhất quán (sm/md/lg, không arbitrary values)
 - [ ] Shadow tokens được reuse, không redefine

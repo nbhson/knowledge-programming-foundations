@@ -32,20 +32,20 @@ Xem đầy đủ: [`examples/index.ts`](examples/index.ts)
 
 ```typescript
 // ─────────────────────────────────────────────
-// ❌ BAD: 没有防抖和节流
+// ❌ BAD: Không có debounce và throttle
 // ─────────────────────────────────────────────
 window.addEventListener('scroll', () => {
-  // 每滚动一像素都执行 → 性能灾难
+  // Mỗi pixel cuộn đều thực thi → thảm họa hiệu năng
   updateScrollIndicator();
 });
 
 document.querySelector('.search-box').addEventListener('input', (e) => {
-  // 每个字符都请求 → API预算耗尽
+  // Mỗi ký tự đều gửi request → cạn kiệt ngân sách API
   fetchSearchResults((e.target as HTMLInputElement).value);
 });
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: Debounce 防抖
+// ✅ GOOD: Debounce (chống dội)
 // ─────────────────────────────────────────────
 function debounce<T extends (...args: any[]) => any>(
   fn: T,
@@ -60,14 +60,14 @@ function debounce<T extends (...args: any[]) => any>(
 
 const search = debounce((query: string) => {
   fetch(`/api/search?q=${query}`).then(console.log);
-}, 300); // 停止输入300ms后才执行
+}, 300); // Dừng nhập 300ms rồi mới thực thi
 
 document.querySelector('.search-box').addEventListener('input', (e) => {
   search((e.target as HTMLInputElement).value);
 });
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: Throttle 节流
+// ✅ GOOD: Throttle (tiết lưu)
 // ─────────────────────────────────────────────
 function throttle<T extends (...args: any[]) => any>(
   fn: T,
@@ -85,16 +85,16 @@ function throttle<T extends (...args: any[]) => any>(
 
 window.addEventListener('scroll', throttle(() => {
   updateScrollIndicator();
-}, 100)); // 每100ms最多执行一次
+}, 100)); // Tối đa thực thi một lần mỗi 100ms
 
 // ─────────────────────────────────────────────
-// ✅ GOOD: 两者对比
+// ✅ GOOD: So sánh hai kỹ thuật
 // ─────────────────────────────────────────────
-// Debounce - 每次动作结束后执行
-// 适用场景: 搜索框、窗口resize、表单验证
+// Debounce — thực thi sau khi mỗi lần thao tác kết thúc
+// Trường hợp áp dụng: ô tìm kiếm, resize cửa sổ, validate form
 
-// Throttle - 动作期间定期执行
-// 适用场景: 滚动监听、鼠标移动、游戏循环
+// Throttle — thực thi định kỳ trong lúc thao tác đang diễn ra
+// Trường hợp áp dụng: lắng nghe cuộn trang, di chuyển chuột, vòng lặp game
 ```
 
 ---

@@ -79,6 +79,33 @@ function fuzz(seeds: string[], rounds: number): FuzzResult {
 
 ---
 
+## 🚀 Đi Sâu Thêm
+
+**Fuzzing an toàn cho API — Schemathesis & Dredd:**
+
+| Công cụ | Cách hoạt động | Input |
+|---|---|---|
+| **Schemathesis** | Đọc OpenAPI/GraphQL schema → sinh hàng nghìn request hợp lệ + biến dị theo type → gửi vào server thật | OpenAPI 3.x, GraphQL |
+| **Dredd** | Chạy test suite từ API spec (HTTP requests theo spec) — phát hiện spec không khớp implementation | OpenAPI, API Blueprint |
+
+- Schemathesis: chạy `schemathesis run https://api.example.com/openapi.yaml` → tự sinh test case, phát hiện 500, timeout, schema violation mà không cần viết test case tay. Khuyến khích: đặt base URL staging trong CI nightly.
+- Dredd: chạy "CI contract test" từ spec — nhưng vì phát sinh từ spec chứ không phải consumer, nên nó gần provider-driven contract testing hơn.
+
+**Coverage-guided vs dumb fuzzing:**
+
+| Loại | Cách sinh input | Ưu điểm | Ví dụ |
+|---|---|---|---|
+| **Dumb** | Random thuần túy | Đơn giản | Fuzzilli (JS), basic fuzz cho parser đơn giản |
+| **Coverage-guided** | Dựa trên edge coverage (khối code đã đi qua) | Tìm crash sâu hơn, nhanh hơn 10–100× | AFL++, libFuzzer, Honggfuzz |
+
+- Dumb fuzzer vẫn có ích cho: regex, parser đơn giản, input size nhỏ.
+- Coverage-guided cần corpus seed tốt (tập input hợp lệ thật) — seed quyết định phần lớn hiệu quả.
+
+**OSS-Fuzz — continuous fuzzing cho open-source (Google):**
+Hỗ trợ: C/C++/Go/Rust/Python/Java/Kotlin/Swift/... — miễn phí cho dự án open-source có significance. Submit qua https://issues.oss-fuzz.com, CI chạy 24/7, crash được tự động report vào OSS-Fuzz bug tracker. Nhiều CVE (Heartbleed, stdlibc++, ...) được phát hiện qua OSS-Fuzz.
+
+---
+
 ## 🔗 Liên quan
 
 - **7.1 Unit Testing** — mỗi crash fuzzer tìm ra nên thành 1 unit regression test.

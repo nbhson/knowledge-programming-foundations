@@ -1,27 +1,47 @@
 # 🛡️ 9.1 OWASP Top 10
 
-> **OWASP Top 10** là danh sách 10 lỗ hổng bảo mật web nghiêm trọng nhất, được OWASP (Open Web Application Security Project) công bố định kỳ (~4 năm/lần), cập nhật lần gần nhất: 2021. Bản 2024 đang trong draft.
+> **OWASP Top 10** là danh sách 10 lỗ hổng bảo mật web nghiêm trọng nhất, được OWASP (Open Web Application Security Project) công bố định kỳ (~4 năm/lần). **Bản 2025 đã phát hành chính thức** (11/2025, công bố tại OWASP Global AppSec).
 >
 > OWASP = tổ chức phi lợi nhuận giáo dục về app security. Top 10 không phải technical standard — nó là **risk awareness tool** giúp developer và stakeholder hiểu mối đe dọa phổ biến nhất.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              OWASP TOP 10 — 2021                         │
+│              OWASP TOP 10 — 2025                         │
 ├──────┬───────────────────────────┬───────────────────────┤
 │  #   │  Lỗ hổng                  │  Tác động chính       │
 ├──────┼───────────────────────────┼───────────────────────┤
 │ A01  │ Broken Access Control     │ Truy cập trái phép    │
-│ A02  │ Cryptographic Failures    │ Rò rỉ dữ liệu nhạy cảm│
-│ A03  │ Injection                 │ Thực thi mã độc       │
-│ A04  │ Insecure Design           │ Kiến trúc yếu         │
-│ A05  │ Security Misconfiguration │ Cấu hình sai          │
-│ A06  │ Vulnerable Components     │ Thư viện cũ/lỗ hổng   │
+│      │ (+ SSRF gộp từ A10/2021)  │ + SSRF                │
+│ A02  │ Security Misconfiguration │ Cấu hình sai (#5→#2)  │
+│ A03  │ Software Supply Chain     │ Thư viện cũ/lỗ hổng   │
+│      │ Failures (MỚI)            │ + CI/CD, build system │
+│ A04  │ Cryptographic Failures    │ Rò rỉ dữ liệu (#2→#4) │
+│ A05  │ Injection                 │ Thực thi mã độc       │
+│ A06  │ Insecure Design           │ Kiến trúc yếu         │
 │ A07  │ Authentication Failures   │ Đánh cắp tài khoản    │
 │ A08  │ Software/Data Integrity   │ Xâm phạm toàn vẹn     │
-│ A09  │ Logging & Monitoring      │ Không phát hiện tấn công│
-│ A10  │ SSRF                      │ Server gửi request độc│
+│ A09  │ Security Logging &        │ Không phát hiện       │
+│      │ Alerting Failures         │ tấn công              │
+│ A10  │ Mishandling of            │ Fail open khi lỗi     │
+│      │ Exceptional Conditions    │ (MỚI hoàn toàn)       │
 └──────┴───────────────────────────┴───────────────────────┘
 ```
+
+### 🔄 Thay đổi vs 2021
+
+| Thay đổi | Chi tiết |
+|----------|----------|
+| **SSRF gộp vào A01** | SSRF (A10/2021) không còn là hạng mục riêng — được xem là một dạng Broken Access Control |
+| **A03 mới: Software Supply Chain Failures** | Mở rộng từ "Vulnerable and Outdated Components" (A06/2021) sang toàn bộ supply chain: dependencies, CI/CD, build systems, distribution |
+| **A10 mới: Mishandling of Exceptional Conditions** | Hoàn toàn mới — xử lý lỗi/điều kiện bất thường an toàn, không bao giờ "fail open" |
+| **A02 Security Misconfiguration** | Tăng #5 → #2 |
+| **A04 Cryptographic Failures** | Giảm #2 → #4 |
+| **A05 Injection** | Giảm #3 → #5 |
+| **A06 Insecure Design** | Giảm #4 → #6 |
+| **A07 đổi tên** | "Identification and Authentication Failures" → "Authentication Failures" |
+| **A09 đổi tên** | "Monitoring" → "Alerting" |
+
+> Dựa trên dữ liệu 2.8+ triệu ứng dụng, 589 CWE được phân tích. Chi tiết: [top10.owasp.org/2025](https://top10.owasp.org/2025/en)
 
 ---
 
@@ -37,6 +57,7 @@
 | **Privilege Escalation** | `PUT /api/users/role` → tự elevation thành admin | Full system compromise |
 | **Missing Function-Level Access Control** | truy cập `/api/admin/delete-user` mà không có admin role | Admin functions accessible |
 | **CORS Misconfiguration** | `Access-Control-Allow-Origin: *` với credentials | Cross-site data theft |
+| **SSRF** (gộp từ A10/2021) | `/api/fetch?url=http://169.254.169.254/…` — server đọc cloud metadata | IAM credentials leak, internal service access |
 
 ### Attack example: IDOR
 
@@ -99,7 +120,7 @@ function requireOwnerOrAdmin(resourceGetter) {
 |--------|---------------|--------|
 | **Plaintext password storage** | DB leak → tất cả password đọc được | Credential stuffing attack |
 | **Weak hash algorithm** | MD5/SHA1 hash → rainbow table reverse | Password crack trong giây |
-| **No TLS** | HTTP traffic →中間 person đọc | Session hijacking, data interception |
+| **No TLS** | HTTP traffic → người đứng giữa (man-in-the-middle) đọc | Session hijacking, data interception |
 | **Weak encryption key** | Key hardcode trong source → leak | Data at rest readable |
 
 ### Attack example: Plaintext password
@@ -274,7 +295,7 @@ const validId = z.string().uuid().parse(inputId);  // reject non-UUID
    → Mọi trang web có thể gọi API của bạn
 
 ❌ HTTP thay vì HTTPS
-   → Traffic đọc được bởi中间 person
+   → Traffic đọc được bởi người đứng giữa (man-in-the-middle)
 
 ❌ Directory listing enabled
    → Attacker thấy toàn bộ file trong folder
@@ -329,9 +350,9 @@ app.use(cors({
 
 ---
 
-## A06 — Vulnerable Components (Thành phần lỗi thời)
+## A06 — Software Supply Chain Failures (Thất bại chuỗi cung ứng phần mềm) — *mới trong 2025, mở rộng từ "Vulnerable and Outdated Components"*
 
-**Mô tả:** Sử dụng thư viện第三方 có lỗ hổng đã biết (CVE). Đây là vector tấn công phổ biến — attacker scan dependency list, tìm CVE, exploit.
+**Mô tả:** Lỗi xuyên suốt chuỗi cung ứng phần mềm: dependency có lỗ hổng đã biết (CVE), CI/CD bị xâm phạm, build system không an toàn, kênh distribution bị giả mạo. Attacker scan dependency list, tìm CVE, exploit — hoặc tấn công thẳng vào pipeline.
 
 ### Attack example: Log4Shell (2021)
 
@@ -494,7 +515,7 @@ app.post('/api/preference', (req, res) => {
 
 ---
 
-## A09 — Security Logging & Monitoring Failures
+## A09 — Security Logging & Alerting Failures — *đổi tên từ "Monitoring" trong 2025*
 
 **Mô tả:** Log không đủ, không giám sát, không cảnh báo — attacker hoạt động trong system mà không bị phát hiện.
 
@@ -507,7 +528,7 @@ app.post('/api/preference', (req, res) => {
 ✅ Admin actions (create/delete/modify user, change settings)
 ✅ Password reset requests (success/fail)
 ✅ API key usage anomalies (unusual location, high frequency)
-✅ Configuration changes (security group修改, IAM policy changes)
+✅ Configuration changes (security group thay đổi, IAM policy changes)
 
 ❌ KHÔNG bao giờ log:
    - Password (plaintext hoặc hash)
@@ -526,7 +547,9 @@ app.post('/api/preference', (req, res) => {
 
 ---
 
-## A10 — Server-Side Request Forgery (SSRF)
+## SSRF — Server-Side Request Forgery — *nay thuộc A01 Broken Access Control trong 2025*
+
+> ℹ️ Trong OWASP Top 10 2025, **SSRF không còn là hạng mục riêng** (trước đây là A10/2021) — nó được xem là một dạng Broken Access Control.
 
 **Mô tả:** Server gửi HTTP request đến URL do attacker kiểm soát — attacker lợi dụng server như proxy để nội scan, access metadata service, hoặc reach internal services.
 
@@ -565,6 +588,44 @@ app.get('/api/fetch-image', async (req, res) => {
 
 ---
 
+## A10 — Mishandling of Exceptional Conditions (Xử lý sai điều kiện bất thường) — *hoàn toàn mới trong 2025*
+
+**Mô tả:** Hệ thống xử lý sai các điều kiện bất thường (error, timeout, resource cạn, trạng thái lạ) — điển hình là **"fail open"**: khi có lỗi thì mở quyền truy cập thay vì khóa lại. Hệ thống rơi vào trạng thái không an toàn khi gặp tình huống bất ngờ.
+
+### Attack example: Fail Open khi service lỗi
+
+```typescript
+// ❌ BAD — fail open: khi auth service lỗi, cho phép mọi request
+app.use(async (req, res, next) => {
+  try {
+    await verifyToken(req.headers.authorization);
+    next();
+  } catch (err) {
+    next();  // "Service down → cứ cho qua" = DISASTER
+  }
+});
+
+// ✅ GOOD — fail closed: lỗi → từ chối (fail secure)
+app.use(async (req, res, next) => {
+  try {
+    await verifyToken(req.headers.authorization);
+    next();
+  } catch (err) {
+    // Lỗi hệ thống → từ chối request (503), KHÔNG mở khóa
+    return res.status(503).json({ error: 'Service unavailable' });
+  }
+});
+```
+
+### Defense / Mitigation
+- ✅ Fail closed (default deny) — lỗi phải dẫn đến từ chối, không phải cho phép
+- ✅ Retry với exponential backoff + circuit breaker (chặn retry storm)
+- ✅ Timeout mọi call ra ngoài (không treo vô hạn)
+- ✅ Idempotency cho retry (tránh xử lý trùng lặp)
+- ✅ Test các đường lỗi (fault injection, chaos engineering)
+
+---
+
 ## 📊 Tổng hợp phòng chống
 
 | Lớp | Biện pháp | Công cụ |
@@ -573,14 +634,14 @@ app.get('/api/fetch-image', async (req, res) => {
 | 🛡️ **Code** | Input validation, parameterized queries, output encoding | Zod, ORM, DOMPurify |
 | 🔒 **Config** | Security headers, CORS strict, disable debug | Helmet, CORS middleware |
 | 📦 **Dependencies** | `npm audit`, dependabot, pin versions | Snyk, Dependabot, Renovate |
-| 📝 **Monitoring** | Audit log, SIEM, alert on anomalies | ELK, Datadog, CloudWatch |
+| 📝 **Alerting** | Audit log, SIEM, alert on anomalies | ELK, Datadog, CloudWatch |
 | 🧪 **Testing** | SAST/DAST, pen test, OWASP ZAP scan | SonarQube, Burp Suite, ZAP |
 
 ---
 
 ## 📚 Tài liệu tham khảo
 
-- 📖 [OWASP Top 10 2021](https://owasp.org/Top10/)
+- 📖 [OWASP Top 10 2025](https://top10.owasp.org/2025/en)
 - 📖 [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
 - 📖 [CWE Top 25](https://cwe.mitre.org/top25/)
 - 📖 [OWASP ASVS (Application Security Verification Standard)](https://owasp.org/www-project-application-security-verification-standard/)

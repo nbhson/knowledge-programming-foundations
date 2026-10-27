@@ -12,7 +12,7 @@
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │   Call Stack (thực thi)   ───▶   Web APIs       ───▶  Callback Queue    │
-│                                     (setTimeout等)           (Macrotask)    │
+│                                     (setTimeout v.v.)           (Macrotask)    │
 │        │                                       │                    │
 │        │◀──────────────────────────────────────┤                    │
 │        │            Event Loop kiểm tra        │                    │
@@ -111,7 +111,7 @@ queueMicrotask(() => console.log('Microtask'));
 **⚡ Lưu ý quan trọng — starvation:** Vì microtasks được flush **toàn bộ** trước khi macrotask tiếp theo chạy, một vòng lặp microtask liên tục sẽ "bóp nghẹt" rendering và timer:
 
 ```typescript
-//危险代码 — block cả browser
+// Code nguy hiểm — block cả browser
 queueMicrotask(() => queueMicrotask(arguments.callee));
 // Render đóng băng, timer không chạy, UI đơ.
 ```
@@ -173,7 +173,7 @@ setImmediate(() => console.log('immediate'));
 // Trong I/O callback: setImmediate thường trước setTimeout (poll check).
 ```
 
-**Process.nextTick** — Node.js独有 mechanism, chạy **ngay sau mỗi phase, trước khi event loop chuyển phase**:
+**Process.nextTick** — Node.js có cơ chế riêng, chạy **ngay sau mỗi phase, trước khi event loop chuyển phase**:
 
 ```typescript
 setTimeout(() => console.log('A'), 0);

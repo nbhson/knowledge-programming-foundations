@@ -121,7 +121,7 @@ Production   ██████████████████████�
 | 🔄 Refactor tự tin | Test là "lưới an toàn" khi thay đổi code | Bạn có thể tái cấu trúc codebase hoàn toàn mà vẫn biết behavior không đổi — test suite là contract sống |
 | 📖 Documentation sống | Test mô tả behavior của hệ thống | Đọc test file ≈ đọc spec. `test_calculateDiscount_withNegativePercent_raisesError()` tự giải thích edge case mà comment không làm được |
 | 🚀 Deploy tự tin | Automated tests trong CI/CD pipeline | 1000+ test pass trong 2 phút = tự động approve deploy. Human approval = bottleneck + fatigue errors |
-| 💰 Giảm chi phí bảo trì | Ít regression bugs hơn |每 lần release mới không phải test manual again — regression suite đảm bảo cái cũ vẫn hoạt động |
+| 💰 Giảm chi phí bảo trì | Ít regression bugs hơn | mỗi lần release mới không phải test manual again — regression suite đảm bảo cái cũ vẫn hoạt động |
 | 👥 Team scaling | Dev mới hiểu system nhanh hơn | Test suite = onboarding document tự động. Clone repo, chạy test, xem cái nào fail → hiểu ngay phần mình cần sửa |
 | 📊 Compliance & audit | Chứng minh quality cho khách hàng | Fintech, healthcare cần test coverage report để meet regulatory requirements |
 
@@ -153,10 +153,10 @@ Production   ██████████████████████�
 | Loại | Mô tả | Ví dụ | Depth |
 |---|---|---|---|
 | **Functional Testing** | Kiểm tra chức năng có đúng yêu cầu không | "Login với đúng credentials → redirect to dashboard" | Core — phải có |
-| **Non-functional Testing** | Kiểm tra hiệu năng, bảo mật, khả năng mở rộng | Load test: "API chịu được 1000 req/s" |重要 — phụ thuộc project |
+| **Non-functional Testing** | Kiểm tra hiệu năng, bảo mật, khả năng mở rộng | Load test: "API chịu được 1000 req/s" | Quan trọng — phụ thuộc project |
 | **Regression Testing** | Đảm bảo thay đổi mới không phá vỡ tính năng cũ | Chạy toàn bộ test suite trước mỗi release | Bắt buộc cho mọi project |
 | **Smoke Testing** | Kiểm tra nhanh các chức năng cốt lõi | "App có khởi động được không?" — chạy trước khi deploy | Bắt buộc cho CI/CD |
-| **Sanity Testing** | Kiểm tra có hợp lý không sau khi sửa bug | "Bug fix này có thực sự解决 vấn đề không?" | Sau mỗi bug fix |
+| **Sanity Testing** | Kiểm tra có hợp lý không sau khi sửa bug | "Bug fix này có thực sự giải quyết vấn đề không?" | Sau mỗi bug fix |
 | **Boundary Testing** | Test tại ranh giới giá trị | Input max integer, empty string, null, negative numbers | Quan trọng cho input validation |
 | **Exploratory Testing** | Tester tự do khám phá, không theo script | QA tester dùng app như user thật | Bổ sung cho automated tests |
 | **Load Testing** | Test với tải bình thường | 100 concurrent users, check response time | Pre-launch mandatory |

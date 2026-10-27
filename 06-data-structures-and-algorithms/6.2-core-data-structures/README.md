@@ -45,13 +45,13 @@ Data Structures & Algorithms
 
 ## Tại Sao DSA Lại Quan Trọng?
 
-Nhiều developer cảm thấy DSA "xa rời thực tế" vì日常 code có rất nhiều high-level API. Nhưng DSA thực sự quan trọng vì ba lý do:
+Nhiều developer cảm thấy DSA "xa rời thực tế" vì code hằng ngày có rất nhiều high-level API. Nhưng DSA thực sự quan trọng vì ba lý do:
 
 1. **Performance decision-making:** Bạn không thể biết nên dùng `Map` hay `Array` cho task X nếu không hiểu trade-off về time/space complexity. Ví dụ: tìm kiếm trong 1 triệu phần tử — linear scan là O(n) = 1,000,000 thao tác, trong khi hash map là O(1) ~vài nano giây. Khác biệt này là **hàng triệu lần**.
 
 2. **Interview & engineering depth:** DSA là ngôn ngữ chung để đánh giá tư duy thuật toán. Nhưng quan trọng hơn — DSA dạy bạn **cách chia nhỏ vấn đề**, **nhận diện pattern**, và **đánh giá trade-off**. Những skill này không biến mất sau khi khỏi công ty.
 
-3. **Framework底层 đều là DSA:** React virtual DOM diff là tree traversal. Database indexing là B-tree. Redis caching là hash map + LRU eviction. GraphQL query planning là graph traversal. Nếu hiểu DSA, bạn hiểu được **tại sao** công cụ bạn dùng hoạt động như vậy.
+3. **Framework bên dưới đều là DSA:** React virtual DOM diff là tree traversal. Database indexing là B-tree. Redis caching là hash map + LRU eviction. GraphQL query planning là graph traversal. Nếu hiểu DSA, bạn hiểu được **tại sao** công cụ bạn dùng hoạt động như vậy.
 
 > 💡 **Misconception phổ biến:** "Tôi làm frontend/web app CRUD, không cần DSA." — Sai. Mọi app đều xử lý data ở đâu đó. Vấn đề chỉ là scale — với 100 users, O(n²) vẫn chạy ok; với 100K users, cùng code đó sẽ crash. DSA giúp bạn **tư duy trước** về giới hạn.
 
@@ -611,7 +611,7 @@ Trong JavaScript, `Map` native đã tối ưu hóa collision handling + resizing
 **Complexity:**
 | Operation | Average | Worst (many collisions) | Giải thích sâu |
 |-----------|---------|------------------------|----------------|
-| Access | O(1) | O(n) | Worst-case: tất cả key hash ra cùng bucket →變成 linked list search |
+| Access | O(1) | O(n) | Worst-case: tất cả key hash ra cùng bucket → biến thành linked list search |
 | Search | O(1) | O(n) | Tương tự |
 | Insert | O(1) | O(n) | Khi resize → O(n) nhưng rare (amortized O(1)) |
 | Delete | O(1) | O(n) | Cần tìm rồi splice |
@@ -624,7 +624,7 @@ Trong JavaScript, `Map` native đã tối ưu hóa collision handling + resizing
 
 ### Tree (BST — Binary Search Tree)
 
-**Mô tả:** Cấu trúc tree nhị phân — mỗi node có最多 2 con. **Left < Root < Right**.
+**Mô tả:** Cấu trúc tree nhị phân — mỗi node có tối đa 2 con. **Left < Root < Right**.
 
 ```
         8

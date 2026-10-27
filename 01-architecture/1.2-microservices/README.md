@@ -96,7 +96,7 @@ Ví dụ `examples/index.ts` mô tả **Mini Shop (3 services)**:
 | Bước | Monolith (1.1) | Microservices (đây) |
 |------|----------------|---------------------|
 | Kiểm stock | `productService.checkStock()` — ~0.0001ms | HTTP `GET /stock` — 1–50ms, **có thể timeout/5xx** |
-| Trừ stock | `repo.decrease()` trong cùng transaction | `POST /reserve` — nếu trừ xong nhưng tạo order fail → phải **补偿** (release stock) |
+| Trừ stock | `repo.decrease()` trong cùng transaction | `POST /reserve` — nếu trừ xong nhưng tạo order fail → phải **bù đắp** (release stock) |
 | Gửi email | `emailService.send()` inline | Consume `OrderCreated` event — email **có thể gửi muộn**, hoặc gửi 2 lần nếu retry → cần idempotency |
 | Lỗi | 1 exception, rollback sạch | Partial state: order PENDING, stock reserved, email chưa gửi — **ai dọn dẹp?** |
 

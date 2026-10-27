@@ -137,7 +137,7 @@ for (const song of playlist) console.log(song); // A, B
 | 🧠 **Overkill nếu chỉ duyệt 1 cách** | Dùng `for...of` native đủ | Nếu không cần multiple traversal → native loop is simpler. |
 | 👻 **Mutation during iteration** | Iterator bị invalidate nếu collection đổi | `delete item` while iterating → skip or error. *Gi giảm thiểu:* snapshot/copy, hoặc fail-fast. |
 | 🔒 **Index tracking leak** | Iterator expose internal index | Nếu `index` getter public → structure leak. *Gi giảm thiểu:* keep iterator state private. |
-| 📉 **Backtracking impossible** | Iterator forward-only thường | Một số implementations không support `previous()`. *Gi giảm thiểu:*双向 iterator khi cần. |
+| 📉 **Backtracking impossible** | Iterator forward-only thường | Một số implementations không support `previous()`. *Giảm thiểu:* iterator hai chiều khi cần khi cần. |
 
 ---
 

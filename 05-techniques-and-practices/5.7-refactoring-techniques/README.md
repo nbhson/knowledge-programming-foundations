@@ -402,7 +402,7 @@ if (attempts >= MAX_LOGIN_ATTEMPTS) { /* ... */ }
 | Bug fix lộ ra vùng code đáng sợ | ✅ Refactor vùng đó | "Everyone avoids touching this" = future bug trap |
 | Code base đã < 6 tháng, sạch sẽ | ⏸️ Chờ | Chưa có pain → chưa có motivation refactor đúng chỗ |
 
-**黄金 rule:** **Refactor trong cùng commit với feature** — không bao giờ "refactor trước rồi mới add feature" riêng biệt. Lý do: commit tách biệt tăng risk merge conflict, và feature chưa chạy được trong giai đoạn refactor.
+**Quy tắc vàng:** **Refactor trong cùng commit với feature** — không bao giờ "refactor trước rồi mới add feature" riêng biệt. Lý do: commit tách biệt tăng risk merge conflict, và feature chưa chạy được trong giai đoạn refactor.
 
 ---
 

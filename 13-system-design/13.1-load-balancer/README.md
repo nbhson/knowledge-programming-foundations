@@ -231,7 +231,7 @@ app.get('/health', async (req, res) => {
 | ≥ 2 server instances | ✅ Bắt buộc | Tránh single point of failure, cho phép zero-downtime rolling deploy |
 | SSL termination cần tập trung | ✅ Phù hợp | Giảm burden cho backend, centralize cert rotation |
 | Rate limiting global | ✅ Phù hợp | Central enforcement dễ quản lý hơn per-instance |
-| 1 server nhỏ (< 100 req/s) | ⚠️ Tùy chọn | Chi phí运维 outweigh benefit; dùng nginx làm reverse proxy cũng được |
+| 1 server nhỏ (< 100 req/s) | ⚠️ Tùy chọn | Chi phí vận hành outweigh benefit; dùng nginx làm reverse proxy cũng được |
 | Backend stateful | ✅ Phù hợp + sticky session | Đảm bảo request cùng user tới cùng instance (session locality) |
 
 ---
@@ -240,6 +240,8 @@ app.get('/health', async (req, res) => {
 
 - **13.2 Caching Strategies** — Cache trước load balancer để giảm origin load
 - **13.6 Scalable Architecture** — Horizontal scaling + LB là cặp song hành
+
+> 💡 **eBPF-based LB / service mesh (Cilium):** ở cluster lớn (hàng nghìn pods), routing/load balancing ở kernel layer qua eBPF thay thế iptables/kube-proxy — ít overhead hơn, scale tốt hơn và cho policy per-pod.
 
 ---
 

@@ -369,7 +369,7 @@ Accumulator:   $stdDevPop, $stdDevSamp, $variancePop, $varianceSamp
 |------------|------------------|---------|----------|
 | Schema cố định, quan hệ phức tạp | ✅ Tốt hơn | ❌ Không phù hợp | FK constraint + JOIN + ACID multi-table = SQL domain. MongoDB không có FK enforcement. |
 | Data bán cấu trúc / linh hoạt | ⚠️ JSONB giúp được | ✅ Tốt hơn | Khi schema thay đổi weekly (content, IoT sensor), migration SQL là overhead không cần thiết. |
-| Write scale lớn, shard nhiều | ⚠️ Cần tool第三方 | ✅ Native sharding | MongoDB shard key tự động phân phối write across multiple servers. PostgreSQL shard cần Citus/pg_shard. |
+| Write scale lớn, shard nhiều | ⚠️ Cần tool bên thứ ba | ✅ Native sharding | MongoDB shard key tự động phân phối write across multiple servers. PostgreSQL shard cần Citus/pg_shard. |
 | Query JOIN phức tạp | ✅ Tốt hơn | ⚠️ $lookup chậm | $lookup load foreign collection vào RAM → OOM risk với large collections. |
 | Rapid prototyping / MVP | ⚠️ Cần migration | ✅ Không cần schema | `db.collection.insertOne(doc)` — chạy ngay, schema tự hình thành qua usage pattern. |
 | Geospatial queries | ⚠️ PostGIS plugin | ✅ Built-in | MongoDB native $near, $geoWithin, $geoIntersects — không cần cài plugin. |

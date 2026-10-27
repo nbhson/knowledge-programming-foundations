@@ -66,7 +66,7 @@ class EmailSender     { sendEmail()    { /* SMTP */ } }
 
 **Dấu hiệu nên extract class:**
 - Class có > 5 trách nhiệm rõ ràng
--某一组method luôn được gọi cùng nhau
+- Một nhóm method luôn được gọi cùng nhau
 - Class có private fields chỉ dùng bởi subset methods
 
 ### 3. Replace Conditional với Polymorphism
@@ -89,7 +89,7 @@ class Electronics extends Product { getPrice() { return this.basePrice * 1.1; } 
 class Food        extends Product { getPrice() { return this.basePrice; } }
 ```
 
-> 💡 **Open/Closed Principle:** class mở để extend (thêm subclass), đóng để modify (sửa superclass). Polymorphism实现 OCP.
+> 💡 **Open/Closed Principle:** class mở để extend (thêm subclass), đóng để modify (sửa superclass). Polymorphism thực thi OCP.
 
 ### 4. Inline Function
 

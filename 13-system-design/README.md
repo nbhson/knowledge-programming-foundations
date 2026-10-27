@@ -134,6 +134,26 @@ Asynchronous (Message Queue):
 
 ---
 
+## ▶️ Chạy ví dụ
+
+Mỗi chủ đề đều có ví dụ TypeScript chạy được (`npx ts-node examples/index.ts`):
+
+```bash
+cd 13-system-design/13.1-load-balancer && npx ts-node examples/index.ts
+cd 13-system-design/13.2-caching-strategies && npx ts-node examples/index.ts
+cd 13-system-design/13.3-cdn && npx ts-node examples/index.ts
+cd 13-system-design/13.4-sharding && npx ts-node examples/index.ts
+cd 13-system-design/13.5-cap-theorem && npx ts-node examples/index.ts
+cd 13-system-design/13.6-scalable-arch && npx ts-node examples/index.ts
+cd 13-system-design/13.7-consistent-hashing && npx ts-node examples/index.ts
+cd 13-system-design/13.8-message-queues && npx ts-node examples/index.ts
+cd 13-system-design/13.9-api-gateway-discovery && npx ts-node examples/index.ts
+cd 13-system-design/13.10-consensus-raft && npx ts-node examples/index.ts
+cd 13-system-design/13.11-case-studies && npx ts-node examples/index.ts
+```
+
+---
+
 ## ▶️ Học tiếp theo
 
 → [13.1 Load Balancer](13.1-load-balancer/README.md)
