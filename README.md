@@ -35,6 +35,17 @@
 | 17 | [🤖 AI & LLM Engineering](17-ai-llm-engineering/) | Kỹ thuật LLM (Prompt, Embeddings, RAG, Vector DB, Agents, Eval/Safety...) | [→ Xem chi tiết](17-ai-llm-engineering/README.md) |
 | 18 | [🖥️ CS Fundamentals](18-cs-fundamentals/) | Nền tảng khoa học máy tính (OS, Memory, Encoding, Numbers, Compilers...) | [→ Xem chi tiết](18-cs-fundamentals/README.md) |
 | 19 | [⚡ Frontend Performance](19-frontend-performance/) | Hiệu năng frontend (Rendering, Web Vitals, Bundling, Image/Font...) | [→ Xem chi tiết](19-frontend-performance/README.md) |
+| 20 | [🎓 Advanced CS Fundamentals](20-advanced-cs-fundamentals/) | Nền tảng CS nâng cao (Toán rời rạc, Bit, IEEE-754, Serialization, Regex...) | [→ Xem chi tiết](20-advanced-cs-fundamentals/README.md) |
+| 21 | [🏗️ Build & Package Management](21-build-compile-package-management/) | Build & đóng gói (Make, Vite, npm/pnpm, Shell, Config...) | [→ Xem chi tiết](21-build-compile-package-management/README.md) |
+| 22 | [🐛 Debugging & Profiling](22-debugging-logging-profiling/) | Gỡ lỗi & quan sát (Strategies, Logging, Profiling, Monitoring...) | [→ Xem chi tiết](22-debugging-logging-profiling/README.md) |
+| 23 | [🌳 Text, Parsing & AST](23-text-parsing-ast/) | Phân tích văn bản (Lexer, Parser, Regex internals, Schema...) | [→ Xem chi tiết](23-text-parsing-ast/README.md) |
+| 24 | [💾 File Systems & IO](24-file-systems-io/) | Tệp tin & nhập/xuất (FD & Streams, Path, Binary IO...) | [→ Xem chi tiết](24-file-systems-io/README.md) |
+| 25 | [🔀 IPC](25-ipc-interprocess-communication/) | Giao tiếp tiến trình (Pipes, Shared Memory, Unix Socket, Signals...) | [→ Xem chi tiết](25-ipc-interprocess-communication/README.md) |
+| 26 | [🔐 Cryptography Advanced](26-cryptography-advanced/) | Mật mã học nâng cao (Hashing, AES/RSA, KDF, Signatures...) | [→ Xem chi tiết](26-cryptography-advanced/README.md) |
+| 27 | [💉 Dependency Injection](27-dependency-injection/) | Tiêm phụ thuộc (DI Fundamentals, Container, Testing...) | [→ Xem chi tiết](27-dependency-injection/README.md) |
+| 28 | [📝 Documentation & ADR](28-documentation-adr/) | Tài liệu hóa (Code Docs, API Docs, ADR...) | [→ Xem chi tiết](28-documentation-adr/README.md) |
+| 29 | [🌍 i18n & L10n](29-i18n-l10n/) | Quốc tế hóa (ICU, Plural, Intl API, Unicode...) | [→ Xem chi tiết](29-i18n-l10n/README.md) |
+| 30 | [👀 Code Review](30-code-review-best-practices/) | Review code (Process, Checklist, PR Etiquette...) | [→ Xem chi tiết](30-code-review-best-practices/README.md) |
 
 ---
 
@@ -80,9 +91,12 @@ Architecture  ← Bức tranh lớn nhất (toàn bộ hệ thống)
 ```
 
 > **📁 Cấu trúc thư mục thực tế:** Ngoài 6 lớp cốt lõi, repository được mở rộng thêm
-> **13 lớp kiến thức thực hành** (`07` → `19`): Testing, DevOps/CI/CD, Security, Database,
+> **24 lớp kiến thức thực hành** (`07` → `30`): Testing, DevOps/CI/CD, Security, Database,
 > Networking/APIs, Concurrency, System Design, Clean Code, Version Control, Design Systems,
-> AI & LLM Engineering, CS Fundamentals, Frontend Performance.
+> AI & LLM Engineering, CS Fundamentals, Frontend Performance, Advanced CS Fundamentals,
+> Build & Package Management, Debugging & Profiling, Text/Parsing/AST, File Systems & IO,
+> IPC, Cryptography Advanced, Dependency Injection, Documentation & ADR, i18n & L10n,
+> Code Review.
 > Mỗi lớp có đầy đủ README hướng dẫn và ví dụ chạy được. Xem [📋 Mục Lục](#-mục-lục) ở trên.
 
 ---
