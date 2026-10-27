@@ -624,6 +624,20 @@ app.use(async (req, res, next) => {
 - ✅ Idempotency cho retry (tránh xử lý trùng lặp)
 - ✅ Test các đường lỗi (fault injection, chaos engineering)
 
+### CWE liên quan
+
+A10:2025 bao gồm **24 CWEs**, nổi bật:
+
+| CWE | Tên | Ý nghĩa |
+|-----|-----|---------|
+| **CWE-755** | Improper Handling of Exceptional Conditions | Không prevent/detect/respond với tình huống bất thường |
+| **CWE-228** | Improper Handling of Incomplete/Inconsistent Resource Cleanup | Resource dở dang khi điều kiện lỗi (connection leak, file lock) |
+| **CWE-252** | Unchecked Return Value | Bỏ qua return value/error của call → fail open ngầm |
+
+Các CWE này trước đây từng bị xếp vào "poor code quality" — OWASP 2025 chính thức xếp vào **rủi ro bảo mật** vì stack trace lộ chi tiết, fail open, và logic error đều chuyển thành lỗ hổng (xem ví dụ "fail open" phía trên và [14.3 Error Handling](../../14-clean-code/14.3-error-handling/README.md)).
+
+Ref: https://owasp.org/Top10/2025/ — [A10:2025 đầy đủ](https://owasp.org/Top10/2025/A10_2025-Mishandling_of_Exceptional_Conditions/)
+
 ---
 
 ## 📊 Tổng hợp phòng chống

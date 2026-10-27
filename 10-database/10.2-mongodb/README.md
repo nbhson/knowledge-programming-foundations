@@ -411,6 +411,42 @@ Accumulator:   $stdDevPop, $stdDevSamp, $variancePop, $varianceSamp
 
 ---
 
+## 🆕 MongoDB 8.0 + Atlas Vector Search (2024-2025)
+
+**MongoDB 8.0** (phát hành 10/2024) — những cải tiến đáng chú ý:
+
+- **Performance**: query parallelism cải thiện lớn (mix reads/writes), concurrent time-series writes, shard balancing tăng tốc 50x
+- **Queryable Encryption GA** — query trên field mã hóa mà không cần decrypt toàn bộ
+- **`$lookup` nhanh hơn đáng kể** qua slot-based execution engine — giảm một phần "pain point" kinh điển của MongoDB
+- Horizontal scale: tự động rebalancing shard nhanh hơn nhiều lần so với 7.0
+
+### Atlas Vector Search — AI/RAG workload
+
+Atlas Vector Search cho phép **semantic search** ngay trong MongoDB — quan trọng cho RAG (Retrieval-Augmented Generation):
+
+```javascript
+// Tạo Vector Search index (Atlas UI hoặc Search Index API)
+// { "fields": [{ "type": "vector", "path": "embedding", "numDimensions": 1536, "similarity": "cosine" }] }
+
+// Truy vấn bằng aggregation stage $vectorSearch
+db.collection.aggregate([
+  {
+    $vectorSearch: {
+      index: "vector_index",
+      path: "embedding",
+      queryVector: queryEmbedding,   // embedding của câu hỏi (1536 dims)
+      numCandidates: 200,            // ứng viên xét trong HNSW graph
+      limit: 10,
+    },
+  },
+  { $project: { title: 1, score: { $meta: "vectorSearchScore" } } }
+]);
+```
+
+> 📌 **Lưu ý:** Vector Search là **Atlas-only** (không có trên MongoDB Community tự host). Self-host alternatives: pgvector (PostgreSQL), Qdrant, Weaviate, Milvus. Với RAG workloads trên Postgres, `pgvector` thường là lựa chọn đơn giản hơn vì không phải chạy thêm một database riêng.
+
+---
+
 ## ▶️ Chạy ví dụ
 
 ```bash

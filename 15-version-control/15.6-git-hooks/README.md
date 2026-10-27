@@ -282,6 +282,36 @@ npx trufflehog filesystem --config .trufflehog.yaml
 | Pre-push test suite | Chỉ commit-msg, bỏ qua code quality checks |
 | Document hooks trong README | Giấu hooks config, dev mới không biết setup |
 
+| Document hooks trong README | Giấu hooks config, dev mới không biết setup |
+
+---
+
+## 🧹 ESLint 9 — Flat Config (2025)
+
+ESLint 9 (phát hành 2025) dùng **flat config** (`eslint.config.js`) thay `.eslintrc.json`. Format cũ `.eslintrc` đã deprecated và sẽ bị loại ở ESLint 10 — nếu chưa migrate, lint vẫn chạy ở compatibility mode và in cảnh báo khi `npm install`.
+
+```javascript
+// eslint.config.js — new format
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  { ignores: ['dist/**', 'node_modules/**'] }
+);
+```
+
+Điểm khác biệt chính so với `.eslintrc`:
+- **Không còn `extends` chuỗi string** — mọi shared config được import như một module
+- **`ignores`** thay thế file `.eslintignore`
+- **`root` không tồn tại** — flat config mặc định hoạt động như `root: true`
+- typescript-eslint v7+ cung cấp package `typescript-eslint` với `tseslint.config()` cho type-safe flat config (v9.22+ của ESLint cũng có `defineConfig` built-in)
+
+Khi pre-commit hook chạy `npm run lint`, ESLint 9 đọc `eslint.config.js` ở repo root — nếu project vẫn còn `.eslintrc.json` sẽ chạy ở compatibility mode (deprecated).
+
+Ref: https://eslint.org/docs/latest/use/configure/configuration-files
+
 ---
 
 ## 🔗 Liên quan
