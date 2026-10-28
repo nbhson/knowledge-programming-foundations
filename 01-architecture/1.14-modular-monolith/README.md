@@ -245,4 +245,4 @@ Nhấn mạnh: trong demo, `OrdersModule` không biết `InventoryModule` là cl
 
 ## ⏭️ Bài tiếp theo
 
-→ [02-design-patterns](../02-design-patterns/README.md)
+→ [02-design-patterns](../../02-design-patterns/README.md)
